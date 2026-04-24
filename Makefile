@@ -30,6 +30,7 @@ SRC := $(SRC_DIR)/main.cpp
 
 # Project headers
 HEADERS := $(INCLUDE_DIR)/json.hpp \
+		   $(INCLUDE_DIR)/raylib-cpp.hpp \
 		   $(INCLUDE_DIR)/raylib.h \
 		   $(INCLUDE_DIR)/raymath.h \
 		   $(INCLUDE_DIR)/rlgl.h \
