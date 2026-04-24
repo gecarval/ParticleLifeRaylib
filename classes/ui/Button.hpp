@@ -1,26 +1,26 @@
 #pragma once
 
-#include "../../include/raylib.h"
+#include "../../include/raylib-cpp.hpp"
 #include <functional>
 #include <string>
 
 class Button {
   private:
 	// Position and size
-	Rectangle bounds;
+	raylib::Rectangle bounds;
 
 	// Text properties
-	std::string	 text;
-	unsigned int fontSize;
-	Color		 textColor;
+	std::string	  text;
+	unsigned int  fontSize;
+	raylib::Color textColor;
 
 	// Visual properties
-	Color normalColor;
-	Color hoverColor;
-	Color pressedColor;
-	Color borderColor;
-	float borderWidth;
-	float roundness;
+	raylib::Color normalColor;
+	raylib::Color hoverColor;
+	raylib::Color pressedColor;
+	raylib::Color borderColor;
+	float		  borderWidth;
+	float		  roundness;
 
 	// State
 	bool isHovered;
@@ -32,20 +32,20 @@ class Button {
 	std::function<void()> onClick;
 
 	// Helper methods
-	Color getCurrentColor() const;
-	void  checkInteraction();
+	raylib::Color getCurrentColor() const;
+	void		  checkInteraction();
 
   public:
 	// Constructor
 	Button(const float x, const float y, const float width, const float height,
 		   const std::string &text);
-	Button(const float x, const float y, const Vector2 &size,
+	Button(const float x, const float y, const raylib::Vector2 &size,
 		   const std::string &text);
-	Button(const Vector2 &position, const float width, const float height,
+	Button(const raylib::Vector2 &position, const float width,
+		   const float height, const std::string &text);
+	Button(const raylib::Vector2 &position, const raylib::Vector2 &size,
 		   const std::string &text);
-	Button(const Vector2 &position, const Vector2 &size,
-		   const std::string &text);
-	Button(const Rectangle &button, const std::string &text);
+	Button(const raylib::Rectangle &button, const std::string &text);
 
 	// Update and draw methods
 	void update();
@@ -54,24 +54,24 @@ class Button {
 	// Setters for customization
 	void setText(const std::string &text);
 	void setPosition(const float x, const float y);
-	void setPosition(const Vector2 &position);
+	void setPosition(const raylib::Vector2 &position);
 	void setSize(float width, float height);
-	void setSize(const Vector2 &size);
-	void setBounds(const Rectangle &size);
-	void setColors(const Color &normal, const Color &hover,
-				   const Color &pressed);
-	void setTextColor(const Color &color);
+	void setSize(const raylib::Vector2 &size);
+	void setBounds(const raylib::Rectangle &size);
+	void setColors(const raylib::Color &normal, const raylib::Color &hover,
+				   const raylib::Color &pressed);
+	void setTextColor(const raylib::Color &color);
 	void setFontSize(const unsigned int size);
 	void setBorderWidth(const float width);
-	void setBorderColor(const Color &color);
+	void setBorderColor(const raylib::Color &color);
 	void setRoundness(const float roundness);
 	void setOnClick(std::function<void()> callback);
 
 	// Getters
-	bool			 isButtonPressed() const;
-	bool			 isButtonHovered() const;
-	Rectangle		&getBounds();
-	const Rectangle &getBounds() const;
+	bool					 isButtonPressed() const;
+	bool					 isButtonHovered() const;
+	raylib::Rectangle		&getBounds();
+	const raylib::Rectangle &getBounds() const;
 
 	// State management
 	void setEnabled(const bool enabled);
