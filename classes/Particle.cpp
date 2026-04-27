@@ -71,10 +71,10 @@ void Particle::applyGravity(const float strength) noexcept {
 
 void Particle::applyNewtonianGravity(const raylib::Vector2 &target,
 									 const float			strength) noexcept {
-	raylib::Vector2 direction = target - _pos;
-	float			distance = direction.Length();
+	const raylib::Vector2 direction = target - _pos;
+	const float			  distance = direction.Length();
 	if (distance > 0) {
-		float forceMagnitude = strength / (distance * distance);
+		const float forceMagnitude = strength / (distance * distance);
 		_acc += direction.Normalize() * forceMagnitude;
 	}
 }
@@ -84,23 +84,24 @@ void Particle::applyFriction(const float strength) noexcept {
 }
 
 void Particle::collideWith(Particle &other, const float restitution) noexcept {
-	raylib::Vector2 direction = other._pos - _pos;
-	float			distance = direction.Length();
-	float			minDistance = _rad + other._rad;
+	const raylib::Vector2 direction = other._pos - _pos;
+	const float			  distance = direction.Length();
+	const float			  minDistance = _rad + other._rad;
 
 	if (distance < minDistance && distance > 0) {
 		raylib::Vector2 normal = direction.Normalize();
-		float relativeVelocity = (_vel - other._vel).DotProduct(normal);
+		const float relativeVelocity = (_vel - other._vel).DotProduct(normal);
 		// Assuming equal mass
-		float impulseMagnitude = -(1 + restitution) * relativeVelocity / 2.0f;
+		const float impulseMagnitude =
+			-(1 + restitution) * relativeVelocity / 2.0f;
 
-		raylib::Vector2 impulse = normal * impulseMagnitude;
+		const raylib::Vector2 impulse = normal * impulseMagnitude;
 		_vel += impulse;
 		other._vel -= impulse;
 
 		// Positional correction to prevent sinking
-		float			penetrationDepth = minDistance - distance;
-		raylib::Vector2 correction = normal * (penetrationDepth / 2.0f);
+		const float			  penetrationDepth = minDistance - distance;
+		const raylib::Vector2 correction = normal * (penetrationDepth / 2.0f);
 		_pos -= correction;
 		other._pos += correction;
 	}
