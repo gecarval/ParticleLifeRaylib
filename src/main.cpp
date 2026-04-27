@@ -1,6 +1,4 @@
-#include "../classes/HashCollision.hpp"
 #include "../classes/Particle.hpp"
-#include "../classes/ui/Button.hpp"
 
 int main(void) {
 	std::vector<Particle *> particles;

@@ -18,10 +18,10 @@ DEBUG := valgrind --leak-check=full --show-leak-kinds=all \
          --track-origins=yes -s
 
 # Directories
-SRC_DIR := ./src
-LIB_DIR := ./lib
-CLASS_DIR := ./classes
-INCLUDE_DIR := ./include
+SRC_DIR := src
+LIB_DIR := lib
+CLASS_DIR := classes
+INCLUDE_DIR := include
 
 # Project sources
 CLASS_SRC := $(CLASS_DIR)/ui/Button.cpp \
@@ -45,7 +45,7 @@ INC_FLAGS := -I$(CLASS_DIR) \
              -I$(INCLUDE_DIR)
 
 # Libraries
-LIBS := $(LIB_DIR)/libraylib.a -lGL -lm -lpthread -ldl -lrt -lX11
+LIBS := $(LIB_DIR)/libraylib.a -lGL -lm -lpthread -ldl -lrt -lX11 -latomic
 
 # Object files with build directory
 CLASS_OBJ := $(CLASS_SRC:%.cpp=$(OBJ_DIR)/%.o)
