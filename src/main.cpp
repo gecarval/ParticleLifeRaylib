@@ -1,3 +1,4 @@
+#include "../classes/HashCollision.hpp"
 #include "../classes/Particle.hpp"
 
 static void cameraControl(raylib::Camera2D &cam) {
@@ -33,6 +34,7 @@ static void cameraControl(raylib::Camera2D &cam) {
 }
 
 int main(void) {
+	HashCollision		   *hash = HashCollision::getInstance();
 	std::vector<Particle *> particles;
 	particles.reserve(1000);
 	for (int i = 0; i < 1000; ++i) {
@@ -46,16 +48,21 @@ int main(void) {
 	window.SetTargetFPS(60);
 	while (!window.ShouldClose()) {
 		cameraControl(cam);
+		hash->addParticles(particles);
 		window.BeginDrawing();
 		window.ClearBackground();
 		cam.BeginMode();
 		for (Particle *particle : particles) {
 			Particle &p = *particle;
+			auto	  colliders = hash->getCollisions(particle);
+			for (Particle *collider : colliders) {
+				p.collideWith(*collider, 0.5f);
+			}
 			p.update();
-			for (Particle *particle2 : particles) {
-				Particle &p2 = *particle2;
+			for (auto *particle2 : particles) {
+				auto &p2 = *particle2;
 				if (p != p2) {
-					p.moveTowards(p2.getPos());
+					p.applyNewtonianGravity(p2.getPos(), 100.0f);
 				}
 			}
 			p.draw();
@@ -63,9 +70,11 @@ int main(void) {
 		cam.EndMode();
 		window.DrawFPS();
 		window.EndDrawing();
+		hash->clear();
 	}
 	for (Particle *p : particles) {
 		delete p;
 	}
+	HashCollision::deleteInstance();
 	return (0);
 }
