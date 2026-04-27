@@ -2,70 +2,62 @@
 #define HASHCOLLISION_HPP
 
 #include "../include/raylib-cpp.hpp"
-#include <map>
+#include <unordered_map>
 #include <vector>
 
 class Particle;
 struct Vector2i;
+struct Vector2iHash {
+	std::size_t operator()(const Vector2i &v) const noexcept;
+};
 
 class HashCollision {
   private:
-	static const float	  _hashQuadSize;
+	static const float	  CELL_SIZE;
 	static HashCollision *_instance;
 
-	std::map<Vector2i, std::vector<Particle *>> _hashMap;
+	std::unordered_map<Vector2i, std::vector<Particle *>, Vector2iHash>
+		_hashMap;
 
 	HashCollision();
-	HashCollision(const HashCollision &other);
-	HashCollision &operator=(const HashCollision &other);
+	HashCollision(const HashCollision &) = delete;
+	HashCollision &operator=(const HashCollision &) = delete;
 	~HashCollision();
 
-	Vector2i hashFunction(const raylib::Vector2 &position);
+	inline Vector2i
+	hashFunction(const raylib::Vector2 &position) const noexcept;
 
   public:
-	static HashCollision   *getInstance();
-	static void				deleteInstance();
+	static HashCollision *getInstance();
+	static void			  deleteInstance();
+
+	// Core API
+	void rebuild(std::vector<Particle *> &particles);
+	void getCollisions(Particle *particle, std::vector<Particle *> &out) const;
+
+	// Legacy
 	void					addParticles(std::vector<Particle *> &particles);
-	std::vector<Particle *> getCollisions(Particle *particle);
+	std::vector<Particle *> getCollisions(Particle *particle) const;
 	void					clear();
 };
 
 struct Vector2i {
 	int x;
 	int y;
-
-	Vector2i(int x = 0, int y = 0) : x(x), y(y) {
+	constexpr Vector2i(int x = 0, int y = 0) noexcept : x(x), y(y) {
 	}
-
-	Vector2i(const raylib::Vector2 &vec)
-		: x(static_cast<int>(vec.x)), y(static_cast<int>(vec.y)) {
-	}
-
-	Vector2i(const Vector2i &other) : x(other.x), y(other.y) {
-	}
-
-	Vector2i &operator=(const Vector2i &other) {
-		if (this != &other) {
-			x = other.x;
-			y = other.y;
-		}
-		return *this;
-	}
-
-	~Vector2i() {
-	}
-
-	bool operator==(const Vector2i &other) const {
+	constexpr bool operator==(const Vector2i &other) const noexcept {
 		return x == other.x && y == other.y;
 	}
-
-	bool operator!=(const Vector2i &other) const {
-		return !(*this == other);
-	}
-
-	bool operator<(const Vector2i &other) const {
-		return (x < other.x) || (x == other.x && y < other.y);
+	constexpr bool operator!=(const Vector2i &other) const noexcept {
+		return x != other.x || y != other.y;
 	}
 };
+
+inline std::size_t Vector2iHash::operator()(const Vector2i &v) const noexcept {
+	std::size_t h = static_cast<std::size_t>(v.x);
+	h ^= static_cast<std::size_t>(v.y) + 0x9e3779b9u + (h << 6) + (h >> 2);
+	return h;
+}
 
 #endif // HASHCOLLISION_HPP

@@ -1,29 +1,23 @@
 #include "HashCollision.hpp"
 #include "Particle.hpp"
+#include <array>
 
-const float	   HashCollision::_hashQuadSize = 10.0f;
+// Static
+const float	   HashCollision::CELL_SIZE = 10.0f;
 HashCollision *HashCollision::_instance = nullptr;
 
-HashCollision::HashCollision() : _hashMap() {
-}
-
-HashCollision::HashCollision(const HashCollision &other)
-	: _hashMap(other._hashMap) {
-}
-
-HashCollision &HashCollision::operator=(const HashCollision &other) {
-	if (this != &other) {
-		_hashMap = other._hashMap;
-	}
-	return *this;
+// Pre-bucket the map so the first rebuild rarely triggers a rehash.
+HashCollision::HashCollision() {
+	_hashMap.reserve(4096);
 }
 
 HashCollision::~HashCollision() {
 }
 
-Vector2i HashCollision::hashFunction(const raylib::Vector2 &position) {
-	return Vector2i(static_cast<int>(position.x / _hashQuadSize),
-					static_cast<int>(position.y / _hashQuadSize));
+inline Vector2i
+HashCollision::hashFunction(const raylib::Vector2 &position) const noexcept {
+	return {static_cast<int>(position.x / CELL_SIZE),
+			static_cast<int>(position.y / CELL_SIZE)};
 }
 
 HashCollision *HashCollision::getInstance() {
@@ -40,59 +34,65 @@ void HashCollision::deleteInstance() {
 	}
 }
 
-void HashCollision::addParticles(std::vector<Particle *> &particles) {
-	for (Particle *particle : particles) {
-		Vector2i hashKey = hashFunction(particle->getPos());
-		_hashMap[hashKey].push_back(particle);
+// Core API
+void HashCollision::rebuild(std::vector<Particle *> &particles) {
+	// Reuse allocated buckets — clear() keeps capacity.
+	for (auto &[key, vec] : _hashMap) {
+		vec.clear();
+	}
+	for (Particle *p : particles) {
+		auto &bucket = _hashMap[hashFunction(p->getPos())];
+		bucket.push_back(p);
 	}
 }
 
-std::vector<Particle *> HashCollision::getCollisions(Particle *particle) {
-	Vector2i				hashKey = hashFunction(particle->getPos());
-	std::vector<Particle *> collisions;
+void HashCollision::getCollisions(Particle				  *particle,
+								  std::vector<Particle *> &out) const {
+	const Vector2i key = hashFunction(particle->getPos());
+	// Offsets for the 3×3 neighbourhood (center cell + 8 surrounding).
+	static constexpr std::array<std::pair<int, int>, 9> offsets{{
+		{-1, -1},
+		{0, -1},
+		{1, -1},
+		{-1, 0},
+		{0, 0},
+		{1, 0},
+		{-1, 1},
+		{0, 1},
+		{1, 1},
+	}};
 
-	if (_hashMap.find(hashKey) != _hashMap.end()) {
-		collisions.reserve(_hashMap[hashKey].size());
-		for (Particle *other : _hashMap[hashKey]) {
-			if (other != particle) {
-				collisions.push_back(other);
+	for (const auto &[dx, dy] : offsets) {
+		const Vector2i neighborKey(key.x + dx, key.y + dy);
+		const auto	   it = _hashMap.find(neighborKey);
+		if (it == _hashMap.end()) {
+			continue;
+		}
+		for (Particle *other : it->second) {
+			if (*particle != *other) {
+				out.push_back(other);
 			}
 		}
 	}
+}
 
-	const std::vector<Vector2i> neighbors = {
-		Vector2i(hashKey.x - 1, hashKey.y - 1),
-		Vector2i(hashKey.x, hashKey.y - 1),
-		Vector2i(hashKey.x + 1, hashKey.y - 1),
-		Vector2i(hashKey.x - 1, hashKey.y),
-		Vector2i(hashKey.x + 1, hashKey.y),
-		Vector2i(hashKey.x - 1, hashKey.y + 1),
-		Vector2i(hashKey.x, hashKey.y + 1),
-		Vector2i(hashKey.x + 1, hashKey.y + 1)};
-
-	const raylib::Vector2 size(_hashQuadSize, _hashQuadSize);
-	for (const Vector2i &neighborKey : neighbors) {
-		if (_hashMap.find(neighborKey) != _hashMap.end()) {
-			raylib::Vector2 neighborPos = raylib::Vector2(
-				neighborKey.x * _hashQuadSize, neighborKey.y * _hashQuadSize);
-			raylib::Rectangle neighborRect(neighborPos, size);
-			if (!neighborRect.CheckCollision(particle->getPos(),
-											 particle->getRadius())) {
-				continue;
-			}
-			collisions.reserve(collisions.size() +
-							   _hashMap[neighborKey].size());
-			for (Particle *other : _hashMap[neighborKey]) {
-				if (other != particle) {
-					collisions.push_back(other);
-				}
-			}
-		}
+// Legacy
+void HashCollision::addParticles(std::vector<Particle *> &particles) {
+	for (Particle *p : particles) {
+		_hashMap[hashFunction(p->getPos())].push_back(p);
 	}
+}
 
-	return collisions;
+std::vector<Particle *> HashCollision::getCollisions(Particle *particle) const {
+	std::vector<Particle *> out;
+	// Rough upper-bound guess to avoid repeated small reallocations.
+	out.reserve(32);
+	getCollisions(particle, out);
+	return out;
 }
 
 void HashCollision::clear() {
-	_hashMap.clear();
+	for (auto &[key, vec] : _hashMap) {
+		vec.clear();
+	}
 }
