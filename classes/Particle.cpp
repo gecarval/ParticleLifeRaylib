@@ -55,13 +55,13 @@ void Particle::applyForce(const raylib::Vector2 &force) noexcept {
 
 void Particle::moveTowards(const raylib::Vector2 &target,
 						   const float			  strength) noexcept {
-	raylib::Vector2 direction = target - _pos;
+	const raylib::Vector2 direction = target - _pos;
 	_acc += (direction.Normalize() * strength);
 }
 
 void Particle::moveAwayFrom(const raylib::Vector2 &target,
 							const float			   strength) noexcept {
-	raylib::Vector2 direction = _pos - target;
+	const raylib::Vector2 direction = _pos - target;
 	_acc += (direction.Normalize() * strength);
 }
 
