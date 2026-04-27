@@ -331,6 +331,8 @@ public:
      */
     void DrawCircle(float radius, ::Color color = {0, 0, 0, 255}) const { ::DrawCircleV(*this, radius, color); }
 
+    void DrawCircleLine(float radius, ::Color color = {0, 0, 0, 255}) const { ::DrawCircleLinesV(*this, radius, color); }
+
     void DrawRectangle(::Vector2 size, ::Color color = {0, 0, 0, 255}) const { ::DrawRectangleV(*this, size, color); }
 
     void DrawPoly(int sides, float radius, float rotation, ::Color color = {0, 0, 0, 255}) const {

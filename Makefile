@@ -24,7 +24,9 @@ CLASS_DIR := ./classes
 INCLUDE_DIR := ./include
 
 # Project sources
-CLASS_SRC := $(CLASS_DIR)/ui/Button.cpp
+CLASS_SRC := $(CLASS_DIR)/ui/Button.cpp \
+			 $(CLASS_DIR)/Particle.cpp \
+			 $(CLASS_DIR)/HashCollision.cpp
 
 SRC := $(SRC_DIR)/main.cpp
 
@@ -34,7 +36,9 @@ HEADERS := $(INCLUDE_DIR)/json.hpp \
 		   $(INCLUDE_DIR)/raylib.h \
 		   $(INCLUDE_DIR)/raymath.h \
 		   $(INCLUDE_DIR)/rlgl.h \
-           $(CLASS_DIR)/ui/Button.hpp
+           $(CLASS_DIR)/ui/Button.hpp \
+		   $(CLASS_DIR)/Particle.hpp \
+		   $(CLASS_DIR)/HashCollision.hpp
 
 # Include paths
 INC_FLAGS := -I$(CLASS_DIR) \
