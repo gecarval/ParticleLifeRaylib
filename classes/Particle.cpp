@@ -43,6 +43,18 @@ void Particle::draw(void) const noexcept {
 	_pos.DrawCircle(_rad, _col);
 }
 
+void Particle::draw(const raylib::Window   &window,
+					const raylib::Camera2D &camera) const noexcept {
+	const raylib::Rectangle screenRect(
+		camera.GetTarget().x - (window.GetWidth() / 2.0f) / camera.GetZoom(),
+		camera.GetTarget().y - (window.GetHeight() / 2.0f) / camera.GetZoom(),
+		window.GetWidth() / camera.GetZoom(),
+		window.GetHeight() / camera.GetZoom());
+	if (screenRect.CheckCollision(_pos, _rad)) {
+		draw();
+	}
+}
+
 void Particle::debugDraw(void) const noexcept {
 	_pos.DrawCircleLine(_rad, raylib::Color::Red());
 	_pos.DrawLine(_pos + _vel, raylib::Color::Green());

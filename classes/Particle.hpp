@@ -29,6 +29,8 @@ class Particle {
 	// methods
 	void update(void) noexcept;
 	void draw(void) const noexcept;
+	void draw(const raylib::Window	 &window,
+			  const raylib::Camera2D &camera) const noexcept;
 	void debugDraw(void) const noexcept;
 
 	// movement methods
