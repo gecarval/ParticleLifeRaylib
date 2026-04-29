@@ -97,10 +97,11 @@ void Particle::applyFriction(const float strength) noexcept {
 
 void Particle::collideWith(Particle &other, const float restitution) noexcept {
 	const raylib::Vector2 direction = other._pos - _pos;
-	const float			  distance = direction.Length();
+	const float			  distanceSqr = direction.LengthSqr();
 	const float			  minDistance = _rad + other._rad;
 
-	if (distance < minDistance && distance > 0) {
+	if (distanceSqr > 0.01f && distanceSqr < (minDistance * minDistance)) {
+		const float		distance = sqrtf(distanceSqr);
 		raylib::Vector2 normal = direction.Normalize();
 		const float relativeVelocity = (_vel - other._vel).DotProduct(normal);
 		// Assuming equal mass
