@@ -2,33 +2,31 @@
 #define PARTICLE_HPP
 
 #include "../../../../../include/raylib-cpp.hpp"
-#include "../../../../Object.hpp"
+#include "../Node2D.hpp"
 
-class Particle : public Object {
+class Particle : public Node2D {
   private:
 	static const float _defaultSize;
 
-	// physics
-	raylib::Vector2 _pos;
-	raylib::Vector2 _vel;
-	raylib::Vector2 _acc;
-	raylib::Color	_col;
-	float			_rad;
+	raylib::Color _col;
+	float		  _rad;
 
   public:
-	Particle(const raylib::Vector2 &pos = raylib::Vector2());
-	Particle(const raylib::Color   &col,
-			 const raylib::Vector2 &pos = raylib::Vector2());
+	Particle(const std::string	   &instanceName = "",
+			 const raylib::Vector2 &pos = raylib::Vector2(),
+			 const raylib::Color   &col = raylib::Color::White());
 	Particle(const Particle &other);
 	Particle &operator=(const Particle &other);
 	virtual ~Particle();
 
 	// methods
-	void update() noexcept;
-	void draw() const noexcept;
-	void draw(const raylib::Window	 &window,
-			  const raylib::Camera2D &Camera2D) const noexcept;
-	void debugDraw() const noexcept;
+	void		 update() noexcept;
+	virtual void draw(const raylib::Window &window) const noexcept;
+	virtual void draw(const raylib::Window	 &window,
+					  const raylib::Camera2D &camera) const noexcept;
+	virtual void drawDebug(const raylib::Window &window) const noexcept;
+	virtual void drawDebug(const raylib::Window	  &window,
+						   const raylib::Camera2D &camera) const noexcept;
 
 	// movement methods
 	void applyForce(const raylib::Vector2 &force) noexcept;
@@ -45,20 +43,11 @@ class Particle : public Object {
 	void collideWith(Particle &other, const float restitution = 1.0f) noexcept;
 
 	// getters and setters
-	const raylib::Vector2 &getPos() const noexcept;
-	raylib::Vector2		  &getPos() noexcept;
-	void				   setPos(const raylib::Vector2 &newPos) noexcept;
-	const raylib::Vector2 &getVel() const noexcept;
-	raylib::Vector2		  &getVel() noexcept;
-	void				   setVel(const raylib::Vector2 &newVel) noexcept;
-	const raylib::Vector2 &getAcc() const noexcept;
-	raylib::Vector2		  &getAcc() noexcept;
-	void				   setAcc(const raylib::Vector2 &newAcc) noexcept;
-	const raylib::Color	  &getCol() const noexcept;
-	raylib::Color		  &getCol() noexcept;
-	void				   setCol(const raylib::Color &newCol) noexcept;
-	unsigned int		   getRadius() const noexcept;
-	void				   setRadius(unsigned int newRad) noexcept;
+	const raylib::Color &getCol() const noexcept;
+	raylib::Color		&getCol() noexcept;
+	void				 setCol(const raylib::Color &newCol) noexcept;
+	unsigned int		 getRadius() const noexcept;
+	void				 setRadius(unsigned int newRad) noexcept;
 
 	virtual const std::string &getClassName() const noexcept;
 };

@@ -1,5 +1,7 @@
 #include "../classes/node/canvas_item/node2d/particle/Particle.hpp"
 #include "../classes/physics_server/PhysicsServer.hpp"
+#include "../classes/render_server/RenderServer.hpp"
+#include <string>
 
 static void cameraControl(raylib::Camera2D &cam) {
 	const float walkSpeed = 20.0f / cam.GetZoom();
@@ -34,12 +36,14 @@ static void cameraControl(raylib::Camera2D &cam) {
 }
 
 int main(void) {
-	PhysicsServer		   &PhysicServer = PhysicsServer::getInstance();
+	PhysicsServer		   &physicsServer = PhysicsServer::getInstance();
+	RenderServer		   &renderServer = RenderServer::getInstance();
 	std::vector<Particle *> particles;
 	particles.reserve(1000);
 	for (int i = 0; i < 1000; ++i) {
 		raylib::Vector2 pos(rand() % 800, rand() % 600);
-		Particle	   *newParticle = new Particle(pos);
+		Particle	   *newParticle = new Particle(std::to_string(i), pos);
+		newParticle->setVisibleDebug(true);
 		particles.push_back(newParticle);
 	}
 	raylib::Window		  window(800, 600);
@@ -53,10 +57,10 @@ int main(void) {
 		window.BeginDrawing();
 		window.ClearBackground();
 		cam.BeginMode();
-		PhysicServer.rebuild(particles);
+		physicsServer.rebuild(particles);
 		for (Particle *p : particles) {
 			colliders.clear();
-			PhysicServer.getCollisions(p, colliders);
+			physicsServer.getCollisions(p, colliders);
 			for (Particle *p2 : colliders) {
 				p->collideWith(*p2, 0.5f);
 			}
@@ -66,12 +70,12 @@ int main(void) {
 				}
 			}
 			p->update();
-			p->draw(window, cam);
 		}
+		renderServer.render(window, cam);
 		cam.EndMode();
 		window.DrawFPS();
 		window.EndDrawing();
-		PhysicServer.clear();
+		physicsServer.clear();
 	}
 	for (Particle *p : particles) {
 		delete p;

@@ -2,25 +2,21 @@
 
 const float Particle::_defaultSize = 5.0f;
 
-Particle::Particle(const raylib::Vector2 &pos)
-	: Object(), _pos(pos), _col(raylib::Color::White()), _rad(_defaultSize) {
-}
-
-Particle::Particle(const raylib::Color &col, const raylib::Vector2 &pos)
-	: Object(), _pos(pos), _col(col), _rad(_defaultSize) {
+Particle::Particle(const std::string &instanceName, const raylib::Vector2 &pos,
+				   const raylib::Color &col)
+	: Object(instanceName), Node(instanceName), CanvasItem(instanceName),
+	  Node2D(instanceName), _col(col), _rad(_defaultSize) {
+	_pos = pos;
 }
 
 Particle::Particle(const Particle &other)
-	: Object(other), _pos(other._pos), _vel(other._vel), _acc(other._acc),
+	: Object(other), Node(other), CanvasItem(other), Node2D(other),
 	  _col(other._col), _rad(other._rad) {
 }
 
 Particle &Particle::operator=(const Particle &other) {
 	if (this != &other) {
-		Object::operator=(other);
-		_pos = other._pos;
-		_vel = other._vel;
-		_acc = other._acc;
+		Node2D::operator=(other);
 		_col = other._col;
 		_rad = other._rad;
 	}
@@ -30,26 +26,50 @@ Particle &Particle::operator=(const Particle &other) {
 Particle::~Particle() {
 }
 
-void Particle::draw() const noexcept {
-	_pos.DrawCircle(_rad, _col);
+void Particle::draw(const raylib::Window &window) const noexcept {
+	const raylib::Rectangle screenSpace(0, 0, window.GetWidth(),
+										window.GetHeight());
+	if (screenSpace.CheckCollision(_pos, _rad)) {
+		_pos.DrawCircle(_rad, _col);
+	}
 }
 
 void Particle::draw(const raylib::Window   &window,
 					const raylib::Camera2D &camera) const noexcept {
-	const raylib::Rectangle screenRect(
+	const raylib::Rectangle screenSpace(
 		camera.GetTarget().x - (window.GetWidth() / 2.0f) / camera.GetZoom(),
 		camera.GetTarget().y - (window.GetHeight() / 2.0f) / camera.GetZoom(),
 		window.GetWidth() / camera.GetZoom(),
 		window.GetHeight() / camera.GetZoom());
-	if (screenRect.CheckCollision(_pos, _rad)) {
-		draw();
+	if (screenSpace.CheckCollision(_pos, _rad)) {
+		_pos.DrawCircle(_rad, _col);
 	}
 }
 
-void Particle::debugDraw() const noexcept {
-	_pos.DrawCircleLine(_rad, raylib::Color::Red());
-	_pos.DrawLine(_pos + _vel, raylib::Color::Green());
-	_pos.DrawLine(_pos + _acc, raylib::Color::Blue());
+void Particle::drawDebug(const raylib::Window &window) const noexcept {
+	const raylib::Rectangle screenSpace(0, 0, window.GetWidth(),
+										window.GetHeight());
+	if (screenSpace.CheckCollision(_pos, _rad)) {
+		_pos.DrawCircleLine(_rad, raylib::Color::Red());
+		_pos.DrawLine(_pos + _vel, raylib::Color::Green());
+		_pos.DrawLine(_pos + _acc, raylib::Color::Blue());
+	}
+	Node2D::drawDebug(window);
+}
+
+void Particle::drawDebug(const raylib::Window	&window,
+						 const raylib::Camera2D &camera) const noexcept {
+	const raylib::Rectangle screenSpace(
+		camera.GetTarget().x - (window.GetWidth() / 2.0f) / camera.GetZoom(),
+		camera.GetTarget().y - (window.GetHeight() / 2.0f) / camera.GetZoom(),
+		window.GetWidth() / camera.GetZoom(),
+		window.GetHeight() / camera.GetZoom());
+	if (screenSpace.CheckCollision(_pos, _rad)) {
+		_pos.DrawCircleLine(_rad, raylib::Color::Red());
+		_pos.DrawLine(_pos + _vel, raylib::Color::Green());
+		_pos.DrawLine(_pos + _acc, raylib::Color::Blue());
+	}
+	Node2D::drawDebug(window, camera);
 }
 
 void Particle::update() noexcept {
@@ -116,42 +136,6 @@ void Particle::collideWith(Particle &other, const float restitution) noexcept {
 		_pos -= correction;
 		other._pos += correction;
 	}
-}
-
-const raylib::Vector2 &Particle::getPos() const noexcept {
-	return _pos;
-}
-
-raylib::Vector2 &Particle::getPos() noexcept {
-	return _pos;
-}
-
-void Particle::setPos(const raylib::Vector2 &newPos) noexcept {
-	_pos = newPos;
-}
-
-const raylib::Vector2 &Particle::getVel() const noexcept {
-	return _vel;
-}
-
-raylib::Vector2 &Particle::getVel() noexcept {
-	return _vel;
-}
-
-void Particle::setVel(const raylib::Vector2 &newVel) noexcept {
-	_vel = newVel;
-}
-
-const raylib::Vector2 &Particle::getAcc() const noexcept {
-	return _acc;
-}
-
-raylib::Vector2 &Particle::getAcc() noexcept {
-	return _acc;
-}
-
-void Particle::setAcc(const raylib::Vector2 &newAcc) noexcept {
-	_acc = newAcc;
 }
 
 const raylib::Color &Particle::getCol() const noexcept {
