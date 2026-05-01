@@ -6,9 +6,10 @@
 class Object {
   private:
 	static unsigned long _instanceIDCounter;
+	const unsigned long	 _instanceID;
 
-	const unsigned long _instanceID;
-	std::string			_instanceName;
+  protected:
+	std::string _instanceName;
 
   public:
 	virtual ~Object();
