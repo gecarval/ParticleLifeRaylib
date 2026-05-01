@@ -215,6 +215,6 @@ void Button::checkInteraction() {
 }
 
 const std::string &Button::getClassName() const noexcept {
-	static const std::string className = "Button";
+	static const std::string className("Button");
 	return (className);
 }

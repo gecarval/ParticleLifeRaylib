@@ -116,19 +116,19 @@ void Node::pushBackChild(Object &child) noexcept {
 	_children.push_back(&child);
 }
 
-Object *Node::backChild(void) noexcept {
+Object *Node::backChild() noexcept {
 	return (_children.back());
 }
 
-Object *Node::frontChild(void) noexcept {
+Object *Node::frontChild() noexcept {
 	return (_children.front());
 }
 
-void Node::popFrontChild(void) noexcept {
+void Node::popFrontChild() noexcept {
 	_children.erase(_children.begin());
 }
 
-void Node::popBackChild(void) noexcept {
+void Node::popBackChild() noexcept {
 	_children.pop_back();
 }
 

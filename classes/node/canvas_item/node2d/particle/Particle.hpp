@@ -24,11 +24,11 @@ class Particle : public Object {
 	virtual ~Particle();
 
 	// methods
-	void update(void) noexcept;
-	void draw(void) const noexcept;
+	void update() noexcept;
+	void draw() const noexcept;
 	void draw(const raylib::Window	 &window,
 			  const raylib::Camera2D &Camera2D) const noexcept;
-	void debugDraw(void) const noexcept;
+	void debugDraw() const noexcept;
 
 	// movement methods
 	void applyForce(const raylib::Vector2 &force) noexcept;
@@ -45,22 +45,22 @@ class Particle : public Object {
 	void collideWith(Particle &other, const float restitution = 1.0f) noexcept;
 
 	// getters and setters
-	const raylib::Vector2 &getPos(void) const noexcept;
-	raylib::Vector2		  &getPos(void) noexcept;
+	const raylib::Vector2 &getPos() const noexcept;
+	raylib::Vector2		  &getPos() noexcept;
 	void				   setPos(const raylib::Vector2 &newPos) noexcept;
-	const raylib::Vector2 &getVel(void) const noexcept;
-	raylib::Vector2		  &getVel(void) noexcept;
+	const raylib::Vector2 &getVel() const noexcept;
+	raylib::Vector2		  &getVel() noexcept;
 	void				   setVel(const raylib::Vector2 &newVel) noexcept;
-	const raylib::Vector2 &getAcc(void) const noexcept;
-	raylib::Vector2		  &getAcc(void) noexcept;
+	const raylib::Vector2 &getAcc() const noexcept;
+	raylib::Vector2		  &getAcc() noexcept;
 	void				   setAcc(const raylib::Vector2 &newAcc) noexcept;
-	const raylib::Color	  &getCol(void) const noexcept;
-	raylib::Color		  &getCol(void) noexcept;
+	const raylib::Color	  &getCol() const noexcept;
+	raylib::Color		  &getCol() noexcept;
 	void				   setCol(const raylib::Color &newCol) noexcept;
-	unsigned int		   getRadius(void) const noexcept;
+	unsigned int		   getRadius() const noexcept;
 	void				   setRadius(unsigned int newRad) noexcept;
 
-	virtual const std::string &getClassName(void) const noexcept;
+	virtual const std::string &getClassName() const noexcept;
 };
 
 #endif // PARTICLE_HPP

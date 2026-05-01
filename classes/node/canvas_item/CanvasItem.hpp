@@ -17,10 +17,10 @@ class CanvasItem : virtual public Node {
 	virtual ~CanvasItem();
 
 	// draw method to be implemented by derived classes
-	virtual void draw(void) const noexcept = 0;
+	virtual void draw() const noexcept = 0;
 	virtual void draw(const raylib::Window	 &window,
 					  const raylib::Camera2D &camera) const noexcept = 0;
-	virtual void drawDebug(void) const noexcept = 0;
+	virtual void drawDebug() const noexcept = 0;
 
 	// getters and setters
 	bool isVisible() const noexcept;

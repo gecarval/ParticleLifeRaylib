@@ -10,6 +10,8 @@ class RenderServer : public Object {
 	RenderServer(const RenderServer &other);
 	RenderServer &operator=(const RenderServer &other);
 	virtual ~RenderServer();
+
+	virtual const std::string &getClassName() const noexcept;
 };
 
 #endif // RENDERSERVER_HPP

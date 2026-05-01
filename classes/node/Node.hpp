@@ -36,10 +36,10 @@ class Node : virtual public Object {
 	void	insertChild(Object &child, const Node::iterator &it) noexcept;
 	void	pushFrontChild(Object &child) noexcept;
 	void	pushBackChild(Object &child) noexcept;
-	Object *frontChild(void) noexcept;
-	Object *backChild(void) noexcept;
-	void	popFrontChild(void) noexcept;
-	void	popBackChild(void) noexcept;
+	Object *frontChild() noexcept;
+	Object *backChild() noexcept;
+	void	popFrontChild() noexcept;
+	void	popBackChild() noexcept;
 	void	deleteChild(const Node::iterator &it) noexcept;
 	void	deleteChild(const std::string &instanceName) noexcept;
 	void	deleteChild(const unsigned long instanceID) noexcept;

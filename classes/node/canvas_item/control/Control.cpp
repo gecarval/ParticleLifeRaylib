@@ -20,6 +20,6 @@ Control::~Control() {
 }
 
 const std::string &Control::getClassName() const noexcept {
-	static const std::string className = "Control";
+	static const std::string className("Control");
 	return className;
 }

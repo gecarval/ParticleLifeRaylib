@@ -97,7 +97,7 @@ void PhysicsServer::clear() {
 	}
 }
 
-const std::string &PhysicsServer::getClassName(void) const noexcept {
+const std::string &PhysicsServer::getClassName() const noexcept {
 	static const std::string className("PhysicsServer");
 	return (className);
 }

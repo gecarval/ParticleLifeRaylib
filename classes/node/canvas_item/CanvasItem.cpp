@@ -48,6 +48,6 @@ void CanvasItem::setLayer(int layer) noexcept {
 }
 
 const std::string &CanvasItem::getClassName() const noexcept {
-	static const std::string className = "CanvasItem";
+	static const std::string className("CanvasItem");
 	return className;
 }

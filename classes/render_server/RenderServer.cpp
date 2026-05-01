@@ -16,3 +16,8 @@ RenderServer &RenderServer::operator=(const RenderServer &other) {
 
 RenderServer::~RenderServer() {
 }
+
+const std::string &RenderServer::getClassName() const noexcept {
+	static const std::string className("RenderServer");
+	return className;
+}

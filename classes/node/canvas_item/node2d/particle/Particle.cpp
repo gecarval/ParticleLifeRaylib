@@ -30,7 +30,7 @@ Particle &Particle::operator=(const Particle &other) {
 Particle::~Particle() {
 }
 
-void Particle::draw(void) const noexcept {
+void Particle::draw() const noexcept {
 	_pos.DrawCircle(_rad, _col);
 }
 
@@ -46,13 +46,13 @@ void Particle::draw(const raylib::Window   &window,
 	}
 }
 
-void Particle::debugDraw(void) const noexcept {
+void Particle::debugDraw() const noexcept {
 	_pos.DrawCircleLine(_rad, raylib::Color::Red());
 	_pos.DrawLine(_pos + _vel, raylib::Color::Green());
 	_pos.DrawLine(_pos + _acc, raylib::Color::Blue());
 }
 
-void Particle::update(void) noexcept {
+void Particle::update() noexcept {
 	const float deltaTime = raylib::Window::GetFrameTime();
 	_vel += _acc * deltaTime;
 	_pos += _vel * deltaTime;
@@ -118,11 +118,11 @@ void Particle::collideWith(Particle &other, const float restitution) noexcept {
 	}
 }
 
-const raylib::Vector2 &Particle::getPos(void) const noexcept {
+const raylib::Vector2 &Particle::getPos() const noexcept {
 	return _pos;
 }
 
-raylib::Vector2 &Particle::getPos(void) noexcept {
+raylib::Vector2 &Particle::getPos() noexcept {
 	return _pos;
 }
 
@@ -130,11 +130,11 @@ void Particle::setPos(const raylib::Vector2 &newPos) noexcept {
 	_pos = newPos;
 }
 
-const raylib::Vector2 &Particle::getVel(void) const noexcept {
+const raylib::Vector2 &Particle::getVel() const noexcept {
 	return _vel;
 }
 
-raylib::Vector2 &Particle::getVel(void) noexcept {
+raylib::Vector2 &Particle::getVel() noexcept {
 	return _vel;
 }
 
@@ -142,11 +142,11 @@ void Particle::setVel(const raylib::Vector2 &newVel) noexcept {
 	_vel = newVel;
 }
 
-const raylib::Vector2 &Particle::getAcc(void) const noexcept {
+const raylib::Vector2 &Particle::getAcc() const noexcept {
 	return _acc;
 }
 
-raylib::Vector2 &Particle::getAcc(void) noexcept {
+raylib::Vector2 &Particle::getAcc() noexcept {
 	return _acc;
 }
 
@@ -154,11 +154,11 @@ void Particle::setAcc(const raylib::Vector2 &newAcc) noexcept {
 	_acc = newAcc;
 }
 
-const raylib::Color &Particle::getCol(void) const noexcept {
+const raylib::Color &Particle::getCol() const noexcept {
 	return _col;
 }
 
-raylib::Color &Particle::getCol(void) noexcept {
+raylib::Color &Particle::getCol() noexcept {
 	return _col;
 }
 
@@ -166,7 +166,7 @@ void Particle::setCol(const raylib::Color &newCol) noexcept {
 	_col = newCol;
 }
 
-unsigned int Particle::getRadius(void) const noexcept {
+unsigned int Particle::getRadius() const noexcept {
 	return _rad;
 }
 
@@ -174,7 +174,7 @@ void Particle::setRadius(unsigned int newRad) noexcept {
 	_rad = newRad;
 }
 
-const std::string &Particle::getClassName(void) const noexcept {
+const std::string &Particle::getClassName() const noexcept {
 	static const std::string className("Particle");
 	return (className);
 }

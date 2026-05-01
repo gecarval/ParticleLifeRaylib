@@ -20,6 +20,6 @@ Node2D::~Node2D() {
 }
 
 const std::string &Node2D::getClassName() const noexcept {
-	static const std::string className = "Node2D";
+	static const std::string className("Node2D");
 	return className;
 }

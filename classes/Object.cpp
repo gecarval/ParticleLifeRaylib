@@ -20,15 +20,15 @@ Object &Object::operator=(const Object &other) noexcept {
 	return (*this);
 }
 
-unsigned long Object::getInstanceID(void) const noexcept {
+unsigned long Object::getInstanceID() const noexcept {
 	return (_instanceID);
 }
 
-const std::string &Object::getInstanceName(void) const noexcept {
+const std::string &Object::getInstanceName() const noexcept {
 	return (_instanceName);
 }
 
-std::string &Object::getInstanceName(void) noexcept {
+std::string &Object::getInstanceName() noexcept {
 	return (_instanceName);
 }
 
@@ -44,7 +44,7 @@ bool Object::operator!=(const Object &other) const noexcept {
 	return (_instanceID != other._instanceID);
 }
 
-const std::string &Object::getClassName(void) const noexcept {
+const std::string &Object::getClassName() const noexcept {
 	static const std::string className("Object");
 	return (className);
 }

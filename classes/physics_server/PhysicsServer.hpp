@@ -60,7 +60,7 @@ class PhysicsServer : public Object {
 	std::vector<Particle *> getCollisions(Particle *particle) const;
 	void					clear();
 
-	virtual const std::string &getClassName(void) const noexcept;
+	virtual const std::string &getClassName() const noexcept;
 };
 
 #endif // PHYSICSSERVER_HPP
