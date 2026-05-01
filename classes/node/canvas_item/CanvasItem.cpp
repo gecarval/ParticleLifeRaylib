@@ -1,8 +1,10 @@
 #include "CanvasItem.hpp"
+#include "../../render_server/RenderServer.hpp"
 
 CanvasItem::CanvasItem(const std::string &instanceName)
 	: Object(instanceName), Node(instanceName), _visible(true),
 	  _visibleDebug(false), _layer(0) {
+	RenderServer::addCanvasItem(this);
 }
 
 CanvasItem::CanvasItem(const CanvasItem &other)
@@ -21,6 +23,7 @@ CanvasItem &CanvasItem::operator=(const CanvasItem &other) {
 }
 
 CanvasItem::~CanvasItem() {
+	RenderServer::removeCanvasItem(this);
 }
 
 bool CanvasItem::isVisible() const noexcept {
