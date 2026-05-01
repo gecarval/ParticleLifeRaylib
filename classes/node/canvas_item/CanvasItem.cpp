@@ -27,7 +27,7 @@ bool CanvasItem::isVisible() const noexcept {
 	return _visible;
 }
 
-void CanvasItem::setVisible(bool visible) noexcept {
+void CanvasItem::setVisible(const bool visible) noexcept {
 	_visible = visible;
 }
 
@@ -35,7 +35,7 @@ bool CanvasItem::isVisibleDebug() const noexcept {
 	return _visibleDebug;
 }
 
-void CanvasItem::setVisibleDebug(bool visibleDebug) noexcept {
+void CanvasItem::setVisibleDebug(const bool visibleDebug) noexcept {
 	_visibleDebug = visibleDebug;
 }
 
@@ -43,7 +43,7 @@ int CanvasItem::getLayer() const noexcept {
 	return _layer;
 }
 
-void CanvasItem::setLayer(int layer) noexcept {
+void CanvasItem::setLayer(const int layer) noexcept {
 	_layer = layer;
 }
 
