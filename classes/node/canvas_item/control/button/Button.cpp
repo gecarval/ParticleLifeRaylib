@@ -1,5 +1,5 @@
 #include "./Button.hpp"
-#include "../../include/raymath.h"
+#include "../../../../../include/raymath.h"
 
 // Constructor
 Button::Button(const float x, const float y, const float width,
@@ -212,4 +212,9 @@ void Button::checkInteraction() {
 	} else if (raylib::Mouse::IsButtonReleased(MOUSE_LEFT_BUTTON)) {
 		this->isPressed = false;
 	}
+}
+
+const std::string &Button::getClassName() const noexcept {
+	static const std::string className = "Button";
+	return (className);
 }

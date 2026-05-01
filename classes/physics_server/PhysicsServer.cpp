@@ -1,33 +1,33 @@
-#include "HashCollision.hpp"
-#include "Particle.hpp"
+#include "PhysicsServer.hpp"
+#include "../node/canvas_item/node2d/particle/Particle.hpp"
 #include <array>
 
 // Static
-const float	   HashCollision::CELL_SIZE = 10.0f;
-HashCollision *HashCollision::_instance = nullptr;
+const float	   PhysicsServer::CELL_SIZE = 10.0f;
+PhysicsServer *PhysicsServer::_instance = nullptr;
 
 // Pre-bucket the map so the first rebuild rarely triggers a rehash.
-HashCollision::HashCollision() : Object() {
+PhysicsServer::PhysicsServer() : Object() {
 	_hashMap.reserve(4096);
 }
 
-HashCollision::~HashCollision() {
+PhysicsServer::~PhysicsServer() {
 }
 
 inline Vector2i
-HashCollision::hashFunction(const raylib::Vector2 &position) const noexcept {
+PhysicsServer::hashFunction(const raylib::Vector2 &position) const noexcept {
 	return {static_cast<int>(position.x / CELL_SIZE),
 			static_cast<int>(position.y / CELL_SIZE)};
 }
 
-HashCollision *HashCollision::getInstance() {
+PhysicsServer *PhysicsServer::getInstance() {
 	if (_instance == nullptr) {
-		_instance = new HashCollision();
+		_instance = new PhysicsServer();
 	}
 	return _instance;
 }
 
-void HashCollision::deleteInstance() {
+void PhysicsServer::deleteInstance() {
 	if (_instance != nullptr) {
 		delete _instance;
 		_instance = nullptr;
@@ -35,7 +35,7 @@ void HashCollision::deleteInstance() {
 }
 
 // Core API
-void HashCollision::rebuild(std::vector<Particle *> &particles) {
+void PhysicsServer::rebuild(std::vector<Particle *> &particles) {
 	// Reuse allocated buckets — clear() keeps capacity.
 	for (auto &[key, vec] : _hashMap) {
 		vec.clear();
@@ -46,7 +46,7 @@ void HashCollision::rebuild(std::vector<Particle *> &particles) {
 	}
 }
 
-void HashCollision::getCollisions(Particle				  *particle,
+void PhysicsServer::getCollisions(Particle				  *particle,
 								  std::vector<Particle *> &out) const {
 	const Vector2i key = hashFunction(particle->getPos());
 	// Offsets for the 3×3 neighbourhood (center cell + 8 surrounding).
@@ -77,13 +77,13 @@ void HashCollision::getCollisions(Particle				  *particle,
 }
 
 // Legacy
-void HashCollision::addParticles(std::vector<Particle *> &particles) {
+void PhysicsServer::addParticles(std::vector<Particle *> &particles) {
 	for (Particle *p : particles) {
 		_hashMap[hashFunction(p->getPos())].push_back(p);
 	}
 }
 
-std::vector<Particle *> HashCollision::getCollisions(Particle *particle) const {
+std::vector<Particle *> PhysicsServer::getCollisions(Particle *particle) const {
 	std::vector<Particle *> out;
 	// Rough upper-bound guess to avoid repeated small reallocations.
 	out.reserve(32);
@@ -91,13 +91,13 @@ std::vector<Particle *> HashCollision::getCollisions(Particle *particle) const {
 	return out;
 }
 
-void HashCollision::clear() {
+void PhysicsServer::clear() {
 	for (auto &[key, vec] : _hashMap) {
 		vec.clear();
 	}
 }
 
-const std::string &HashCollision::getClassName(void) const noexcept {
-	static const std::string className("HashCollision");
+const std::string &PhysicsServer::getClassName(void) const noexcept {
+	static const std::string className("PhysicsServer");
 	return (className);
 }

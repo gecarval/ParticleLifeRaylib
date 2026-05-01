@@ -1,5 +1,4 @@
 #include "Particle.hpp"
-#include "Object.hpp"
 
 const float Particle::_defaultSize = 5.0f;
 
@@ -31,13 +30,6 @@ Particle &Particle::operator=(const Particle &other) {
 Particle::~Particle() {
 }
 
-void Particle::update(void) noexcept {
-	const float deltaTime = raylib::Window::GetFrameTime();
-	_vel += _acc * deltaTime;
-	_pos += _vel * deltaTime;
-	_acc = raylib::Vector2::Zero();
-}
-
 void Particle::draw(void) const noexcept {
 	_pos.DrawCircle(_rad, _col);
 }
@@ -58,6 +50,13 @@ void Particle::debugDraw(void) const noexcept {
 	_pos.DrawCircleLine(_rad, raylib::Color::Red());
 	_pos.DrawLine(_pos + _vel, raylib::Color::Green());
 	_pos.DrawLine(_pos + _acc, raylib::Color::Blue());
+}
+
+void Particle::update(void) noexcept {
+	const float deltaTime = raylib::Window::GetFrameTime();
+	_vel += _acc * deltaTime;
+	_pos += _vel * deltaTime;
+	_acc = raylib::Vector2::Zero();
 }
 
 void Particle::applyForce(const raylib::Vector2 &force) noexcept {

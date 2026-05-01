@@ -1,8 +1,8 @@
-#ifndef HASHCOLLISION_HPP
-#define HASHCOLLISION_HPP
+#ifndef PHYSICSSERVER_HPP
+#define PHYSICSSERVER_HPP
 
-#include "../include/raylib-cpp.hpp"
-#include "Object.hpp"
+#include "../../include/raylib-cpp.hpp"
+#include "../Object.hpp"
 #include <unordered_map>
 #include <vector>
 
@@ -31,24 +31,24 @@ inline std::size_t Vector2iHash::operator()(const Vector2i &v) const noexcept {
 	return h;
 }
 
-class HashCollision : public Object {
+class PhysicsServer : public Object {
   private:
 	static const float	  CELL_SIZE;
-	static HashCollision *_instance;
+	static PhysicsServer *_instance;
 
 	std::unordered_map<Vector2i, std::vector<Particle *>, Vector2iHash>
 		_hashMap;
 
-	HashCollision();
-	HashCollision(const HashCollision &) = delete;
-	HashCollision &operator=(const HashCollision &) = delete;
-	~HashCollision();
+	PhysicsServer();
+	PhysicsServer(const PhysicsServer &) = delete;
+	PhysicsServer &operator=(const PhysicsServer &) = delete;
+	~PhysicsServer();
 
 	inline Vector2i
 	hashFunction(const raylib::Vector2 &position) const noexcept;
 
   public:
-	static HashCollision *getInstance();
+	static PhysicsServer *getInstance();
 	static void			  deleteInstance();
 
 	// Core API
@@ -63,4 +63,4 @@ class HashCollision : public Object {
 	virtual const std::string &getClassName(void) const noexcept;
 };
 
-#endif // HASHCOLLISION_HPP
+#endif // PHYSICSSERVER_HPP

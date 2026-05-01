@@ -24,11 +24,15 @@ CLASS_DIR := classes
 INCLUDE_DIR := include
 
 # Project sources
-CLASS_SRC := $(CLASS_DIR)/ui/Button.cpp \
-			 $(CLASS_DIR)/Object.cpp \
-			 $(CLASS_DIR)/Node.cpp \
-			 $(CLASS_DIR)/Particle.cpp \
-			 $(CLASS_DIR)/HashCollision.cpp
+CLASS_SRC := $(CLASS_DIR)/Object.cpp \
+			 $(CLASS_DIR)/physics_server/PhysicsServer.cpp \
+			 $(CLASS_DIR)/render_server/RenderServer.cpp \
+			 $(CLASS_DIR)/node/Node.cpp \
+			 $(CLASS_DIR)/node/canvas_item/CanvasItem.cpp \
+			 $(CLASS_DIR)/node/canvas_item/control/Control.cpp \
+			 $(CLASS_DIR)/node/canvas_item/control/button/Button.cpp \
+			 $(CLASS_DIR)/node/canvas_item/node2d/Node2D.cpp \
+			 $(CLASS_DIR)/node/canvas_item/node2d/particle/Particle.cpp
 
 SRC := $(SRC_DIR)/main.cpp
 
@@ -38,11 +42,15 @@ HEADERS := $(INCLUDE_DIR)/json.hpp \
 		   $(INCLUDE_DIR)/raylib.h \
 		   $(INCLUDE_DIR)/raymath.h \
 		   $(INCLUDE_DIR)/rlgl.h \
-           $(CLASS_DIR)/ui/Button.hpp \
-		   $(CLASS_DIR)/Object.hpp \
-		   $(CLASS_DIR)/Node.hpp \
-		   $(CLASS_DIR)/Particle.hpp \
-		   $(CLASS_DIR)/HashCollision.hpp
+           $(CLASS_DIR)/Object.hpp \
+		   $(CLASS_DIR)/physics_server/PhysicsServer.hpp \
+		   $(CLASS_DIR)/render_server/RenderServer.hpp \
+		   $(CLASS_DIR)/node/Node.hpp \
+		   $(CLASS_DIR)/node/canvas_item/CanvasItem.hpp \
+		   $(CLASS_DIR)/node/canvas_item/control/Control.hpp \
+		   $(CLASS_DIR)/node/canvas_item/control/button/Button.hpp \
+		   $(CLASS_DIR)/node/canvas_item/node2d/Node2D.hpp \
+		   $(CLASS_DIR)/node/canvas_item/node2d/particle/Particle.hpp
 
 # Include paths
 INC_FLAGS := -I$(CLASS_DIR) \

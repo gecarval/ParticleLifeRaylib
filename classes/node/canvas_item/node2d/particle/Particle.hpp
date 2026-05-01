@@ -1,8 +1,8 @@
 #ifndef PARTICLE_HPP
 #define PARTICLE_HPP
 
-#include "../include/raylib-cpp.hpp"
-#include "Object.hpp"
+#include "../../../../../include/raylib-cpp.hpp"
+#include "../../../../Object.hpp"
 
 class Particle : public Object {
   private:
@@ -27,7 +27,7 @@ class Particle : public Object {
 	void update(void) noexcept;
 	void draw(void) const noexcept;
 	void draw(const raylib::Window	 &window,
-			  const raylib::Camera2D &camera) const noexcept;
+			  const raylib::Camera2D &Camera2D) const noexcept;
 	void debugDraw(void) const noexcept;
 
 	// movement methods

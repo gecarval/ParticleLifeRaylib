@@ -1,7 +1,7 @@
 #ifndef NODE_HPP
 #define NODE_HPP
 
-#include "Object.hpp"
+#include "../Object.hpp"
 #include <vector>
 
 class Node : virtual public Object {

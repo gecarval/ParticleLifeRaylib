@@ -1,6 +1,7 @@
-#pragma once
+#ifndef BUTTON_HPP
+#define BUTTON_HPP
 
-#include "../../include/raylib-cpp.hpp"
+#include "../../../../../include/raylib-cpp.hpp"
 #include <functional>
 #include <string>
 
@@ -76,4 +77,8 @@ class Button {
 	// State management
 	void setEnabled(const bool enabled);
 	bool isEnabled() const;
+
+	virtual const std::string &getClassName() const noexcept;
 };
+
+#endif // BUTTON_HPP

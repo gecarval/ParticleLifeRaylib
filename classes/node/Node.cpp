@@ -1,5 +1,4 @@
 #include "Node.hpp"
-#include "Object.hpp"
 
 Node::Node(const std::string &instanceName) noexcept : Object(instanceName) {
 }

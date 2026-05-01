@@ -1,5 +1,5 @@
-#include "../classes/HashCollision.hpp"
-#include "../classes/Particle.hpp"
+#include "../classes/node/canvas_item/node2d/particle/Particle.hpp"
+#include "../classes/physics_server/PhysicsServer.hpp"
 
 static void cameraControl(raylib::Camera2D &cam) {
 	const float walkSpeed = 20.0f / cam.GetZoom();
@@ -34,7 +34,7 @@ static void cameraControl(raylib::Camera2D &cam) {
 }
 
 int main(void) {
-	HashCollision		   &hash = *HashCollision::getInstance();
+	PhysicsServer		   &PhysicServer = *PhysicsServer::getInstance();
 	std::vector<Particle *> particles;
 	particles.reserve(1000);
 	for (int i = 0; i < 1000; ++i) {
@@ -53,10 +53,10 @@ int main(void) {
 		window.BeginDrawing();
 		window.ClearBackground();
 		cam.BeginMode();
-		hash.rebuild(particles);
+		PhysicServer.rebuild(particles);
 		for (Particle *p : particles) {
 			colliders.clear();
-			hash.getCollisions(p, colliders);
+			PhysicServer.getCollisions(p, colliders);
 			for (Particle *p2 : colliders) {
 				p->collideWith(*p2, 0.5f);
 			}
@@ -71,11 +71,11 @@ int main(void) {
 		cam.EndMode();
 		window.DrawFPS();
 		window.EndDrawing();
-		hash.clear();
+		PhysicServer.clear();
 	}
 	for (Particle *p : particles) {
 		delete p;
 	}
-	HashCollision::deleteInstance();
+	PhysicsServer::deleteInstance();
 	return (0);
 }
