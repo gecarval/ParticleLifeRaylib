@@ -1,20 +1,59 @@
 #include "RenderServer.hpp"
+#include "../node/canvas_item/CanvasItem.hpp"
 
-RenderServer::RenderServer() {
-}
+std::unordered_map<unsigned long, CanvasItem *> RenderServer::_canvasItems;
+RenderServer *RenderServer::_instance = nullptr;
 
-RenderServer::RenderServer(const RenderServer &other) : Object(other) {
-}
-
-RenderServer &RenderServer::operator=(const RenderServer &other) {
-	if (this != &other) {
-		Object::operator=(other);
-		// Copy derived class members here
-	}
-	return *this;
+RenderServer::RenderServer(const std::string &instanceName)
+	: Object(instanceName) {
 }
 
 RenderServer::~RenderServer() {
+}
+
+RenderServer &RenderServer::getInstance() noexcept {
+	if (_instance == nullptr) {
+		_instance = new RenderServer("RenderServer");
+	}
+	return *_instance;
+}
+
+void RenderServer::destroyInstance() noexcept {
+	delete _instance;
+	_instance = nullptr;
+}
+
+void RenderServer::render(const raylib::Window &window) noexcept {
+	for (const auto &pair : _canvasItems) {
+		CanvasItem *canvasItem = pair.second;
+		if (canvasItem->isVisible()) {
+			canvasItem->draw(window);
+		}
+		if (canvasItem->isVisibleDebug()) {
+			canvasItem->drawDebug(window);
+		}
+	}
+}
+
+void RenderServer::render(const raylib::Window	 &window,
+						  const raylib::Camera2D &camera) noexcept {
+	for (const auto &pair : _canvasItems) {
+		CanvasItem *canvasItem = pair.second;
+		if (canvasItem->isVisible()) {
+			canvasItem->draw(window, camera);
+		}
+		if (canvasItem->isVisibleDebug()) {
+			canvasItem->drawDebug(window, camera);
+		}
+	}
+}
+
+void RenderServer::addCanvasItem(CanvasItem *canvasItem) noexcept {
+	_canvasItems[canvasItem->getInstanceID()] = canvasItem;
+}
+
+void RenderServer::removeCanvasItem(CanvasItem *canvasItem) noexcept {
+	_canvasItems.erase(canvasItem->getInstanceID());
 }
 
 const std::string &RenderServer::getClassName() const noexcept {
