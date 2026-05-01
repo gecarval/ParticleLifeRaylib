@@ -54,15 +54,19 @@ int main(void) {
 		window.ClearBackground();
 		cam.BeginMode();
 		hash.rebuild(particles);
-		for (Particle *particle : particles) {
-			Particle &p = *particle;
+		for (Particle *p : particles) {
 			colliders.clear();
-			hash.getCollisions(particle, colliders);
-			for (Particle *collider : colliders) {
-				p.collideWith(*collider, 0.5f);
+			hash.getCollisions(p, colliders);
+			for (Particle *p2 : colliders) {
+				p->collideWith(*p2, 0.5f);
 			}
-			p.update();
-			p.draw(window, cam);
+			for (Particle *p2 : particles) {
+				if (*p != *p2) {
+					p->applyNewtonianGravity(p2->getPos());
+				}
+			}
+			p->update();
+			p->draw(window, cam);
 		}
 		cam.EndMode();
 		window.DrawFPS();
