@@ -20,11 +20,11 @@ PhysicsServer::hashFunction(const raylib::Vector2 &position) const noexcept {
 			static_cast<int>(position.y / CELL_SIZE)};
 }
 
-PhysicsServer *PhysicsServer::getInstance() noexcept {
+PhysicsServer &PhysicsServer::getInstance() noexcept {
 	if (_instance == nullptr) {
 		_instance = new PhysicsServer();
 	}
-	return _instance;
+	return *_instance;
 }
 
 void PhysicsServer::deleteInstance() noexcept {

@@ -48,7 +48,7 @@ class PhysicsServer : public Object {
 	hashFunction(const raylib::Vector2 &position) const noexcept;
 
   public:
-	static PhysicsServer *getInstance() noexcept;
+	static PhysicsServer &getInstance() noexcept;
 	static void			  deleteInstance() noexcept;
 
 	// Core API

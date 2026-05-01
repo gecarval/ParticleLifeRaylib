@@ -34,7 +34,7 @@ static void cameraControl(raylib::Camera2D &cam) {
 }
 
 int main(void) {
-	PhysicsServer		   &PhysicServer = *PhysicsServer::getInstance();
+	PhysicsServer		   &PhysicServer = PhysicsServer::getInstance();
 	std::vector<Particle *> particles;
 	particles.reserve(1000);
 	for (int i = 0; i < 1000; ++i) {
