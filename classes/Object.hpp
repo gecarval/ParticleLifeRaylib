@@ -1,7 +1,7 @@
 #ifndef OBJECT_HPP
 #define OBJECT_HPP
 
-#include <string>
+#include <ostream>
 
 class Object {
   private:
@@ -14,7 +14,7 @@ class Object {
 	virtual ~Object();
 	explicit Object(const std::string &instanceName = "");
 	explicit Object(const Object &other);
-	Object &operator=(const Object &other);
+	Object &operator=(const Object &other) noexcept;
 
 	unsigned long	   getInstanceID(void) const noexcept;
 	const std::string &getInstanceName(void) const noexcept;
@@ -27,5 +27,7 @@ class Object {
 
 	virtual const std::string &getClassName(void) const noexcept;
 };
+
+std::ostream &operator<<(std::ostream &out, const Object &other);
 
 #endif

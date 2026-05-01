@@ -13,7 +13,7 @@ Object::Object(const Object &other)
 	: _instanceID(_instanceIDCounter++), _instanceName(other._instanceName) {
 }
 
-Object &Object::operator=(const Object &other) {
+Object &Object::operator=(const Object &other) noexcept {
 	if (this != &other) {
 		_instanceName = other._instanceName;
 	}
@@ -47,4 +47,10 @@ bool Object::operator!=(const Object &other) const noexcept {
 const std::string &Object::getClassName(void) const noexcept {
 	static const std::string className("Object");
 	return (className);
+}
+
+std::ostream &operator<<(std::ostream &out, const Object &other) {
+	out << other.getClassName() << "#" << other.getInstanceID() << ": \""
+		<< other.getInstanceName() << "\"";
+	return (out);
 }
