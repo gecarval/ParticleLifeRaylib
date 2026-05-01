@@ -20,7 +20,9 @@ class CanvasItem : virtual public Node {
 	virtual void draw(const raylib::Window &window) const noexcept = 0;
 	virtual void draw(const raylib::Window	 &window,
 					  const raylib::Camera2D &camera) const noexcept = 0;
-	virtual void drawDebug() const noexcept = 0;
+	virtual void drawDebug(const raylib::Window &window) const noexcept = 0;
+	virtual void drawDebug(const raylib::Window	  &window,
+						   const raylib::Camera2D &camera) const noexcept = 0;
 
 	// getters and setters
 	bool isVisible() const noexcept;
