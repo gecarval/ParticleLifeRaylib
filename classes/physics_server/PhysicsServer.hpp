@@ -39,7 +39,7 @@ class PhysicsServer : public Object {
 	std::unordered_map<Vector2i, std::vector<Particle *>, Vector2iHash>
 		_hashMap;
 
-	PhysicsServer();
+	PhysicsServer(const std::string &instanceName = "");
 	PhysicsServer(const PhysicsServer &) = delete;
 	PhysicsServer &operator=(const PhysicsServer &) = delete;
 	~PhysicsServer();

@@ -7,7 +7,8 @@ const float	   PhysicsServer::CELL_SIZE = 10.0f;
 PhysicsServer *PhysicsServer::_instance = nullptr;
 
 // Pre-bucket the map so the first rebuild rarely triggers a rehash.
-PhysicsServer::PhysicsServer() : Object() {
+PhysicsServer::PhysicsServer(const std::string &instanceName)
+	: Object(instanceName) {
 	_hashMap.reserve(4096);
 }
 
@@ -22,7 +23,7 @@ PhysicsServer::hashFunction(const raylib::Vector2 &position) const noexcept {
 
 PhysicsServer &PhysicsServer::getInstance() noexcept {
 	if (_instance == nullptr) {
-		_instance = new PhysicsServer();
+		_instance = new PhysicsServer("PhysicsServer");
 	}
 	return *_instance;
 }
