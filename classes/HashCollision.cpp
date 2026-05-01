@@ -7,7 +7,7 @@ const float	   HashCollision::CELL_SIZE = 10.0f;
 HashCollision *HashCollision::_instance = nullptr;
 
 // Pre-bucket the map so the first rebuild rarely triggers a rehash.
-HashCollision::HashCollision() {
+HashCollision::HashCollision() : Object() {
 	_hashMap.reserve(4096);
 }
 
@@ -95,4 +95,9 @@ void HashCollision::clear() {
 	for (auto &[key, vec] : _hashMap) {
 		vec.clear();
 	}
+}
+
+const std::string &HashCollision::getClassName(void) const noexcept {
+	static const std::string className("HashCollision");
+	return (className);
 }
