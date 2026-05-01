@@ -1,25 +1,24 @@
 #include "Particle.hpp"
+#include "Object.hpp"
 
-const float	  Particle::_defaultSize = 5.0f;
-unsigned long Particle::_instanceIDCounter = 0;
+const float Particle::_defaultSize = 5.0f;
 
 Particle::Particle(const raylib::Vector2 &pos)
-	: _instanceID(_instanceIDCounter++), _pos(pos),
-	  _col(raylib::Color::White()), _rad(_defaultSize) {
+	: Object(), _pos(pos), _col(raylib::Color::White()), _rad(_defaultSize) {
 }
 
 Particle::Particle(const raylib::Color &col, const raylib::Vector2 &pos)
-	: _instanceID(_instanceIDCounter++), _pos(pos), _col(col),
-	  _rad(_defaultSize) {
+	: Object(), _pos(pos), _col(col), _rad(_defaultSize) {
 }
 
 Particle::Particle(const Particle &other)
-	: _instanceID(_instanceIDCounter++), _pos(other._pos), _vel(other._vel),
-	  _acc(other._acc), _col(other._col), _rad(other._rad) {
+	: Object(other), _pos(other._pos), _vel(other._vel), _acc(other._acc),
+	  _col(other._col), _rad(other._rad) {
 }
 
 Particle &Particle::operator=(const Particle &other) {
 	if (this != &other) {
+		Object::operator=(other);
 		_pos = other._pos;
 		_vel = other._vel;
 		_acc = other._acc;
@@ -176,14 +175,7 @@ void Particle::setRadius(unsigned int newRad) noexcept {
 	_rad = newRad;
 }
 
-unsigned long Particle::getInstanceID(void) const noexcept {
-	return (_instanceID);
-}
-
-bool Particle::operator==(const Particle &other) const noexcept {
-	return (_instanceID == other._instanceID);
-}
-
-bool Particle::operator!=(const Particle &other) const noexcept {
-	return (_instanceID != other._instanceID);
+const std::string &Particle::getClassName(void) const noexcept {
+	static const std::string className("Particle");
+	return (className);
 }

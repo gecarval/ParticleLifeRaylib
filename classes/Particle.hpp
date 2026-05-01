@@ -2,14 +2,11 @@
 #define PARTICLE_HPP
 
 #include "../include/raylib-cpp.hpp"
+#include "Object.hpp"
 
-class Particle {
+class Particle : public Object {
   private:
-	static unsigned long _instanceIDCounter;
-	static const float	 _defaultSize;
-
-	// instance manager
-	unsigned long _instanceID;
+	static const float _defaultSize;
 
 	// physics
 	raylib::Vector2 _pos;
@@ -62,11 +59,8 @@ class Particle {
 	void				   setCol(const raylib::Color &newCol) noexcept;
 	unsigned int		   getRadius(void) const noexcept;
 	void				   setRadius(unsigned int newRad) noexcept;
-	unsigned long		   getInstanceID(void) const noexcept;
 
-	// operators
-	bool operator==(const Particle &other) const noexcept;
-	bool operator!=(const Particle &other) const noexcept;
+	virtual const std::string &getClassName(void) const noexcept;
 };
 
 #endif // PARTICLE_HPP
