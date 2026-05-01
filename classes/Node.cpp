@@ -165,6 +165,13 @@ void Node::deleteChild(const unsigned long instanceID) noexcept {
 	}
 }
 
+void Node::eraseChild(const Node::iterator &it) noexcept {
+	if (it < _children.begin() || it >= _children.end()) {
+		return;
+	}
+	_children.erase(it);
+}
+
 void Node::eraseChild(const std::string &instanceName) noexcept {
 	unsigned long i = 0;
 	while (i < _children.size()) {

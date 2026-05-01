@@ -43,6 +43,7 @@ class Node : virtual public Object {
 	void	deleteChild(const Node::iterator &it) noexcept;
 	void	deleteChild(const std::string &instanceName) noexcept;
 	void	deleteChild(const unsigned long instanceID) noexcept;
+	void	eraseChild(const Node::iterator &it) noexcept;
 	void	eraseChild(const std::string &instanceName) noexcept;
 	void	eraseChild(const unsigned long instanceID) noexcept;
 
