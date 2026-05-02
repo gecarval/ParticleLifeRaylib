@@ -1,6 +1,10 @@
 #include "CircleShape2D.hpp"
 #include "../rectangle_shape2d/RectangleShape2D.hpp"
 
+CircleShape2D::CircleShape2D(const float radius)
+	: Shape2D("CircleShape2D"), _pos(raylib::Vector2::Zero()), _radius(radius) {
+}
+
 CircleShape2D::CircleShape2D(const float x, const float y, const float radius)
 	: Shape2D("CircleShape2D"), _pos(x, y), _radius(radius) {
 }
@@ -66,7 +70,7 @@ bool CircleShape2D::collides(
 	} else if (other.getClassName() == "CircleShape2D") {
 		const RectangleShape2D otherRectShape =
 			dynamic_cast<const RectangleShape2D &>(other);
-		const raylib::Rectangle otherShape = otherRectShape.getShape();
+		const raylib::Rectangle otherShape = otherRectShape.getRect();
 		const raylib::Rectangle otherRect(otherShape.x + otherOriginPos.x,
 										  otherShape.y + otherOriginPos.y,
 										  otherShape.width, otherShape.height);
