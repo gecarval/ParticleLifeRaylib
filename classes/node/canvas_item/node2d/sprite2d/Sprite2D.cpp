@@ -91,26 +91,23 @@ void Sprite2D::draw() const noexcept {
 	if (_texture.id != 0) {
 		_texture.Draw(_pos + _offset, _rot + _rotation, _scale, _color);
 	} else if (_shape != nullptr) {
-		if (_shape->getClassName() == "Circle2D") {
+		if (_shape->getClassName() == "CircleShape2D") {
 			CircleShape2D  *circle = dynamic_cast<CircleShape2D *>(_shape);
-			raylib::Vector2 center = circle->getPosition();
-			center += _pos + _offset;
-			const float radius = circle->getRadius() * _scale;
+			raylib::Vector2 center = _pos + _offset;
+			const float		radius = circle->getRadius() * _scale;
 			center.DrawCircle(radius, _color);
-		} else if (_shape->getClassName() == "Rectangle2D") {
+		} else if (_shape->getClassName() == "RectangleShape2D") {
 			RectangleShape2D *rectangle =
 				dynamic_cast<RectangleShape2D *>(_shape);
-			raylib::Rectangle rect = rectangle->getRect();
-			rect.SetSize(rect.GetSize() * _scale);
+			raylib::Rectangle rect;
+			rect.SetSize(rectangle->getSize() * _scale);
 			rect.Draw(_pos + _offset, _rot + _rotation, _color);
 		}
 	}
 }
 
 void Sprite2D::drawDebug() const noexcept {
-	if (_shape != nullptr) {
-		_shape->drawDebug();
-	}
+	Node2D::drawDebug();
 }
 
 const std::string &Sprite2D::getClassName() const noexcept {
