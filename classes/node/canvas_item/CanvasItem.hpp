@@ -2,9 +2,10 @@
 #define CANVASITEM_HPP
 
 #include "../../../include/raylib-cpp.hpp"
+#include "../../shape2d/Shape2D.hpp"
 #include "../Node.hpp"
 
-class CanvasItem : virtual public Node {
+class CanvasItem : public Node {
   private:
 	bool _visible;
 	bool _visibleDebug;
@@ -17,12 +18,13 @@ class CanvasItem : virtual public Node {
 	virtual ~CanvasItem();
 
 	// draw method to be implemented by derived classes
-	virtual void draw(const raylib::Window &window) const noexcept = 0;
-	virtual void draw(const raylib::Window	 &window,
-					  const raylib::Camera2D &camera) const noexcept = 0;
-	virtual void drawDebug(const raylib::Window &window) const noexcept = 0;
-	virtual void drawDebug(const raylib::Window	  &window,
-						   const raylib::Camera2D &camera) const noexcept = 0;
+	bool isInView(const raylib::Window &window, const Shape2D &shape,
+				  const raylib::Vector2 &pos) const noexcept;
+	bool isInView(const raylib::Window &window, const raylib::Camera2D &camera,
+				  const Shape2D			&shape,
+				  const raylib::Vector2 &pos) const noexcept;
+	virtual void draw() const noexcept = 0;
+	virtual void drawDebug() const noexcept = 0;
 
 	// getters and setters
 	bool isVisible() const noexcept;
@@ -32,7 +34,7 @@ class CanvasItem : virtual public Node {
 	int	 getLayer() const noexcept;
 	void setLayer(const int layer) noexcept;
 
-	virtual const std::string &getClassName() const noexcept;
+	virtual const std::string &getClassName() const noexcept override;
 };
 
 #endif // CANVASITEM_HPP

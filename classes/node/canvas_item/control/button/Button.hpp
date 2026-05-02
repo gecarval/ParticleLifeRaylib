@@ -2,10 +2,11 @@
 #define BUTTON_HPP
 
 #include "../../../../../include/raylib-cpp.hpp"
+#include "../Control.hpp"
 #include <functional>
 #include <string>
 
-class Button {
+class Button : public Control {
   private:
 	// Position and size
 	raylib::Rectangle bounds;
@@ -49,8 +50,8 @@ class Button {
 	Button(const raylib::Rectangle &button, const std::string &text);
 
 	// Update and draw methods
-	void update();
-	void draw() const;
+	virtual void update() noexcept override;
+	virtual void draw() const noexcept override;
 
 	// Setters for customization
 	void setText(const std::string &text);
@@ -78,7 +79,7 @@ class Button {
 	void setEnabled(const bool enabled);
 	bool isEnabled() const;
 
-	virtual const std::string &getClassName() const noexcept;
+	virtual const std::string &getClassName() const noexcept override;
 };
 
 #endif // BUTTON_HPP

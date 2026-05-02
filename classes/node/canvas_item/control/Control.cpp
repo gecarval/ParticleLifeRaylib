@@ -1,11 +1,9 @@
 #include "Control.hpp"
 
-Control::Control(const std::string &instanceName)
-	: Object(instanceName), Node(instanceName), CanvasItem(instanceName) {
+Control::Control(const std::string &instanceName) : CanvasItem(instanceName) {
 }
 
-Control::Control(const Control &other)
-	: Object(other), Node(other), CanvasItem(other) {
+Control::Control(const Control &other) : CanvasItem(other) {
 }
 
 Control &Control::operator=(const Control &other) {

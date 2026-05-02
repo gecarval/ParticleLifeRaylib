@@ -3,7 +3,7 @@
 
 #include "../CanvasItem.hpp"
 
-class Node2D : virtual public CanvasItem {
+class Node2D : public CanvasItem {
   protected:
 	raylib::Vector2 _pos;
 	raylib::Vector2 _vel;
@@ -17,12 +17,8 @@ class Node2D : virtual public CanvasItem {
 	virtual ~Node2D();
 
 	// draw calls
-	virtual void draw(const raylib::Window &window) const noexcept;
-	virtual void draw(const raylib::Window	 &window,
-					  const raylib::Camera2D &camera) const noexcept;
-	virtual void drawDebug(const raylib::Window &window) const noexcept;
-	virtual void drawDebug(const raylib::Window	  &window,
-						   const raylib::Camera2D &camera) const noexcept;
+	virtual void draw() const noexcept override;
+	virtual void drawDebug() const noexcept override;
 
 	// getters and setters
 	const raylib::Vector2 &getPos() const noexcept;
@@ -37,7 +33,7 @@ class Node2D : virtual public CanvasItem {
 	float				   getRotation() const noexcept;
 	void				   setRotation(const float newRot) noexcept;
 
-	virtual const std::string &getClassName() const noexcept;
+	virtual const std::string &getClassName() const noexcept override;
 };
 
 #endif // NODE2D_HPP

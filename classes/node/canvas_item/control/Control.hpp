@@ -3,7 +3,7 @@
 
 #include "../CanvasItem.hpp"
 
-class Control : virtual public CanvasItem {
+class Control : public CanvasItem {
   private:
   public:
 	Control(const std::string &instanceName = "");
@@ -11,7 +11,7 @@ class Control : virtual public CanvasItem {
 	Control &operator=(const Control &other);
 	virtual ~Control();
 
-	virtual const std::string &getClassName() const noexcept;
+	virtual const std::string &getClassName() const noexcept override;
 };
 
 #endif // CONTROL_HPP

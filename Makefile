@@ -27,6 +27,9 @@ INCLUDE_DIR := include
 CLASS_SRC := $(CLASS_DIR)/Object.cpp \
 			 $(CLASS_DIR)/physics_server/PhysicsServer.cpp \
 			 $(CLASS_DIR)/render_server/RenderServer.cpp \
+			 $(CLASS_DIR)/shape2d/Shape2D.cpp \
+			 $(CLASS_DIR)/shape2d/circle_shape2d/CircleShape2D.cpp \
+			 $(CLASS_DIR)/shape2d/rectangle_shape2d/RectangleShape2D.cpp \
 			 $(CLASS_DIR)/node/Node.cpp \
 			 $(CLASS_DIR)/node/canvas_item/CanvasItem.cpp \
 			 $(CLASS_DIR)/node/canvas_item/control/Control.cpp \
@@ -42,9 +45,12 @@ HEADERS := $(INCLUDE_DIR)/json.hpp \
 		   $(INCLUDE_DIR)/raylib.h \
 		   $(INCLUDE_DIR)/raymath.h \
 		   $(INCLUDE_DIR)/rlgl.h \
-           $(CLASS_DIR)/Object.hpp \
+		   $(CLASS_DIR)/Object.hpp \
 		   $(CLASS_DIR)/physics_server/PhysicsServer.hpp \
 		   $(CLASS_DIR)/render_server/RenderServer.hpp \
+		   $(CLASS_DIR)/shape2d/Shape2D.hpp \
+		   $(CLASS_DIR)/shape2d/circle_shape2d/CircleShape2D.hpp \
+		   $(CLASS_DIR)/shape2d/rectangle_shape2d/RectangleShape2D.hpp \
 		   $(CLASS_DIR)/node/Node.hpp \
 		   $(CLASS_DIR)/node/canvas_item/CanvasItem.hpp \
 		   $(CLASS_DIR)/node/canvas_item/control/Control.hpp \

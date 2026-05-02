@@ -4,7 +4,7 @@
 #include "../Object.hpp"
 #include <vector>
 
-class Node : virtual public Object {
+class Node : public Object {
   public:
 	typedef std::vector<Node *>::iterator		iterator;
 	typedef std::vector<Node *>::const_iterator const_iterator;
@@ -23,6 +23,11 @@ class Node : virtual public Object {
 	void				setParent(Node *parent) noexcept;
 	Node			   *getParent() const noexcept;
 	std::vector<Node *> getChildren() const noexcept;
+
+	// State
+	virtual void ready() noexcept;
+	virtual void update() noexcept;
+	virtual void updatePhysics() noexcept;
 
 	// find method
 	std::vector<Node *> findChild(const std::string &instanceName) noexcept;
@@ -50,7 +55,7 @@ class Node : virtual public Object {
 	void  removeChild(const std::string &instanceName) noexcept;
 	void  removeChild(const unsigned long instanceID) noexcept;
 
-	virtual const std::string &getClassName() const noexcept;
+	virtual const std::string &getClassName() const noexcept override;
 };
 
 std::ostream &operator<<(std::ostream &out, const Node &other);

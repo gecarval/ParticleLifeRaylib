@@ -24,26 +24,29 @@ void RenderServer::destroyInstance() noexcept {
 }
 
 void RenderServer::render(const raylib::Window &window) noexcept {
+	(void)window; // Suppress unused parameter warning
 	for (const auto &pair : _canvasItems) {
 		CanvasItem *canvasItem = pair.second;
 		if (canvasItem->isVisible()) {
-			canvasItem->draw(window);
+			canvasItem->draw();
 		}
 		if (canvasItem->isVisibleDebug()) {
-			canvasItem->drawDebug(window);
+			canvasItem->drawDebug();
 		}
 	}
 }
 
 void RenderServer::render(const raylib::Window	 &window,
 						  const raylib::Camera2D &camera) noexcept {
+	(void)window; // Suppress unused parameter warning
+	(void)camera; // Suppress unused parameter warning
 	for (const auto &pair : _canvasItems) {
 		CanvasItem *canvasItem = pair.second;
 		if (canvasItem->isVisible()) {
-			canvasItem->draw(window, camera);
+			canvasItem->draw();
 		}
 		if (canvasItem->isVisibleDebug()) {
-			canvasItem->drawDebug(window, camera);
+			canvasItem->drawDebug();
 		}
 	}
 }

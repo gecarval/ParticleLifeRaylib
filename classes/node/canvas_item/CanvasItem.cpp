@@ -1,15 +1,15 @@
 #include "CanvasItem.hpp"
 #include "../../render_server/RenderServer.hpp"
+#include "../../shape2d/rectangle_shape2d/RectangleShape2D.hpp"
 
 CanvasItem::CanvasItem(const std::string &instanceName)
-	: Object(instanceName), Node(instanceName), _visible(true),
-	  _visibleDebug(false), _layer(0) {
+	: Node(instanceName), _visible(true), _visibleDebug(false), _layer(0) {
 	RenderServer::addCanvasItem(this);
 }
 
 CanvasItem::CanvasItem(const CanvasItem &other)
-	: Object(other), Node(other), _visible(other._visible),
-	  _visibleDebug(other._visibleDebug), _layer(other._layer) {
+	: Node(other), _visible(other._visible), _visibleDebug(other._visibleDebug),
+	  _layer(other._layer) {
 }
 
 CanvasItem &CanvasItem::operator=(const CanvasItem &other) {
@@ -20,6 +20,32 @@ CanvasItem &CanvasItem::operator=(const CanvasItem &other) {
 		_layer = other._layer;
 	}
 	return *this;
+}
+
+bool CanvasItem::isInView(const raylib::Window &window, const Shape2D &shape,
+						  const raylib::Vector2 &shapePos) const noexcept {
+	const raylib::Vector2  pos;
+	const raylib::Vector2  size(window.GetWidth(), window.GetHeight());
+	const RectangleShape2D screenSpace(pos, size);
+	if (screenSpace.collides(pos, shape, shapePos)) {
+		return (true);
+	}
+	return (false);
+}
+
+bool CanvasItem::isInView(const raylib::Window	 &window,
+						  const raylib::Camera2D &camera, const Shape2D &shape,
+						  const raylib::Vector2 &shapePos) const noexcept {
+	const raylib::Vector2 pos(
+		camera.GetTarget().x - (window.GetWidth() / 2.0f) / camera.GetZoom(),
+		camera.GetTarget().y - (window.GetHeight() / 2.0f) / camera.GetZoom());
+	const raylib::Vector2  size(window.GetWidth() / camera.GetZoom(),
+								window.GetHeight() / camera.GetZoom());
+	const RectangleShape2D screenSpace(pos, size);
+	if (screenSpace.collides(pos, shape, shapePos)) {
+		return (true);
+	}
+	return (false);
 }
 
 CanvasItem::~CanvasItem() {

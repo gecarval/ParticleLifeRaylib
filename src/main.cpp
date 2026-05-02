@@ -75,7 +75,7 @@ int main(void) {
 					p->applyNewtonianGravity(p2->getPos());
 				}
 			}
-			p->update();
+			p->updatePhysics();
 		}
 		renderServer.render(window, cam);
 		cam.EndMode();

@@ -4,14 +4,12 @@ const float Particle::_defaultSize = 5.0f;
 
 Particle::Particle(const std::string &instanceName, const raylib::Vector2 &pos,
 				   const raylib::Color &col)
-	: Object(instanceName), Node(instanceName), CanvasItem(instanceName),
-	  Node2D(instanceName), _col(col), _rad(_defaultSize) {
+	: Node2D(instanceName), _col(col), _rad(_defaultSize) {
 	_pos = pos;
 }
 
 Particle::Particle(const Particle &other)
-	: Object(other), Node(other), CanvasItem(other), Node2D(other),
-	  _col(other._col), _rad(other._rad) {
+	: Node2D(other), _col(other._col), _rad(other._rad) {
 }
 
 Particle &Particle::operator=(const Particle &other) {
@@ -26,53 +24,18 @@ Particle &Particle::operator=(const Particle &other) {
 Particle::~Particle() {
 }
 
-void Particle::draw(const raylib::Window &window) const noexcept {
-	const raylib::Rectangle screenSpace(0, 0, window.GetWidth(),
-										window.GetHeight());
-	if (screenSpace.CheckCollision(_pos, _rad)) {
-		_pos.DrawCircle(_rad, _col);
-	}
+void Particle::draw() const noexcept {
+	_pos.DrawCircle(_rad, _col);
 }
 
-void Particle::draw(const raylib::Window   &window,
-					const raylib::Camera2D &camera) const noexcept {
-	const raylib::Rectangle screenSpace(
-		camera.GetTarget().x - (window.GetWidth() / 2.0f) / camera.GetZoom(),
-		camera.GetTarget().y - (window.GetHeight() / 2.0f) / camera.GetZoom(),
-		window.GetWidth() / camera.GetZoom(),
-		window.GetHeight() / camera.GetZoom());
-	if (screenSpace.CheckCollision(_pos, _rad)) {
-		_pos.DrawCircle(_rad, _col);
-	}
+void Particle::drawDebug() const noexcept {
+	_pos.DrawCircleLine(_rad, raylib::Color::Pink());
+	_pos.DrawLine(_pos + _vel, raylib::Color::Green());
+	_pos.DrawLine(_pos + _acc, raylib::Color::Blue());
+	Node2D::drawDebug();
 }
 
-void Particle::drawDebug(const raylib::Window &window) const noexcept {
-	const raylib::Rectangle screenSpace(0, 0, window.GetWidth(),
-										window.GetHeight());
-	if (screenSpace.CheckCollision(_pos, _rad)) {
-		_pos.DrawCircleLine(_rad, raylib::Color::Red());
-		_pos.DrawLine(_pos + _vel, raylib::Color::Green());
-		_pos.DrawLine(_pos + _acc, raylib::Color::Blue());
-	}
-	Node2D::drawDebug(window);
-}
-
-void Particle::drawDebug(const raylib::Window	&window,
-						 const raylib::Camera2D &camera) const noexcept {
-	const raylib::Rectangle screenSpace(
-		camera.GetTarget().x - (window.GetWidth() / 2.0f) / camera.GetZoom(),
-		camera.GetTarget().y - (window.GetHeight() / 2.0f) / camera.GetZoom(),
-		window.GetWidth() / camera.GetZoom(),
-		window.GetHeight() / camera.GetZoom());
-	if (screenSpace.CheckCollision(_pos, _rad)) {
-		_pos.DrawCircleLine(_rad, raylib::Color::Red());
-		_pos.DrawLine(_pos + _vel, raylib::Color::Green());
-		_pos.DrawLine(_pos + _acc, raylib::Color::Blue());
-	}
-	Node2D::drawDebug(window, camera);
-}
-
-void Particle::update() noexcept {
+void Particle::updatePhysics() noexcept {
 	const float deltaTime = raylib::Window::GetFrameTime();
 	_vel += _acc * deltaTime;
 	_pos += _vel * deltaTime;

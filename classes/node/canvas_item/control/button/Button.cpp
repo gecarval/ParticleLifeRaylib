@@ -49,7 +49,7 @@ Button::Button(const raylib::Rectangle &bounds, const std::string &text)
 }
 
 // Update method - checks for mouse interaction
-void Button::update() {
+void Button::update() noexcept {
 	if (!this->enabled) {
 		this->isHovered = false;
 		this->isPressed = false;
@@ -68,7 +68,7 @@ void Button::update() {
 }
 
 // Draw method - renders the button
-void Button::draw() const {
+void Button::draw() const noexcept {
 	const raylib::Color &currentColor = this->getCurrentColor();
 
 	// Draw button background
@@ -99,7 +99,7 @@ void Button::draw() const {
 
 	// Optional: Draw disabled overlay
 	if (!this->enabled) {
-		const raylib::Color &overlay = {0, 0, 0, 100};
+		const raylib::Color overlay(0, 0, 0, 100);
 		if (this->roundness > 0.0f) {
 			this->bounds.DrawRounded(this->roundness, 16, overlay);
 		} else {

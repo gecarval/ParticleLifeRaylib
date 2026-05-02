@@ -20,13 +20,9 @@ class Particle : public Node2D {
 	virtual ~Particle();
 
 	// methods
-	void		 update() noexcept;
-	virtual void draw(const raylib::Window &window) const noexcept;
-	virtual void draw(const raylib::Window	 &window,
-					  const raylib::Camera2D &camera) const noexcept;
-	virtual void drawDebug(const raylib::Window &window) const noexcept;
-	virtual void drawDebug(const raylib::Window	  &window,
-						   const raylib::Camera2D &camera) const noexcept;
+	virtual void updatePhysics() noexcept override;
+	virtual void draw() const noexcept override;
+	virtual void drawDebug() const noexcept override;
 
 	// movement methods
 	void applyForce(const raylib::Vector2 &force) noexcept;
@@ -49,7 +45,7 @@ class Particle : public Node2D {
 	unsigned int		 getRadius() const noexcept;
 	void				 setRadius(unsigned int newRad) noexcept;
 
-	virtual const std::string &getClassName() const noexcept;
+	virtual const std::string &getClassName() const noexcept override;
 };
 
 #endif // PARTICLE_HPP

@@ -11,7 +11,7 @@ Node::~Node() {
 }
 
 Node::Node(const Node &other) noexcept
-	: Object(other), _children(other._children), _parent(other._parent) {
+	: Object(other), _parent(other._parent), _children(other._children) {
 }
 
 Node &Node::operator=(const Node &other) noexcept {
@@ -36,6 +36,15 @@ void Node::setParent(Node *parent) noexcept {
 
 std::vector<Node *> Node::getChildren() const noexcept {
 	return (_children);
+}
+
+void Node::ready() noexcept {
+}
+
+void Node::update() noexcept {
+}
+
+void Node::updatePhysics() noexcept {
 }
 
 std::vector<Node *> Node::findChild(const std::string &instanceName) noexcept {
