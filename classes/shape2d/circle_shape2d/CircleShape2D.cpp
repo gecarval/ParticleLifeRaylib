@@ -1,10 +1,6 @@
 #include "CircleShape2D.hpp"
 #include "../rectangle_shape2d/RectangleShape2D.hpp"
 
-CircleShape2D::CircleShape2D(const float radius)
-	: Shape2D("CircleShape2D"), _pos(raylib::Vector2::Zero()), _radius(radius) {
-}
-
 CircleShape2D::CircleShape2D(const float x, const float y, const float radius)
 	: Shape2D("CircleShape2D"), _pos(x, y), _radius(radius) {
 }

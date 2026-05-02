@@ -9,7 +9,6 @@ class CircleShape2D : public Shape2D {
 	float			_radius;
 
   public:
-	CircleShape2D(const float radius = 1.0f);
 	CircleShape2D(const float x = 0, const float y = 0,
 				  const float radius = 1.0f);
 	CircleShape2D(const raylib::Vector2 &pos, const float radius = 1.0f);
