@@ -1,6 +1,7 @@
 #include "../classes/node/canvas_item/node2d/particle/Particle.hpp"
 #include "../classes/physics_server/PhysicsServer.hpp"
 #include "../classes/render_server/RenderServer.hpp"
+#include <memory>
 #include <string>
 
 static void cameraControl(raylib::Camera2D &cam) {
@@ -36,9 +37,11 @@ static void cameraControl(raylib::Camera2D &cam) {
 }
 
 int main(void) {
-	PhysicsServer		   &physicsServer = PhysicsServer::getInstance();
-	RenderServer		   &renderServer = RenderServer::getInstance();
-	std::vector<Particle *> particles;
+	PhysicsServer		 &physicsServer = PhysicsServer::getInstance();
+	RenderServer		 &renderServer = RenderServer::getInstance();
+	std::vector<Node2D *> particles;
+	std::vector<Node2D *> colliders;
+	colliders.reserve(1000);
 	particles.reserve(1000);
 	for (int i = 0; i < 1000; ++i) {
 		raylib::Vector2 pos(rand() % 800, rand() % 600);
@@ -46,25 +49,28 @@ int main(void) {
 		newParticle->setVisibleDebug(true);
 		particles.push_back(newParticle);
 	}
+	physicsServer.setPhysicsBodies(particles);
 	raylib::Window		  window(800, 600);
 	const raylib::Vector2 initialPosition(window.GetSize() / 2.0f);
 	raylib::Camera2D	  cam(initialPosition, initialPosition);
-	window.SetTargetFPS(60);
-	std::vector<Particle *> colliders;
-	colliders.reserve(128);
+	// window.SetTargetFPS(60);
 	while (!window.ShouldClose()) {
 		cameraControl(cam);
 		window.BeginDrawing();
 		window.ClearBackground();
 		cam.BeginMode();
-		physicsServer.rebuild(particles);
-		for (Particle *p : particles) {
+		physicsServer.rebuild();
+		for (Node2D *pn : particles) {
+			Particle *p = dynamic_cast<Particle *>(pn);
 			colliders.clear();
-			physicsServer.getCollisions(p, colliders);
-			for (Particle *p2 : colliders) {
-				p->collideWith(*p2, 0.5f);
+			physicsServer.getCollisions(*p, colliders);
+			for (Node2D *pn2 : colliders) {
+				if (*p != *pn2) {
+					Particle *p2 = dynamic_cast<Particle *>(pn2);
+					p->collideWith(*p2, 0.95f);
+				}
 			}
-			for (Particle *p2 : particles) {
+			for (Node2D *p2 : particles) {
 				if (*p != *p2) {
 					p->applyNewtonianGravity(p2->getPos());
 				}
@@ -75,9 +81,8 @@ int main(void) {
 		cam.EndMode();
 		window.DrawFPS();
 		window.EndDrawing();
-		physicsServer.clear();
 	}
-	for (Particle *p : particles) {
+	for (Node2D *p : particles) {
 		delete p;
 	}
 	PhysicsServer::deleteInstance();
