@@ -11,7 +11,7 @@ class Shape2D : public Object {
 	Shape2D &operator=(const Shape2D &other);
 	virtual ~Shape2D();
 
-	virtual void drawDebug() const noexcept = 0;
+	virtual void drawDebug(const raylib::Vector2 &pos) const noexcept = 0;
 	virtual bool collides(const raylib::Vector2 &thisPos, const Shape2D &other,
 						  const raylib::Vector2 &otherPos) const noexcept = 0;
 	virtual bool

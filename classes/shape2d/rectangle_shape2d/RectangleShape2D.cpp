@@ -1,29 +1,22 @@
 #include "RectangleShape2D.hpp"
 #include "../circle_shape2d/CircleShape2D.hpp"
 
-RectangleShape2D::RectangleShape2D(const float x, const float y,
-								   const float width, const float height)
-	: Shape2D("RectangleShape2D"), _shape(x, y, width, height) {
+RectangleShape2D::RectangleShape2D(const float width, const float height)
+	: Shape2D("RectangleShape2D"), _size(width, height) {
 }
 
-RectangleShape2D::RectangleShape2D(const raylib::Vector2 &pos,
-								   const raylib::Vector2 &size)
-	: Shape2D("RectangleShape2D"), _shape(pos, size) {
-}
-
-RectangleShape2D::RectangleShape2D(const raylib::Rectangle &rect)
-	: Shape2D("RectangleShape2D"), _shape(rect) {
+RectangleShape2D::RectangleShape2D(const raylib::Vector2 &size)
+	: Shape2D("RectangleShape2D"), _size(size) {
 }
 
 RectangleShape2D::RectangleShape2D(const RectangleShape2D &other)
-	: Shape2D(other) {
-	_shape = other._shape;
+	: Shape2D(other), _size(other._size) {
 }
 
 RectangleShape2D &RectangleShape2D::operator=(const RectangleShape2D &other) {
 	if (this != &other) {
 		Shape2D::operator=(other);
-		_shape = other._shape;
+		_size = other._size;
 	}
 	return *this;
 }
@@ -31,44 +24,36 @@ RectangleShape2D &RectangleShape2D::operator=(const RectangleShape2D &other) {
 RectangleShape2D::~RectangleShape2D() {
 }
 
-void RectangleShape2D::setRect(const raylib::Rectangle &rect) noexcept {
-	_shape = rect;
+raylib::Vector2 RectangleShape2D::getSize() const noexcept {
+	return _size;
 }
 
-raylib::Rectangle &RectangleShape2D::getRect() noexcept {
-	return _shape;
+void RectangleShape2D::setSize(const raylib::Vector2 &size) noexcept {
+	_size = size;
 }
 
-const raylib::Rectangle &RectangleShape2D::getRect() const noexcept {
-	return _shape;
-}
-
-void RectangleShape2D::drawDebug() const noexcept {
+void RectangleShape2D::drawDebug(const raylib::Vector2 &pos) const noexcept {
 	static const raylib::Color debugColor =
 		raylib::Color::DarkBlue().Fade(0.5f);
-	_shape.Draw(debugColor);
-	_shape.DrawLines(raylib::Color::DarkBlue());
+	const raylib::Rectangle rect(pos, _size);
+	rect.Draw(debugColor);
+	rect.DrawLines(raylib::Color::DarkBlue());
 }
 
 bool RectangleShape2D::collides(
 	const raylib::Vector2 &originPos, const Shape2D &other,
 	const raylib::Vector2 &otherOriginPos) const noexcept {
-	const raylib::Rectangle thisRect(_shape.x + originPos.x,
-									 _shape.y + originPos.y, _shape.width,
-									 _shape.height);
+	const raylib::Rectangle thisRect(originPos.x, originPos.y, _size.x,
+									 _size.y);
 	if (other.getClassName() == "CircleShape2D") {
 		const CircleShape2D &otherCircle =
 			dynamic_cast<const CircleShape2D &>(other);
-		const raylib::Vector2 otherShapePos =
-			otherOriginPos + otherCircle.getPosition();
-		return thisRect.CheckCollision(otherShapePos, otherCircle.getRadius());
+		return thisRect.CheckCollision(otherOriginPos, otherCircle.getRadius());
 	} else if (other.getClassName() == "RectangleShape2D") {
 		const RectangleShape2D &otherRectShape =
 			dynamic_cast<const RectangleShape2D &>(other);
-		const raylib::Rectangle otherRect(
-			otherRectShape.getRect().x + otherOriginPos.x,
-			otherRectShape.getRect().y + otherOriginPos.y,
-			otherRectShape.getRect().width, otherRectShape.getRect().height);
+		const raylib::Rectangle otherRect(otherOriginPos,
+										  otherRectShape.getSize());
 		return thisRect.CheckCollision(otherRect);
 	}
 	return (false);

@@ -5,23 +5,19 @@
 
 class RectangleShape2D : public Shape2D {
   protected:
-	raylib::Rectangle _shape;
+	raylib::Vector2 _size;
 
   public:
-	RectangleShape2D(const float x = 0, const float y = 0,
-					 const float width = 0, const float height = 0);
-	RectangleShape2D(const raylib::Vector2 &pos = raylib::Vector2(0, 0),
-					 const raylib::Vector2 &size = raylib::Vector2(0, 0));
-	RectangleShape2D(const raylib::Rectangle &rect = raylib::Rectangle());
+	RectangleShape2D(const float width = 1.0f, const float height = 1.0f);
+	RectangleShape2D(const raylib::Vector2 &size = raylib::Vector2::One());
 	RectangleShape2D(const RectangleShape2D &other);
 	RectangleShape2D &operator=(const RectangleShape2D &other);
 	virtual ~RectangleShape2D();
 
-	void					 setRect(const raylib::Rectangle &rect) noexcept;
-	raylib::Rectangle		&getRect() noexcept;
-	const raylib::Rectangle &getRect() const noexcept;
+	raylib::Vector2 getSize() const noexcept;
+	void			setSize(const raylib::Vector2 &size) noexcept;
 
-	virtual void drawDebug() const noexcept override;
+	virtual void drawDebug(const raylib::Vector2 &pos) const noexcept override;
 	virtual bool
 	collides(const raylib::Vector2 &thisPos, const Shape2D &other,
 			 const raylib::Vector2 &otherPos) const noexcept override;
