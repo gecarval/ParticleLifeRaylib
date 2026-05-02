@@ -26,7 +26,7 @@ bool CanvasItem::isInView(const raylib::Window &window, const Shape2D &shape,
 						  const raylib::Vector2 &shapePos) const noexcept {
 	const raylib::Vector2  pos;
 	const raylib::Vector2  size(window.GetWidth(), window.GetHeight());
-	const RectangleShape2D screenSpace(pos, size);
+	const RectangleShape2D screenSpace(size);
 	if (screenSpace.collides(pos, shape, shapePos)) {
 		return (true);
 	}
@@ -41,7 +41,7 @@ bool CanvasItem::isInView(const raylib::Window	 &window,
 		camera.GetTarget().y - (window.GetHeight() / 2.0f) / camera.GetZoom());
 	const raylib::Vector2  size(window.GetWidth() / camera.GetZoom(),
 								window.GetHeight() / camera.GetZoom());
-	const RectangleShape2D screenSpace(pos, size);
+	const RectangleShape2D screenSpace(size);
 	if (screenSpace.collides(pos, shape, shapePos)) {
 		return (true);
 	}
