@@ -31,15 +31,15 @@ RectangleShape2D &RectangleShape2D::operator=(const RectangleShape2D &other) {
 RectangleShape2D::~RectangleShape2D() {
 }
 
-void RectangleShape2D::setShape(const raylib::Rectangle &rect) noexcept {
+void RectangleShape2D::setRect(const raylib::Rectangle &rect) noexcept {
 	_shape = rect;
 }
 
-raylib::Rectangle &RectangleShape2D::getShape() noexcept {
+raylib::Rectangle &RectangleShape2D::getRect() noexcept {
 	return _shape;
 }
 
-const raylib::Rectangle &RectangleShape2D::getShape() const noexcept {
+const raylib::Rectangle &RectangleShape2D::getRect() const noexcept {
 	return _shape;
 }
 
@@ -66,9 +66,9 @@ bool RectangleShape2D::collides(
 		const RectangleShape2D &otherRectShape =
 			dynamic_cast<const RectangleShape2D &>(other);
 		const raylib::Rectangle otherRect(
-			otherRectShape.getShape().x + otherOriginPos.x,
-			otherRectShape.getShape().y + otherOriginPos.y,
-			otherRectShape.getShape().width, otherRectShape.getShape().height);
+			otherRectShape.getRect().x + otherOriginPos.x,
+			otherRectShape.getRect().y + otherOriginPos.y,
+			otherRectShape.getRect().width, otherRectShape.getRect().height);
 		return thisRect.CheckCollision(otherRect);
 	}
 	return (false);

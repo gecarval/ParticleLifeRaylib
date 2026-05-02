@@ -17,9 +17,9 @@ class RectangleShape2D : public Shape2D {
 	RectangleShape2D &operator=(const RectangleShape2D &other);
 	virtual ~RectangleShape2D();
 
-	void					 setShape(const raylib::Rectangle &rect) noexcept;
-	raylib::Rectangle		&getShape() noexcept;
-	const raylib::Rectangle &getShape() const noexcept;
+	void					 setRect(const raylib::Rectangle &rect) noexcept;
+	raylib::Rectangle		&getRect() noexcept;
+	const raylib::Rectangle &getRect() const noexcept;
 
 	virtual void drawDebug() const noexcept override;
 	virtual bool
