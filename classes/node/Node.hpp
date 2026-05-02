@@ -6,11 +6,12 @@
 
 class Node : virtual public Object {
   public:
-	typedef std::vector<Object *>::iterator		  iterator;
-	typedef std::vector<Object *>::const_iterator const_iterator;
+	typedef std::vector<Node *>::iterator		iterator;
+	typedef std::vector<Node *>::const_iterator const_iterator;
 
   protected:
-	std::vector<Object *> _children;
+	Node			   *_parent;
+	std::vector<Node *> _children;
 
   public:
 	virtual ~Node();
@@ -18,34 +19,36 @@ class Node : virtual public Object {
 	explicit Node(const Node &other) noexcept;
 	Node &operator=(const Node &other) noexcept;
 
-	// getter
-	std::vector<Object *> getChildren() const noexcept;
+	// getter and setter
+	void				setParent(Node *parent) noexcept;
+	Node			   *getParent() const noexcept;
+	std::vector<Node *> getChildren() const noexcept;
 
 	// find method
-	std::vector<Object *> findChild(const std::string &instanceName) noexcept;
-	std::vector<Object *> findChild(const unsigned long instanceID) noexcept;
-	std::vector<const Object *>
+	std::vector<Node *> findChild(const std::string &instanceName) noexcept;
+	std::vector<Node *> findChild(const unsigned long instanceID) noexcept;
+	std::vector<const Node *>
 	findChild(const std::string &instanceName) const noexcept;
-	std::vector<const Object *>
+	std::vector<const Node *>
 	findChild(const unsigned long instanceID) const noexcept;
-	std::vector<Object *> findClass(const std::string &className) noexcept;
-	std::vector<const Object *>
+	std::vector<Node *> findClass(const std::string &className) noexcept;
+	std::vector<const Node *>
 	findClass(const std::string &className) const noexcept;
 
 	// insertion and deletion
-	void	insertChild(Object &child, const Node::iterator &it) noexcept;
-	void	pushFrontChild(Object &child) noexcept;
-	void	pushBackChild(Object &child) noexcept;
-	Object *frontChild() noexcept;
-	Object *backChild() noexcept;
-	void	popFrontChild() noexcept;
-	void	popBackChild() noexcept;
-	void	deleteChild(const Node::iterator &it) noexcept;
-	void	deleteChild(const std::string &instanceName) noexcept;
-	void	deleteChild(const unsigned long instanceID) noexcept;
-	void	eraseChild(const Node::iterator &it) noexcept;
-	void	eraseChild(const std::string &instanceName) noexcept;
-	void	eraseChild(const unsigned long instanceID) noexcept;
+	void  insertChild(Node &child, const Node::iterator &it) noexcept;
+	void  pushFrontChild(Node &child) noexcept;
+	void  pushBackChild(Node &child) noexcept;
+	Node *frontChild() noexcept;
+	Node *backChild() noexcept;
+	void  popFrontChild() noexcept;
+	void  popBackChild() noexcept;
+	void  deleteChild(const Node::iterator &it) noexcept;
+	void  deleteChild(const std::string &instanceName) noexcept;
+	void  deleteChild(const unsigned long instanceID) noexcept;
+	void  removeChild(const Node::iterator &it) noexcept;
+	void  removeChild(const std::string &instanceName) noexcept;
+	void  removeChild(const unsigned long instanceID) noexcept;
 
 	virtual const std::string &getClassName() const noexcept;
 };
