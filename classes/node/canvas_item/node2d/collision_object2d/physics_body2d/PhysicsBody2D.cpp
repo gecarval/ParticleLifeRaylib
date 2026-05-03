@@ -175,10 +175,10 @@ void PhysicsBody2D::collissionCircleCircle(PhysicsBody2D &other,
 	if (totalInvMass > 0.0f) {
 		const float correctionScale = overlap / totalInvMass * 0.5f;
 		if (!_is_static) {
-			_pos += normal * (correctionScale / _mass);
+			setPos(_pos + normal * (correctionScale / _mass));
 		}
 		if (!other._is_static) {
-			other._pos -= normal * (correctionScale / other._mass);
+			other.setPos(other._pos - normal * (correctionScale / other._mass));
 		}
 	}
 
@@ -265,10 +265,10 @@ void PhysicsBody2D::collissionRectangleRectangle(
 	if (totalInvMass > 0.0f) {
 		const float correctionScale = overlap / totalInvMass * 0.5f;
 		if (!_is_static) {
-			_pos += normal * (correctionScale / _mass);
+			setPos(_pos + normal * (correctionScale / _mass));
 		}
 		if (!other._is_static) {
-			other._pos -= normal * (correctionScale / other._mass);
+			other.setPos(other._pos - normal * (correctionScale / other._mass));
 		}
 	}
 
@@ -345,10 +345,10 @@ void PhysicsBody2D::collissionCircleRectangle(
 	if (totalInvMass > 0.0f) {
 		const float correctionScale = overlap / totalInvMass * 0.5f;
 		if (!_is_static) {
-			_pos += normal * (correctionScale / _mass);
+			setPos(_pos + normal * (correctionScale / _mass));
 		}
 		if (!other._is_static) {
-			other._pos -= normal * (correctionScale / other._mass);
+			other.setPos(other._pos - normal * (correctionScale / other._mass));
 		}
 	}
 
