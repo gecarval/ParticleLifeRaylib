@@ -42,8 +42,8 @@ void PhysicsBody2D::updatePhysics() noexcept {
 	}
 	const float deltaTime = raylib::Window::GetFrameTime();
 	_linearVel += _linearAcc * deltaTime;
-	_pos += _linearVel * deltaTime;
 	_linearAcc = raylib::Vector2::Zero();
+	setPos(_pos + _linearVel * deltaTime);
 }
 
 void PhysicsBody2D::drawDebug() const noexcept {
@@ -369,6 +369,7 @@ void PhysicsBody2D::collissionCircleRectangle(
 
 void PhysicsBody2D::collissionRectangleCircle(
 	PhysicsBody2D &other, const float restitution) noexcept {
+	other.collissionCircleRectangle(*this, restitution);
 }
 
 raylib::Vector2 PhysicsBody2D::getLinearVel() const noexcept {
