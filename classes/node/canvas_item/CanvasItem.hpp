@@ -18,6 +18,10 @@ class CanvasItem : public Node {
 	virtual ~CanvasItem();
 
 	// draw method to be implemented by derived classes
+	bool isInView(const raylib::Window	&window,
+				  const raylib::Vector2 &pos) const noexcept;
+	bool isInView(const raylib::Window &window, const raylib::Camera2D &camera,
+				  const raylib::Vector2 &pos) const noexcept;
 	bool isInView(const raylib::Window &window, const Shape2D &shape,
 				  const raylib::Vector2 &pos) const noexcept;
 	bool isInView(const raylib::Window &window, const raylib::Camera2D &camera,

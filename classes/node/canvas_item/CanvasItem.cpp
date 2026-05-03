@@ -23,6 +23,31 @@ CanvasItem &CanvasItem::operator=(const CanvasItem &other) {
 	return *this;
 }
 
+bool CanvasItem::isInView(const raylib::Window	&window,
+						  const raylib::Vector2 &pos) const noexcept {
+	const raylib::Vector2	size(window.GetWidth(), window.GetHeight());
+	const raylib::Rectangle screenSpace(raylib::Vector2::Zero(), size);
+	if (screenSpace.CheckCollision(pos)) {
+		return (true);
+	}
+	return (false);
+}
+
+bool CanvasItem::isInView(const raylib::Window	 &window,
+						  const raylib::Camera2D &camera,
+						  const raylib::Vector2	 &pos) const noexcept {
+	const raylib::Vector2 posScreen(
+		camera.GetTarget().x - (window.GetWidth() / 2.0f) / camera.GetZoom(),
+		camera.GetTarget().y - (window.GetHeight() / 2.0f) / camera.GetZoom());
+	const raylib::Vector2	size(window.GetWidth() / camera.GetZoom(),
+								 window.GetHeight() / camera.GetZoom());
+	const raylib::Rectangle screenSpace(posScreen, size);
+	if (screenSpace.CheckCollision(pos)) {
+		return (true);
+	}
+	return (false);
+}
+
 bool CanvasItem::isInView(const raylib::Window &window, const Shape2D &shape,
 						  const raylib::Vector2 &shapePos) const noexcept {
 	const raylib::Vector2  pos;
