@@ -63,6 +63,14 @@ void Sprite2D::setTexture(raylib::Texture2D &&newTexture) noexcept {
 	_texture = std::move(newTexture);
 }
 
+raylib::Color Sprite2D::getColor() const noexcept {
+	return _color;
+}
+
+void Sprite2D::setColor(const raylib::Color &newColor) noexcept {
+	_color = newColor;
+}
+
 raylib::Vector2 Sprite2D::getOffset() const noexcept {
 	return _offset;
 }
