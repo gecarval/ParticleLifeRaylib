@@ -1,21 +1,17 @@
 #include "Node2D.hpp"
 
 Node2D::Node2D(const std::string &instanceName)
-	: CanvasItem(instanceName), _pos(raylib::Vector2()),
-	  _vel(raylib::Vector2()), _acc(raylib::Vector2()), _rot(0.0f) {
+	: CanvasItem(instanceName), _pos(raylib::Vector2()), _rot(0.0f) {
 }
 
 Node2D::Node2D(const Node2D &other)
-	: CanvasItem(other), _pos(other._pos), _vel(other._vel), _acc(other._acc),
-	  _rot(other._rot) {
+	: CanvasItem(other), _pos(other._pos), _rot(other._rot) {
 }
 
 Node2D &Node2D::operator=(const Node2D &other) {
 	if (this != &other) {
 		CanvasItem::operator=(other);
 		_pos = other._pos;
-		_vel = other._vel;
-		_acc = other._acc;
 		_rot = other._rot;
 	}
 	return *this;
@@ -49,36 +45,27 @@ void Node2D::setPos(const raylib::Vector2 &newPos) noexcept {
 	_pos = newPos;
 }
 
-const raylib::Vector2 &Node2D::getVel() const noexcept {
-	return _vel;
-}
-
-raylib::Vector2 &Node2D::getVel() noexcept {
-	return _vel;
-}
-
-void Node2D::setVel(const raylib::Vector2 &newVel) noexcept {
-	_vel = newVel;
-}
-
-const raylib::Vector2 &Node2D::getAcc() const noexcept {
-	return _acc;
-}
-
-raylib::Vector2 &Node2D::getAcc() noexcept {
-	return _acc;
-}
-
-void Node2D::setAcc(const raylib::Vector2 &newAcc) noexcept {
-	_acc = newAcc;
-}
-
 float Node2D::getRotation() const noexcept {
 	return _rot;
 }
 
-void Node2D::setRotation(const float newRot) noexcept {
-	_rot = newRot;
+void Node2D::addRotation(const float newRot) noexcept {
+	_rot += newRot;
+	for (Node *child : _children) {
+		if (Node2D *childNode2D = dynamic_cast<Node2D *>(child)) {
+			childNode2D->addRotation(newRot);
+		}
+	}
+}
+
+void Node2D::resetRotation() noexcept {
+	const float deltaRot = _rot;
+	_rot = 0.0f;
+	for (Node *child : _children) {
+		if (Node2D *childNode2D = dynamic_cast<Node2D *>(child)) {
+			childNode2D->addRotation(-deltaRot);
+		}
+	}
 }
 
 const std::string &Node2D::getClassName() const noexcept {
