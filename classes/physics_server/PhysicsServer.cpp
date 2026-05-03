@@ -1,14 +1,16 @@
 #include "PhysicsServer.hpp"
-#include "../node/canvas_item/node2d/Node2D.hpp"
+#include "../node/canvas_item/node2d/collision_object2d/CollisionObject2D.hpp"
 #include <array>
 
 // Static
 const float	   PhysicsServer::CELL_SIZE = 10.0f;
 PhysicsServer *PhysicsServer::_instance = nullptr;
+std::unordered_map<unsigned long, CollisionObject2D *>
+	PhysicsServer::_collisionObjects;
 
 // Pre-bucket the map so the first rebuild rarely triggers a rehash.
 PhysicsServer::PhysicsServer(const std::string &instanceName)
-	: Object(instanceName), _physicsBodies(nullptr) {
+	: Object(instanceName) {
 	_hashMap.reserve(4096);
 }
 
@@ -18,6 +20,16 @@ PhysicsServer::~PhysicsServer() {
 inline Vector2i
 PhysicsServer::hashFunction(const raylib::Vector2 &position) const noexcept {
 	return position / CELL_SIZE;
+}
+
+void PhysicsServer::addCollisionObject(
+	CollisionObject2D *collisionObject) noexcept {
+	_collisionObjects[collisionObject->getInstanceID()] = collisionObject;
+}
+
+void PhysicsServer::removeCollisionObject(
+	CollisionObject2D *collisionObject) noexcept {
+	_collisionObjects.erase(collisionObject->getInstanceID());
 }
 
 PhysicsServer &PhysicsServer::getInstance() noexcept {
@@ -37,18 +49,15 @@ void PhysicsServer::deleteInstance() noexcept {
 // Core API
 void PhysicsServer::rebuild() {
 	clear();
-	if (_physicsBodies == nullptr) {
-		return;
-	}
-	for (Node2D *b : *_physicsBodies) {
+	for (auto &[key, b] : _collisionObjects) {
 		auto &bucket = _hashMap[hashFunction(b->getPos())];
 		bucket.push_back(b);
 	}
 }
 
-void PhysicsServer::getCollisions(Node2D				&physicsBody,
-								  std::vector<Node2D *> &out) const {
-	const Vector2i key = hashFunction(physicsBody.getPos());
+void PhysicsServer::getCollisions(CollisionObject2D &collisionObject,
+								  std::vector<CollisionObject2D *> &out) const {
+	const Vector2i key = hashFunction(collisionObject.getPos());
 	// Offsets for the 3×3 neighbourhood (center cell + 8 surrounding).
 	static constexpr std::array<std::pair<int, int>, 9> offsets{{
 		{-1, -1},
@@ -68,8 +77,8 @@ void PhysicsServer::getCollisions(Node2D				&physicsBody,
 		if (it == _hashMap.end()) {
 			continue;
 		}
-		for (Node2D *other : it->second) {
-			if (physicsBody != *other) {
+		for (CollisionObject2D *other : it->second) {
+			if (collisionObject != *other) {
 				out.push_back(other);
 			}
 		}
@@ -77,19 +86,16 @@ void PhysicsServer::getCollisions(Node2D				&physicsBody,
 }
 
 // Legacy
-void PhysicsServer::setPhysicsBodies(std::vector<Node2D *> &physicsBodies) {
-	_physicsBodies = &physicsBodies;
-}
-
-std::vector<Node2D *> PhysicsServer::getCollisions(Node2D &physicsBody) const {
-	std::vector<Node2D *> out;
+std::vector<CollisionObject2D *>
+PhysicsServer::getCollisions(CollisionObject2D &collisionObject) const {
+	std::vector<CollisionObject2D *> out;
 	// Rough upper-bound guess to avoid repeated small reallocations.
 	out.reserve(32);
-	getCollisions(physicsBody, out);
+	getCollisions(collisionObject, out);
 	return out;
 }
 
-void PhysicsServer::clear() {
+void PhysicsServer::clear() noexcept {
 	// Reuse allocated buckets — clear() keeps capacity.
 	for (auto &[key, vec] : _hashMap) {
 		vec.clear();

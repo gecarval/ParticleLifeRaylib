@@ -4,9 +4,8 @@
 #include "../../include/raylib-cpp.hpp"
 #include "../Object.hpp"
 #include <unordered_map>
-#include <vector>
 
-class Node2D;
+class CollisionObject2D;
 struct Vector2i {
 	int x;
 	int y;
@@ -36,8 +35,10 @@ class PhysicsServer : public Object {
 	static const float	  CELL_SIZE;
 	static PhysicsServer *_instance;
 
-	std::unordered_map<Vector2i, std::vector<Node2D *>, Vector2iHash> _hashMap;
-	std::vector<Node2D *> *_physicsBodies;
+	static std::unordered_map<unsigned long, CollisionObject2D *>
+		_collisionObjects;
+	std::unordered_map<Vector2i, std::vector<CollisionObject2D *>, Vector2iHash>
+		_hashMap;
 
 	PhysicsServer(const std::string &instanceName = "");
 	PhysicsServer(const PhysicsServer &) = delete;
@@ -48,17 +49,22 @@ class PhysicsServer : public Object {
 	hashFunction(const raylib::Vector2 &position) const noexcept;
 
   public:
+	static void addCollisionObject(CollisionObject2D *collisionObject) noexcept;
+	static void
+	removeCollisionObject(CollisionObject2D *collisionObject) noexcept;
+
 	static PhysicsServer &getInstance() noexcept;
 	static void			  deleteInstance() noexcept;
 
 	// Core API
 	void rebuild();
-	void getCollisions(Node2D &physicsBody, std::vector<Node2D *> &out) const;
+	void getCollisions(CollisionObject2D				&collisionObject,
+					   std::vector<CollisionObject2D *> &out) const;
 
 	// Legacy
-	void setPhysicsBodies(std::vector<Node2D *> &physicsBodies);
-	std::vector<Node2D *> getCollisions(Node2D &physicsBody) const;
-	void				  clear();
+	std::vector<CollisionObject2D *>
+		 getCollisions(CollisionObject2D &physicsBody) const;
+	void clear() noexcept;
 
 	virtual const std::string &getClassName() const noexcept;
 };

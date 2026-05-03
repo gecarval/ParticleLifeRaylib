@@ -1,15 +1,17 @@
 #include "CollisionObject2D.hpp"
+#include "../../../../physics_server/PhysicsServer.hpp"
 
 CollisionObject2D::CollisionObject2D(const std::string &instanceName)
 	: Node2D(instanceName), _collisionShape(), _collisionLayer(1),
 	  _collisionMask(1) {
+	PhysicsServer::addCollisionObject(this);
 }
 
 CollisionObject2D::CollisionObject2D(const CollisionObject2D &other)
-	: Node2D(other) {
-	if (this != &other) {
-		*this = other;
-	}
+	: Node2D(other), _collisionShape(other._collisionShape),
+	  _collisionLayer(other._collisionLayer),
+	  _collisionMask(other._collisionMask) {
+	PhysicsServer::addCollisionObject(this);
 }
 
 CollisionObject2D &
@@ -24,6 +26,7 @@ CollisionObject2D::operator=(const CollisionObject2D &other) {
 }
 
 CollisionObject2D::~CollisionObject2D() {
+	PhysicsServer::removeCollisionObject(this);
 }
 
 void CollisionObject2D::drawDebug() const noexcept {
