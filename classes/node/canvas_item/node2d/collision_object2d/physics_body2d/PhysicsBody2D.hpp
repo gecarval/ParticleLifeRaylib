@@ -37,6 +37,10 @@ class PhysicsBody2D : public CollisionObject2D {
 	void applyNewtonianGravity(const raylib::Vector2 &target,
 							   const float strength = 9.81f) noexcept;
 	void applyFriction(const float strength = 0.1f) noexcept;
+	void resolveContact(PhysicsBody2D &other, const raylib::Vector2 &normal,
+						const raylib::Vector2 &contactPt, const float overlap,
+						const float inertiaA, const float inertiaB,
+						const float restitution) noexcept;
 	void collideWith(PhysicsBody2D &other,
 					 const float	restitution = 1.0f) noexcept;
 	void collissionCircleCircle(PhysicsBody2D &other,
