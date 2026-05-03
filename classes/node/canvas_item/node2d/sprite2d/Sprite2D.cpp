@@ -107,9 +107,10 @@ void Sprite2D::draw() const noexcept {
 		} else if (_shape->getClassName() == "RectangleShape2D") {
 			RectangleShape2D *rectangle =
 				dynamic_cast<RectangleShape2D *>(_shape);
-			raylib::Rectangle rect;
-			rect.SetSize(rectangle->getSize() * _scale);
-			rect.Draw(_pos + _offset, _rot + _rotation, _color);
+			const raylib::Vector2 size = rectangle->getSize() * _scale;
+			const raylib::Vector2 centre = _pos + _offset;
+			raylib::Rectangle	  rect(centre.x, centre.y, size.x, size.y);
+			rect.Draw(size * 0.5f, _rot + _rotation, _color);
 		}
 	}
 }
