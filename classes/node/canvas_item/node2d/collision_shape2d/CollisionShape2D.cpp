@@ -27,7 +27,6 @@ CollisionShape2D::CollisionShape2D(const CollisionShape2D &other)
 CollisionShape2D &CollisionShape2D::operator=(const CollisionShape2D &other) {
 	if (this != &other) {
 		Node2D::operator=(other);
-		_shape = other._shape;
 		_enabled = other._enabled;
 	}
 	return *this;
@@ -93,10 +92,11 @@ float CollisionShape2D::getParentRotation() const noexcept {
 
 void CollisionShape2D::setShape(const float width,
 								const float height) noexcept {
+	const raylib::Vector2 newSize(width, height);
 	if (_shape == nullptr) {
+		_shape = new RectangleShape2D(newSize);
 		return;
 	}
-	const raylib::Vector2 newSize(width, height);
 	if (_shape->getClassName() == "RectangleShape2D") {
 		RectangleShape2D *rectShape = dynamic_cast<RectangleShape2D *>(_shape);
 		rectShape->setSize(newSize);
@@ -107,6 +107,7 @@ void CollisionShape2D::setShape(const float width,
 
 void CollisionShape2D::setShape(const raylib::Vector2 &size) noexcept {
 	if (_shape == nullptr) {
+		_shape = new RectangleShape2D(size);
 		return;
 	}
 	if (_shape->getClassName() == "RectangleShape2D") {
@@ -119,6 +120,7 @@ void CollisionShape2D::setShape(const raylib::Vector2 &size) noexcept {
 
 void CollisionShape2D::setShape(const float radius) noexcept {
 	if (_shape == nullptr) {
+		_shape = new CircleShape2D(radius);
 		return;
 	}
 	if (_shape->getClassName() == "CircleShape2D") {
