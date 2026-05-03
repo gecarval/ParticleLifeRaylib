@@ -41,7 +41,20 @@ CollisionShape2D::~CollisionShape2D() {
 
 void CollisionShape2D::drawDebug() const noexcept {
 	if (_shape != nullptr) {
-		_shape->drawDebug(_pos);
+		if (_shape->getClassName() == "RectangleShape2D") {
+			// Draw the rectangle centred on _pos and rotated by _rot,
+			// matching how Sprite2D draws a RectangleShape2D.
+			const RectangleShape2D *rect =
+				dynamic_cast<const RectangleShape2D *>(_shape);
+			static const raylib::Color debugColor =
+				raylib::Color::DarkBlue().Fade(0.5f);
+			const raylib::Vector2 size = rect->getSize();
+			raylib::Rectangle	  debugRect(_pos.x, _pos.y, size.x, size.y);
+			debugRect.Draw(size * 0.5f, _rot, debugColor);
+			debugRect.Draw(size * 0.5f, _rot, raylib::Color::DarkBlue());
+		} else {
+			_shape->drawDebug(_pos);
+		}
 	}
 	Node2D::drawDebug();
 }
