@@ -22,8 +22,6 @@ class PhysicsBody2D : public CollisionObject2D {
 	virtual ~PhysicsBody2D();
 
 	// override methods
-	virtual void ready() noexcept override;
-	virtual void update() noexcept override;
 	virtual void updatePhysics() noexcept override;
 	virtual void drawDebug() const noexcept override;
 
@@ -47,6 +45,8 @@ class PhysicsBody2D : public CollisionObject2D {
 								   const float	  restitution = 1.0f) noexcept;
 	void collissionRectangleRectangle(PhysicsBody2D &other,
 									  const float restitution = 1.0f) noexcept;
+	void collissionRectangleCircle(PhysicsBody2D &other,
+								   const float	  restitution = 1.0f) noexcept;
 
 	// getters and setters
 	raylib::Vector2 getLinearVel() const noexcept;
