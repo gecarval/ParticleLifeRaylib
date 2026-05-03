@@ -1,7 +1,7 @@
 #ifndef OBJECT_HPP
 #define OBJECT_HPP
 
-#include <ostream>
+#include <iostream>
 
 class Object {
   private:

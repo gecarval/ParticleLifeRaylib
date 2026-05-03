@@ -66,7 +66,7 @@ int main(void) {
 			for (CollisionObject2D *pn2 : colliders) {
 				if (*p != *pn2) {
 					Particle *p2 = dynamic_cast<Particle *>(pn2);
-					p->collideWith(*p2, 0.95f);
+					p->collideWith(*p2, 0.5f);
 				}
 			}
 			for (Node2D *p2 : particles) {

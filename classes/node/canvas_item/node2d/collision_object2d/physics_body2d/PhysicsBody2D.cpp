@@ -108,6 +108,11 @@ void PhysicsBody2D::collideWith(PhysicsBody2D &other,
 	const CollisionShape2D &otherCollisionShape =
 		dynamic_cast<CollisionShape2D &>(*otherColliders[0]);
 
+	if (_collisionShape.getShape() == nullptr ||
+		otherCollisionShape.getShape() == nullptr) {
+		return;
+	}
+
 	if (_collisionShape.getShape()->getClassName() == "CircleShape2D" &&
 		otherCollisionShape.getShape()->getClassName() == "CircleShape2D") {
 		collissionCircleCircle(other, restitution);

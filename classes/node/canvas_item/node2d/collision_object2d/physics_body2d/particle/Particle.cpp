@@ -11,6 +11,11 @@ Particle::Particle(const std::string &instanceName, const raylib::Vector2 &pos,
 	sprite->setColor(col);
 	Shape2D *shape = new CircleShape2D(_defaultSize);
 	sprite->setShape(shape);
+	CollisionShape2D *collisionShape =
+		new CollisionShape2D("ParticleCollisionShape");
+	collisionShape->setShape(_defaultSize);
+	collisionShape->setVisibleDebug(true);
+	pushBackChild(*collisionShape);
 	setPos(pos);
 }
 
