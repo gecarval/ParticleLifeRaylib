@@ -10,6 +10,7 @@ CanvasItem::CanvasItem(const std::string &instanceName)
 CanvasItem::CanvasItem(const CanvasItem &other)
 	: Node(other), _visible(other._visible), _visibleDebug(other._visibleDebug),
 	  _layer(other._layer) {
+	RenderServer::addCanvasItem(this);
 }
 
 CanvasItem &CanvasItem::operator=(const CanvasItem &other) {
