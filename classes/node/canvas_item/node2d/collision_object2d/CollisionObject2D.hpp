@@ -6,9 +6,8 @@
 
 class CollisionObject2D : public Node2D {
   protected:
-	CollisionShape2D _collisionShape;
-	int				 _collisionLayer;
-	int				 _collisionMask;
+	int _collisionLayer;
+	int _collisionMask;
 
   public:
 	CollisionObject2D(const std::string &instanceName = "");
@@ -16,12 +15,7 @@ class CollisionObject2D : public Node2D {
 	CollisionObject2D &operator=(const CollisionObject2D &other);
 	virtual ~CollisionObject2D();
 
-	// draw calls
-	virtual void drawDebug() const noexcept override;
-
 	// getters and setters
-	const CollisionShape2D &getCollisionShape() const noexcept;
-	CollisionShape2D	   &getCollisionShape() noexcept;
 	void setCollisionShape(const CollisionShape2D &newShape) noexcept;
 	int	 getCollisionLayer() const noexcept;
 	void setCollisionLayer(int newLayer) noexcept;
