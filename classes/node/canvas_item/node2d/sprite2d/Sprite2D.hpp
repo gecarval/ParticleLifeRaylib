@@ -41,7 +41,6 @@ class Sprite2D : public Node2D {
 
 	// draw calls
 	virtual void draw() const noexcept override;
-	virtual void drawDebug() const noexcept override;
 
 	virtual const std::string &getClassName() const noexcept override;
 };

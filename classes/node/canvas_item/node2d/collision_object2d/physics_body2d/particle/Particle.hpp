@@ -17,9 +17,7 @@ class Particle : public PhysicsBody2D {
 	virtual ~Particle();
 
 	// methods
-	virtual void updatePhysics() noexcept override;
 	virtual void draw() const noexcept override;
-	virtual void drawDebug() const noexcept override;
 
 	virtual const std::string &getClassName() const noexcept override;
 };

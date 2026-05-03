@@ -44,6 +44,7 @@ void CollisionShape2D::drawDebug() const noexcept {
 	if (_shape != nullptr) {
 		_shape->drawDebug(_pos);
 	}
+	Node2D::drawDebug();
 }
 
 void CollisionShape2D::setParentPos(const raylib::Vector2 &newPos) noexcept {

@@ -114,10 +114,6 @@ void Sprite2D::draw() const noexcept {
 	}
 }
 
-void Sprite2D::drawDebug() const noexcept {
-	Node2D::drawDebug();
-}
-
 const std::string &Sprite2D::getClassName() const noexcept {
 	static const std::string className("Sprite2D");
 	return className;

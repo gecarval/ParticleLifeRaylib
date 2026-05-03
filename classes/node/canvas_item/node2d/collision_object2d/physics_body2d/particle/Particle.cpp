@@ -37,14 +37,6 @@ void Particle::draw() const noexcept {
 	}
 }
 
-void Particle::drawDebug() const noexcept {
-	PhysicsBody2D::drawDebug();
-}
-
-void Particle::updatePhysics() noexcept {
-	PhysicsBody2D::updatePhysics();
-}
-
 const std::string &Particle::getClassName() const noexcept {
 	static const std::string className("Particle");
 	return (className);
