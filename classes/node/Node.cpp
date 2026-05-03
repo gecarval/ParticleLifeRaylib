@@ -250,5 +250,6 @@ std::ostream &operator<<(std::ostream &out, const Node &other) {
 			out << ", ";
 		}
 	}
+	out << "]";
 	return (out);
 }
