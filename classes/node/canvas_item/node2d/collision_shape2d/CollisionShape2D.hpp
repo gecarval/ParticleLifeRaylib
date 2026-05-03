@@ -28,11 +28,15 @@ class CollisionShape2D : public Node2D {
 	void setShape(const float radius) noexcept;
 
 	// getters and getters
-	const Shape2D *getShape() const noexcept;
-	Shape2D		  *getShape() noexcept;
-	void		   setShape(Shape2D *newShape) noexcept;
-	bool		   isEnabled() const noexcept;
-	void		   setEnabled(const bool newEnabled) noexcept;
+	void			setParentPos(const raylib::Vector2 &newPos) noexcept;
+	void			setParentRotation(const float newRotation) noexcept;
+	raylib::Vector2 getParentPos() const noexcept;
+	float			getParentRotation() const noexcept;
+	const Shape2D  *getShape() const noexcept;
+	Shape2D		   *getShape() noexcept;
+	void			setShape(Shape2D *newShape) noexcept;
+	bool			isEnabled() const noexcept;
+	void			setEnabled(const bool newEnabled) noexcept;
 
 	virtual const std::string &getClassName() const noexcept override;
 };

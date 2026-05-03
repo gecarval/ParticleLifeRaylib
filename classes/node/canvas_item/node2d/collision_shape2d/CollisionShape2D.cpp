@@ -46,6 +46,50 @@ void CollisionShape2D::drawDebug() const noexcept {
 	}
 }
 
+void CollisionShape2D::setParentPos(const raylib::Vector2 &newPos) noexcept {
+	if (_parent == nullptr) {
+		return;
+	}
+	Node2D *_parentNode2D = dynamic_cast<Node2D *>(_parent);
+	if (_parentNode2D == nullptr) {
+		return;
+	}
+	_parentNode2D->setPos(newPos);
+}
+
+void CollisionShape2D::setParentRotation(const float newRotation) noexcept {
+	if (_parent == nullptr) {
+		return;
+	}
+	Node2D *_parentNode2D = dynamic_cast<Node2D *>(_parent);
+	if (_parentNode2D == nullptr) {
+		return;
+	}
+	_parentNode2D->setRotation(newRotation);
+}
+
+raylib::Vector2 CollisionShape2D::getParentPos() const noexcept {
+	if (_parent == nullptr) {
+		return raylib::Vector2();
+	}
+	const Node2D *_parentNode2D = dynamic_cast<const Node2D *>(_parent);
+	if (_parentNode2D == nullptr) {
+		return raylib::Vector2();
+	}
+	return _parentNode2D->getPos();
+}
+
+float CollisionShape2D::getParentRotation() const noexcept {
+	if (_parent == nullptr) {
+		return 0.0f;
+	}
+	const Node2D *_parentNode2D = dynamic_cast<const Node2D *>(_parent);
+	if (_parentNode2D == nullptr) {
+		return 0.0f;
+	}
+	return _parentNode2D->getRotation();
+}
+
 void CollisionShape2D::setShape(const float width,
 								const float height) noexcept {
 	if (_shape == nullptr) {
