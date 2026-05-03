@@ -239,7 +239,16 @@ const std::string &Node::getClassName() const noexcept {
 std::ostream &operator<<(std::ostream &out, const Node &other) {
 	const Object &otherObject = other;
 	out << otherObject;
-	out << "; children";
-	out << other.getChildren();
+	out << "; children [";
+	for (unsigned long i = 0; i < other.getChildren().size(); i++) {
+		if (other.getChildren()[i] == nullptr) {
+			out << "nullptr";
+		} else {
+			out << *other.getChildren()[i];
+		}
+		if (i < other.getChildren().size() - 1) {
+			out << ", ";
+		}
+	}
 	return (out);
 }
