@@ -1,5 +1,7 @@
 #include "RenderServer.hpp"
 #include "../node/canvas_item/CanvasItem.hpp"
+#include "../node/canvas_item/node2d/Node2D.hpp"
+#include "../node/canvas_item/node2d/sprite2d/Sprite2D.hpp"
 
 std::unordered_map<unsigned long, CanvasItem *> RenderServer::_canvasItems;
 RenderServer *RenderServer::_instance = nullptr;
@@ -24,9 +26,31 @@ void RenderServer::destroyInstance() noexcept {
 }
 
 void RenderServer::render(const raylib::Window &window) noexcept {
-	(void)window; // Suppress unused parameter warning
 	for (const auto &pair : _canvasItems) {
+		bool		inView = false;
+		bool		isSprite = false;
 		CanvasItem *canvasItem = pair.second;
+		Sprite2D   *sprite = dynamic_cast<Sprite2D *>(canvasItem);
+		if (sprite) {
+			isSprite = true;
+			raylib::Vector2 pos = sprite->getPos();
+			const Shape2D  *shape = sprite->getShape();
+			if (shape && canvasItem->isInView(window, *shape, pos)) {
+				inView = true;
+			}
+		}
+		if (!isSprite) {
+			Node2D *node = dynamic_cast<Node2D *>(canvasItem);
+			if (node) {
+				raylib::Vector2 pos = node->getPos();
+				if (canvasItem->isInView(window, pos)) {
+					inView = true;
+				}
+			}
+		}
+		if (!inView) {
+			continue;
+		}
 		if (canvasItem->isVisible()) {
 			canvasItem->draw();
 		}
@@ -38,10 +62,31 @@ void RenderServer::render(const raylib::Window &window) noexcept {
 
 void RenderServer::render(const raylib::Window	 &window,
 						  const raylib::Camera2D &camera) noexcept {
-	(void)window; // Suppress unused parameter warning
-	(void)camera; // Suppress unused parameter warning
 	for (const auto &pair : _canvasItems) {
+		bool		inView = false;
+		bool		isSprite = false;
 		CanvasItem *canvasItem = pair.second;
+		Sprite2D   *sprite = dynamic_cast<Sprite2D *>(canvasItem);
+		if (sprite) {
+			isSprite = true;
+			raylib::Vector2 pos = sprite->getPos();
+			const Shape2D  *shape = sprite->getShape();
+			if (shape && canvasItem->isInView(window, camera, *shape, pos)) {
+				inView = true;
+			}
+		}
+		if (!isSprite) {
+			Node2D *node = dynamic_cast<Node2D *>(canvasItem);
+			if (node) {
+				raylib::Vector2 pos = node->getPos();
+				if (canvasItem->isInView(window, camera, pos)) {
+					inView = true;
+				}
+			}
+		}
+		if (!inView) {
+			continue;
+		}
 		if (canvasItem->isVisible()) {
 			canvasItem->draw();
 		}
