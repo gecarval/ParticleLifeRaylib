@@ -1,4 +1,5 @@
-#include "../classes/node/canvas_item/node2d/particle/Particle.hpp"
+#include "../classes/node/canvas_item/node2d/collision_object2d/CollisionObject2D.hpp"
+#include "../classes/node/canvas_item/node2d/collision_object2d/physics_body2d/particle/Particle.hpp"
 #include "../classes/physics_server/PhysicsServer.hpp"
 #include "../classes/render_server/RenderServer.hpp"
 #include <memory>
@@ -37,10 +38,10 @@ static void cameraControl(raylib::Camera2D &cam) {
 }
 
 int main(void) {
-	PhysicsServer		 &physicsServer = PhysicsServer::getInstance();
-	RenderServer		 &renderServer = RenderServer::getInstance();
-	std::vector<Node2D *> particles;
-	std::vector<Node2D *> colliders;
+	PhysicsServer		   &physicsServer = PhysicsServer::getInstance();
+	RenderServer		   &renderServer = RenderServer::getInstance();
+	std::vector<Particle *> particles;
+	std::vector<CollisionObject2D *> colliders;
 	colliders.reserve(1000);
 	particles.reserve(1000);
 	for (int i = 0; i < 1000; ++i) {
@@ -49,7 +50,6 @@ int main(void) {
 		newParticle->setVisibleDebug(true);
 		particles.push_back(newParticle);
 	}
-	physicsServer.setPhysicsBodies(particles);
 	raylib::Window		  window(800, 600);
 	const raylib::Vector2 initialPosition(window.GetSize() / 2.0f);
 	raylib::Camera2D	  cam(initialPosition, initialPosition);
@@ -60,11 +60,10 @@ int main(void) {
 		window.ClearBackground();
 		cam.BeginMode();
 		physicsServer.rebuild();
-		for (Node2D *pn : particles) {
-			Particle *p = dynamic_cast<Particle *>(pn);
+		for (Particle *p : particles) {
 			colliders.clear();
 			physicsServer.getCollisions(*p, colliders);
-			for (Node2D *pn2 : colliders) {
+			for (CollisionObject2D *pn2 : colliders) {
 				if (*p != *pn2) {
 					Particle *p2 = dynamic_cast<Particle *>(pn2);
 					p->collideWith(*p2, 0.95f);

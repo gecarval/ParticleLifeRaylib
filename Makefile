@@ -35,7 +35,11 @@ CLASS_SRC := $(CLASS_DIR)/Object.cpp \
 			 $(CLASS_DIR)/node/canvas_item/control/Control.cpp \
 			 $(CLASS_DIR)/node/canvas_item/control/button/Button.cpp \
 			 $(CLASS_DIR)/node/canvas_item/node2d/Node2D.cpp \
-			 $(CLASS_DIR)/node/canvas_item/node2d/particle/Particle.cpp
+			 $(CLASS_DIR)/node/canvas_item/node2d/sprite2d/Sprite2D.cpp \
+			 $(CLASS_DIR)/node/canvas_item/node2d/collision_shape2d/CollisionShape2D.cpp \
+			 $(CLASS_DIR)/node/canvas_item/node2d/collision_object2d/CollisionObject2D.cpp \
+			 $(CLASS_DIR)/node/canvas_item/node2d/collision_object2d/physics_body2d/PhysicsBody2D.cpp \
+			 $(CLASS_DIR)/node/canvas_item/node2d/collision_object2d/physics_body2d/particle/Particle.cpp
 
 SRC := $(SRC_DIR)/main.cpp
 
@@ -56,7 +60,11 @@ HEADERS := $(INCLUDE_DIR)/json.hpp \
 		   $(CLASS_DIR)/node/canvas_item/control/Control.hpp \
 		   $(CLASS_DIR)/node/canvas_item/control/button/Button.hpp \
 		   $(CLASS_DIR)/node/canvas_item/node2d/Node2D.hpp \
-		   $(CLASS_DIR)/node/canvas_item/node2d/particle/Particle.hpp
+		   $(CLASS_DIR)/node/canvas_item/node2d/sprite2d/Sprite2D.cpp \
+		   $(CLASS_DIR)/node/canvas_item/node2d/collision_shape2d/CollisionShape2D.cpp \
+		   $(CLASS_DIR)/node/canvas_item/node2d/collision_object2d/CollisionObject2D.cpp \
+		   $(CLASS_DIR)/node/canvas_item/node2d/collision_object2d/physics_body2d/PhysicsBody2D.cpp \
+		   $(CLASS_DIR)/node/canvas_item/node2d/collision_object2d/physics_body2d/particle/Particle.cpp
 
 # Include paths
 INC_FLAGS := -I$(CLASS_DIR) \
