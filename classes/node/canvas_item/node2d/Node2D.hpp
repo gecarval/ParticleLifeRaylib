@@ -21,10 +21,9 @@ class Node2D : public CanvasItem {
 	// getters and setters
 	const raylib::Vector2 &getPos() const noexcept;
 	raylib::Vector2		  &getPos() noexcept;
-	virtual void		   setPos(const raylib::Vector2 &newPos) noexcept;
+	void				   setPos(const raylib::Vector2 &newPos) noexcept;
 	float				   getRotation() const noexcept;
-	virtual void		   addRotation(const float newRot) noexcept;
-	virtual void		   resetRotation() noexcept;
+	void				   setRotation(const float newRot) noexcept;
 
 	virtual const std::string &getClassName() const noexcept override;
 };

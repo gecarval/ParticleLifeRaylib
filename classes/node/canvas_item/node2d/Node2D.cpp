@@ -42,28 +42,27 @@ raylib::Vector2 &Node2D::getPos() noexcept {
 }
 
 void Node2D::setPos(const raylib::Vector2 &newPos) noexcept {
+	const raylib::Vector2 deltaPos = newPos - _pos;
 	_pos = newPos;
+	for (Node *child : _children) {
+		Node2D *childNode2D = dynamic_cast<Node2D *>(child);
+		if (childNode2D != nullptr) {
+			childNode2D->setPos(childNode2D->getPos() + deltaPos);
+		}
+	}
 }
 
 float Node2D::getRotation() const noexcept {
 	return _rot;
 }
 
-void Node2D::addRotation(const float newRot) noexcept {
-	_rot += newRot;
+void Node2D::setRotation(const float newRot) noexcept {
+	const float deltaRot = newRot - _rot;
+	_rot = newRot;
 	for (Node *child : _children) {
-		if (Node2D *childNode2D = dynamic_cast<Node2D *>(child)) {
-			childNode2D->addRotation(newRot);
-		}
-	}
-}
-
-void Node2D::resetRotation() noexcept {
-	const float deltaRot = _rot;
-	_rot = 0.0f;
-	for (Node *child : _children) {
-		if (Node2D *childNode2D = dynamic_cast<Node2D *>(child)) {
-			childNode2D->addRotation(-deltaRot);
+		Node2D *childNode2D = dynamic_cast<Node2D *>(child);
+		if (childNode2D != nullptr) {
+			childNode2D->setRotation(childNode2D->getRotation() + deltaRot);
 		}
 	}
 }
