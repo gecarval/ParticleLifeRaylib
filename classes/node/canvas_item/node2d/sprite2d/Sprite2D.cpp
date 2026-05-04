@@ -97,7 +97,8 @@ void Sprite2D::setRotation(const float newRotation) noexcept {
 
 void Sprite2D::draw() const noexcept {
 	if (_texture.id != 0) {
-		_texture.Draw(_pos + _offset, _rot + _rotation, _scale, _color);
+		_texture.Draw(_pos + _offset, (_rot + _rotation) * RAD2DEG, _scale,
+					  _color);
 	} else if (_shape != nullptr) {
 		if (_shape->getClassName() == "CircleShape2D") {
 			CircleShape2D  *circle = dynamic_cast<CircleShape2D *>(_shape);
@@ -110,7 +111,7 @@ void Sprite2D::draw() const noexcept {
 			const raylib::Vector2 size = rectangle->getSize() * _scale;
 			const raylib::Vector2 centre = _pos + _offset;
 			raylib::Rectangle	  rect(centre.x, centre.y, size.x, size.y);
-			rect.Draw(size * 0.5f, _rot + _rotation, _color);
+			rect.Draw(size * 0.5f, (_rot + _rotation) * RAD2DEG, _color);
 		}
 	}
 }
