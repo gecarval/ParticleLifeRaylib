@@ -6,7 +6,7 @@
 PhysicsBody2D::PhysicsBody2D(const std::string &instanceName)
 	: CollisionObject2D(instanceName), _linearVel(0, 0), _angularVel(0, 0),
 	  _linearAcc(0, 0), _angularAcc(0, 0), _mass(1.0f), _friction(0.1f),
-	  _restitution(0.5f), _is_static(false), _lock_rotation(false) {
+	  _restitution(0.5f), _is_static(false), _lock_rotation(true) {
 }
 
 PhysicsBody2D::PhysicsBody2D(const PhysicsBody2D &other)

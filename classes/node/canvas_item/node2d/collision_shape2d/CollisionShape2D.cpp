@@ -51,8 +51,6 @@ void CollisionShape2D::drawDebug() const noexcept {
 			const raylib::Vector2 size = rect->getSize();
 			raylib::Rectangle	  debugRect(_pos.x, _pos.y, size.x, size.y);
 			debugRect.Draw(size * 0.5f, _rot * RAD2DEG, debugColor);
-			debugRect.Draw(size * 0.5f, _rot * RAD2DEG,
-						   raylib::Color::DarkBlue());
 		} else {
 			_shape->drawDebug(_pos);
 		}

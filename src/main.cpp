@@ -47,7 +47,6 @@ int main(void) {
 	for (int i = 0; i < 1000; ++i) {
 		raylib::Vector2 pos(rand() % 800, rand() % 600);
 		Particle	   *newParticle = new Particle(std::to_string(i), pos);
-		newParticle->setVisibleDebug(true);
 		particles.push_back(newParticle);
 	}
 	raylib::Window		  window(800, 600);
