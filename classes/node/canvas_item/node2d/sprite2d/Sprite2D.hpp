@@ -22,6 +22,11 @@ class Sprite2D : public Node2D {
 	Sprite2D &operator=(Sprite2D &&other);
 	virtual ~Sprite2D();
 
+	// utility functions
+	void setShape(const float width, const float height) noexcept;
+	void setShape(const raylib::Vector2 &size) noexcept;
+	void setShape(const float radius) noexcept;
+
 	// getters and setters
 	const Shape2D			*getShape() const noexcept;
 	Shape2D					*getShape() noexcept;

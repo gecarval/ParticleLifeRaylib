@@ -1,7 +1,6 @@
-#include "Sprite2D.hpp"
 #include "../../../../shape2d/circle_shape2d/CircleShape2D.hpp"
 #include "../../../../shape2d/rectangle_shape2d/RectangleShape2D.hpp"
-#include <algorithm>
+#include "Sprite2D.hpp"
 
 Sprite2D::Sprite2D(const std::string &instanceName)
 	: Node2D(instanceName), _shape(nullptr), _texture(),
@@ -33,6 +32,46 @@ Sprite2D &Sprite2D::operator=(Sprite2D &&other) {
 Sprite2D::~Sprite2D() {
 	if (_shape != nullptr) {
 		delete _shape;
+	}
+}
+
+void Sprite2D::setShape(const float width, const float height) noexcept {
+	const raylib::Vector2 newSize(width, height);
+	if (_shape == nullptr) {
+		_shape = new RectangleShape2D(newSize);
+		return;
+	}
+	if (_shape->getClassName() == "RectangleShape2D") {
+		RectangleShape2D *rectShape = dynamic_cast<RectangleShape2D *>(_shape);
+		rectShape->setSize(newSize);
+	} else {
+		setShape(new RectangleShape2D(newSize));
+	}
+}
+
+void Sprite2D::setShape(const raylib::Vector2 &size) noexcept {
+	if (_shape == nullptr) {
+		_shape = new RectangleShape2D(size);
+		return;
+	}
+	if (_shape->getClassName() == "RectangleShape2D") {
+		RectangleShape2D *rectShape = dynamic_cast<RectangleShape2D *>(_shape);
+		rectShape->setSize(size);
+	} else {
+		setShape(new RectangleShape2D(size));
+	}
+}
+
+void Sprite2D::setShape(const float radius) noexcept {
+	if (_shape == nullptr) {
+		_shape = new CircleShape2D(radius);
+		return;
+	}
+	if (_shape->getClassName() == "CircleShape2D") {
+		CircleShape2D *circleShape = dynamic_cast<CircleShape2D *>(_shape);
+		circleShape->setRadius(radius);
+	} else {
+		setShape(new CircleShape2D(radius));
 	}
 }
 
