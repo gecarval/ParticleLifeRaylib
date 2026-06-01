@@ -1,25 +1,19 @@
 #include "Particle.hpp"
-#include "../../../../../../shape2d/circle_shape2d/CircleShape2D.hpp"
-#include "../../../../../../shape2d/rectangle_shape2d/RectangleShape2D.hpp"
 
 const float Particle::_defaultSize = 5.0f;
 
 Particle::Particle(const std::string &instanceName, const raylib::Vector2 &pos,
 				   const raylib::Color &col)
 	: PhysicsBody2D(instanceName) {
-	Sprite2D		 *sprite = new Sprite2D("ParticleSprite");
-	CollisionShape2D *collisionShape =
-		new CollisionShape2D("ParticleCollisionShape");
-	Shape2D *shape = new CircleShape2D(_defaultSize);
-	sprite->setShape(shape);
-	sprite->setColor(col);
-	sprite->setVisibleDebug(true);
-	collisionShape->setShape(_defaultSize);
-	collisionShape->setVisibleDebug(true);
-	pushBackChild(*sprite);
-	pushBackChild(*collisionShape);
+	Sprite2D		 &sprite = *new Sprite2D("ParticleSprite");
+	CollisionShape2D &collisionShape =
+		*new CollisionShape2D("ParticleCollisionShape");
+	sprite.setColor(col);
+	sprite.setShape(_defaultSize);
+	collisionShape.setShape(_defaultSize);
+	pushBackChild(sprite);
+	pushBackChild(collisionShape);
 	setPos(pos);
-	setVisibleDebug(true);
 }
 
 Particle::Particle(const Particle &other) : PhysicsBody2D(other) {
