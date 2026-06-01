@@ -26,16 +26,6 @@ Particle &Particle::operator=(const Particle &other) {
 Particle::~Particle() {
 }
 
-void Particle::draw() const noexcept {
-	auto children = getChildren();
-	for (const Node *child : children) {
-		const Node2D *node = dynamic_cast<const Node2D *>(child);
-		if (node != nullptr) {
-			node->draw();
-		}
-	}
-}
-
 const std::string &Particle::getClassName() const noexcept {
 	static const std::string className("Particle");
 	return (className);
