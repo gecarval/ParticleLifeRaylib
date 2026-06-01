@@ -84,41 +84,43 @@ GREEN := \033[0;32m
 YELLOW := \033[0;33m
 NC := \033[0m
 
+ECHO = echo -e
+
 # Default target
 .DEFAULT_GOAL := all
 
 # Main targets
 all: $(NAME)
-	@echo "$(GREEN)✓ Build complete: $(NAME)$(NC)"
+	@$(ECHO) "$(GREEN)✓ Build complete: $(NAME)$(NC)"
 
 $(NAME): $(ALL_OBJS)
-	@echo "$(YELLOW)Linking $(NAME)...$(NC)"
+	@$(ECHO) "$(YELLOW)Linking $(NAME)...$(NC)"
 	@$(CXX) $(CXXFLAGS) $(ALL_OBJS) -o $@ $(LIBS)
 
 # Compile project sources
 $(OBJ_DIR)/%.o: %.cpp $(HEADERS)
-	@echo "$(YELLOW)Compiling $<...$(NC)"
+	@$(ECHO) "$(YELLOW)Compiling $<...$(NC)"
 	@mkdir -p $(dir $@)
 	@$(CXX) $(CXXFLAGS) $(INC_FLAGS) -c $< -o $@
 
 # Clean targets
 clean:
-	@echo "$(RED)Cleaning object files...$(NC)"
+	@$(ECHO) "$(RED)Cleaning object files...$(NC)"
 	@rm -rf $(BUILD_DIR)
 
 fclean: clean
-	@echo "$(RED)Cleaning executable...$(NC)"
+	@$(ECHO) "$(RED)Cleaning executable...$(NC)"
 	@rm -f $(NAME)
 
 re: fclean all
 
 # Utility targets
 run: all
-	@echo "$(GREEN)Running $(NAME)...$(NC)"
+	@$(ECHO) "$(GREEN)Running $(NAME)...$(NC)"
 	@./$(NAME)
 
 debug: all
-	@echo "$(GREEN)Running $(NAME) with valgrind...$(NC)"
+	@$(ECHO) "$(GREEN)Running $(NAME) with valgrind...$(NC)"
 	@$(DEBUG) ./$(NAME)
 
 # Show compilation commands (for debugging makefile)
@@ -127,14 +129,14 @@ verbose: re
 
 # Help target
 help:
-	@echo "Available targets:"
-	@echo "  all     - Build the project (default)"
-	@echo "  clean   - Remove object files"
-	@echo "  fclean  - Remove object files and executable"
-	@echo "  re      - Rebuild everything"
-	@echo "  run     - Build and run the project"
-	@echo "  debug   - Run with valgrind"
-	@echo "  verbose - Build with verbose compiler output"
-	@echo "  help    - Show this help message"
+	@$(ECHO) "Available targets:"
+	@$(ECHO) "  all     - Build the project (default)"
+	@$(ECHO) "  clean   - Remove object files"
+	@$(ECHO) "  fclean  - Remove object files and executable"
+	@$(ECHO) "  re      - Rebuild everything"
+	@$(ECHO) "  run     - Build and run the project"
+	@$(ECHO) "  debug   - Run with valgrind"
+	@$(ECHO) "  verbose - Build with verbose compiler output"
+	@$(ECHO) "  help    - Show this help message"
 
 .PHONY: all clean fclean re run debug verbose
