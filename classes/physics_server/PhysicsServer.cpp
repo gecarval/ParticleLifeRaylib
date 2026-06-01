@@ -24,12 +24,16 @@ PhysicsServer::hashFunction(const raylib::Vector2 &position) const noexcept {
 
 void PhysicsServer::addCollisionObject(
 	CollisionObject2D *collisionObject) noexcept {
-	_collisionObjects[collisionObject->getInstanceID()] = collisionObject;
+	if (_instance != nullptr) {
+		_collisionObjects[collisionObject->getInstanceID()] = collisionObject;
+	}
 }
 
 void PhysicsServer::removeCollisionObject(
 	CollisionObject2D *collisionObject) noexcept {
-	_collisionObjects.erase(collisionObject->getInstanceID());
+	if (_instance != nullptr) {
+		_collisionObjects.erase(collisionObject->getInstanceID());
+	}
 }
 
 PhysicsServer &PhysicsServer::getInstance() noexcept {
