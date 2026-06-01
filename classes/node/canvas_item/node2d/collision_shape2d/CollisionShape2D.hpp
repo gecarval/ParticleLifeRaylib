@@ -7,7 +7,6 @@
 class CollisionShape2D : public Node2D {
   protected:
 	Shape2D *_shape;
-	bool	 _enabled;
 
   public:
 	CollisionShape2D(const std::string &instanceName = "");
@@ -35,8 +34,6 @@ class CollisionShape2D : public Node2D {
 	const Shape2D	 *getShape() const noexcept;
 	Shape2D			 *getShape() noexcept;
 	CollisionShape2D &setShape(Shape2D *newShape) noexcept;
-	bool			  isEnabled() const noexcept;
-	CollisionShape2D &setEnabled(const bool newEnabled) noexcept;
 
 	virtual const std::string &getClassName() const noexcept override;
 };

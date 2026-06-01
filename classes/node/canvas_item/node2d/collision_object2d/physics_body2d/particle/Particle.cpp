@@ -1,3 +1,5 @@
+#include "../../../collision_shape2d/CollisionShape2D.hpp"
+#include "../../../sprite2d/Sprite2D.hpp"
 #include "Particle.hpp"
 
 const float Particle::_defaultSize = 5.0f;

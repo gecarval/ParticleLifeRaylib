@@ -2,12 +2,12 @@
 #define COLLISIONOBJECT2D_HPP
 
 #include "../Node2D.hpp"
-#include "../collision_shape2d/CollisionShape2D.hpp"
 
 class CollisionObject2D : public Node2D {
   protected:
-	int _collisionLayer;
-	int _collisionMask;
+	int	 _collisionLayer;
+	int	 _collisionMask;
+	bool _enabled;
 
   public:
 	CollisionObject2D(const std::string &instanceName = "");
@@ -16,12 +16,12 @@ class CollisionObject2D : public Node2D {
 	virtual ~CollisionObject2D();
 
 	// getters and setters
-	CollisionObject2D	  &
-	setCollisionShape(const CollisionShape2D &newShape) noexcept;
-	int getCollisionLayer() const noexcept;
+	int				   getCollisionLayer() const noexcept;
 	CollisionObject2D &setCollisionLayer(int newLayer) noexcept;
 	int				   getCollisionMask() const noexcept;
 	CollisionObject2D &setCollisionMask(int newMask) noexcept;
+	bool			   isEnabled() const noexcept;
+	CollisionObject2D &setEnabled(const bool newEnabled) noexcept;
 
 	virtual const std::string &getClassName() const noexcept override;
 };

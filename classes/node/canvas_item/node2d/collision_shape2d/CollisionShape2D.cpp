@@ -3,31 +3,29 @@
 #include "CollisionShape2D.hpp"
 
 CollisionShape2D::CollisionShape2D(const std::string &instanceName)
-	: Node2D(instanceName), _shape(nullptr), _enabled(true) {
+	: Node2D(instanceName), _shape(nullptr) {
 }
 
 CollisionShape2D::CollisionShape2D(const raylib::Rectangle &rect,
 								   const std::string	   &instanceName)
-	: Node2D(instanceName), _shape(new RectangleShape2D(rect.GetSize())),
-	  _enabled(true) {
+	: Node2D(instanceName), _shape(new RectangleShape2D(rect.GetSize())) {
 	setPos(rect.GetPosition());
 }
 
 CollisionShape2D::CollisionShape2D(const raylib::Vector2 &point,
 								   const float			  radius,
 								   const std::string	 &instanceName)
-	: Node2D(instanceName), _shape(new CircleShape2D(radius)), _enabled(true) {
+	: Node2D(instanceName), _shape(new CircleShape2D(radius)) {
 	setPos(point);
 }
 
 CollisionShape2D::CollisionShape2D(const CollisionShape2D &other)
-	: Node2D(other), _shape(other._shape), _enabled(other._enabled) {
+	: Node2D(other), _shape(other._shape) {
 }
 
 CollisionShape2D &CollisionShape2D::operator=(const CollisionShape2D &other) {
 	if (this != &other) {
 		Node2D::operator=(other);
-		_enabled = other._enabled;
 	}
 	return *this;
 }
@@ -162,15 +160,6 @@ CollisionShape2D &CollisionShape2D::setShape(Shape2D *newShape) noexcept {
 		delete _shape;
 	}
 	_shape = newShape;
-	return *this;
-}
-
-bool CollisionShape2D::isEnabled() const noexcept {
-	return _enabled;
-}
-
-CollisionShape2D &CollisionShape2D::setEnabled(const bool newEnabled) noexcept {
-	_enabled = newEnabled;
 	return *this;
 }
 

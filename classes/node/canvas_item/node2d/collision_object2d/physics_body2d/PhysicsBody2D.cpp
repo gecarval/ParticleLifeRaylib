@@ -1,5 +1,6 @@
 #include "../../../../../shape2d/circle_shape2d/CircleShape2D.hpp"
 #include "../../../../../shape2d/rectangle_shape2d/RectangleShape2D.hpp"
+#include "../../collision_shape2d/CollisionShape2D.hpp"
 #include "PhysicsBody2D.hpp"
 #include <algorithm>
 

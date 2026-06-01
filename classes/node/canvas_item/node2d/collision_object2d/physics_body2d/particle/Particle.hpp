@@ -1,7 +1,6 @@
 #ifndef PARTICLE_HPP
 #define PARTICLE_HPP
 
-#include "../../../sprite2d/Sprite2D.hpp"
 #include "../PhysicsBody2D.hpp"
 
 class Particle : public PhysicsBody2D {
