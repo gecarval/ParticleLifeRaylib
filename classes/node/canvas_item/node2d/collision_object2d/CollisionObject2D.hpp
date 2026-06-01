@@ -16,11 +16,12 @@ class CollisionObject2D : public Node2D {
 	virtual ~CollisionObject2D();
 
 	// getters and setters
-	void setCollisionShape(const CollisionShape2D &newShape) noexcept;
-	int	 getCollisionLayer() const noexcept;
-	void setCollisionLayer(int newLayer) noexcept;
-	int	 getCollisionMask() const noexcept;
-	void setCollisionMask(int newMask) noexcept;
+	CollisionObject2D	  &
+	setCollisionShape(const CollisionShape2D &newShape) noexcept;
+	int getCollisionLayer() const noexcept;
+	CollisionObject2D &setCollisionLayer(int newLayer) noexcept;
+	int				   getCollisionMask() const noexcept;
+	CollisionObject2D &setCollisionMask(int newMask) noexcept;
 
 	virtual const std::string &getClassName() const noexcept override;
 };

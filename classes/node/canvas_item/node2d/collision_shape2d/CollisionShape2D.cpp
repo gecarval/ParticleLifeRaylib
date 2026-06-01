@@ -1,6 +1,6 @@
-#include "CollisionShape2D.hpp"
 #include "../../../../shape2d/circle_shape2d/CircleShape2D.hpp"
 #include "../../../../shape2d/rectangle_shape2d/RectangleShape2D.hpp"
+#include "CollisionShape2D.hpp"
 
 CollisionShape2D::CollisionShape2D(const std::string &instanceName)
 	: Node2D(instanceName), _shape(nullptr), _enabled(true) {
@@ -40,44 +40,46 @@ CollisionShape2D::~CollisionShape2D() {
 }
 
 void CollisionShape2D::drawDebug() const noexcept {
-	if (_shape != nullptr) {
-		if (_shape->getClassName() == "RectangleShape2D") {
-			// Draw the rectangle centred on _pos and rotated by _rot,
-			// matching how Sprite2D draws a RectangleShape2D.
-			const RectangleShape2D *rect =
-				dynamic_cast<const RectangleShape2D *>(_shape);
-			static const raylib::Color debugColor =
-				raylib::Color::DarkBlue().Fade(0.5f);
-			const raylib::Vector2 size = rect->getSize();
-			raylib::Rectangle	  debugRect(_pos.x, _pos.y, size.x, size.y);
-			debugRect.Draw(size * 0.5f, _rot * RAD2DEG, debugColor);
-		} else {
-			_shape->drawDebug(_pos);
-		}
+	if (_shape != nullptr && _shape->getClassName() == "RectangleShape2D") {
+		// Draw the rectangle centred on _pos and rotated by _rot,
+		// matching how Sprite2D draws a RectangleShape2D.
+		const RectangleShape2D *rect =
+			dynamic_cast<const RectangleShape2D *>(_shape);
+		static const raylib::Color debugColor =
+			raylib::Color::DarkBlue().Fade(0.5f);
+		const raylib::Vector2 size = rect->getSize();
+		raylib::Rectangle	  debugRect(_pos.x, _pos.y, size.x, size.y);
+		debugRect.Draw(size * 0.5f, _rot * RAD2DEG, debugColor);
+	} else {
+		_shape->drawDebug(_pos);
 	}
 	Node2D::drawDebug();
 }
 
-void CollisionShape2D::setParentPos(const raylib::Vector2 &newPos) noexcept {
+CollisionShape2D &
+CollisionShape2D::setParentPos(const raylib::Vector2 &newPos) noexcept {
 	if (_parent == nullptr) {
-		return;
+		return *this;
 	}
 	Node2D *_parentNode2D = dynamic_cast<Node2D *>(_parent);
 	if (_parentNode2D == nullptr) {
-		return;
+		return *this;
 	}
 	_parentNode2D->setPos(newPos);
+	return *this;
 }
 
-void CollisionShape2D::setParentRotation(const float newRotation) noexcept {
+CollisionShape2D &
+CollisionShape2D::setParentRotation(const float newRotation) noexcept {
 	if (_parent == nullptr) {
-		return;
+		return *this;
 	}
 	Node2D *_parentNode2D = dynamic_cast<Node2D *>(_parent);
 	if (_parentNode2D == nullptr) {
-		return;
+		return *this;
 	}
 	_parentNode2D->setRotation(newRotation);
+	return *this;
 }
 
 raylib::Vector2 CollisionShape2D::getParentPos() const noexcept {
@@ -102,12 +104,12 @@ float CollisionShape2D::getParentRotation() const noexcept {
 	return _parentNode2D->getRotation();
 }
 
-void CollisionShape2D::setShape(const float width,
-								const float height) noexcept {
+CollisionShape2D &CollisionShape2D::setShape(const float width,
+											 const float height) noexcept {
 	const raylib::Vector2 newSize(width, height);
 	if (_shape == nullptr) {
 		_shape = new RectangleShape2D(newSize);
-		return;
+		return *this;
 	}
 	if (_shape->getClassName() == "RectangleShape2D") {
 		RectangleShape2D *rectShape = dynamic_cast<RectangleShape2D *>(_shape);
@@ -115,12 +117,14 @@ void CollisionShape2D::setShape(const float width,
 	} else {
 		setShape(new RectangleShape2D(newSize));
 	}
+	return *this;
 }
 
-void CollisionShape2D::setShape(const raylib::Vector2 &size) noexcept {
+CollisionShape2D &
+CollisionShape2D::setShape(const raylib::Vector2 &size) noexcept {
 	if (_shape == nullptr) {
 		_shape = new RectangleShape2D(size);
-		return;
+		return *this;
 	}
 	if (_shape->getClassName() == "RectangleShape2D") {
 		RectangleShape2D *rectShape = dynamic_cast<RectangleShape2D *>(_shape);
@@ -128,12 +132,13 @@ void CollisionShape2D::setShape(const raylib::Vector2 &size) noexcept {
 	} else {
 		setShape(new RectangleShape2D(size));
 	}
+	return *this;
 }
 
-void CollisionShape2D::setShape(const float radius) noexcept {
+CollisionShape2D &CollisionShape2D::setShape(const float radius) noexcept {
 	if (_shape == nullptr) {
 		_shape = new CircleShape2D(radius);
-		return;
+		return *this;
 	}
 	if (_shape->getClassName() == "CircleShape2D") {
 		CircleShape2D *circleShape = dynamic_cast<CircleShape2D *>(_shape);
@@ -141,6 +146,7 @@ void CollisionShape2D::setShape(const float radius) noexcept {
 	} else {
 		setShape(new CircleShape2D(radius));
 	}
+	return *this;
 }
 
 const Shape2D *CollisionShape2D::getShape() const noexcept {
@@ -151,19 +157,21 @@ Shape2D *CollisionShape2D::getShape() noexcept {
 	return _shape;
 }
 
-void CollisionShape2D::setShape(Shape2D *newShape) noexcept {
+CollisionShape2D &CollisionShape2D::setShape(Shape2D *newShape) noexcept {
 	if (_shape != nullptr) {
 		delete _shape;
 	}
 	_shape = newShape;
+	return *this;
 }
 
 bool CollisionShape2D::isEnabled() const noexcept {
 	return _enabled;
 }
 
-void CollisionShape2D::setEnabled(const bool newEnabled) noexcept {
+CollisionShape2D &CollisionShape2D::setEnabled(const bool newEnabled) noexcept {
 	_enabled = newEnabled;
+	return *this;
 }
 
 const std::string &CollisionShape2D::getClassName() const noexcept {

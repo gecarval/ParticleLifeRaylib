@@ -41,7 +41,7 @@ raylib::Vector2 &Node2D::getPos() noexcept {
 	return _pos;
 }
 
-void Node2D::setPos(const raylib::Vector2 &newPos) noexcept {
+Node2D &Node2D::setPos(const raylib::Vector2 &newPos) noexcept {
 	const raylib::Vector2 deltaPos = newPos - _pos;
 	_pos = newPos;
 	for (Node *child : _children) {
@@ -50,13 +50,14 @@ void Node2D::setPos(const raylib::Vector2 &newPos) noexcept {
 			childNode2D->setPos(childNode2D->getPos() + deltaPos);
 		}
 	}
+	return *this;
 }
 
 float Node2D::getRotation() const noexcept {
 	return _rot;
 }
 
-void Node2D::setRotation(const float newRot) noexcept {
+Node2D &Node2D::setRotation(const float newRot) noexcept {
 	const float deltaRot = newRot - _rot;
 	_rot = newRot;
 	for (Node *child : _children) {
@@ -65,6 +66,7 @@ void Node2D::setRotation(const float newRot) noexcept {
 			childNode2D->setRotation(childNode2D->getRotation() + deltaRot);
 		}
 	}
+	return *this;
 }
 
 const std::string &Node2D::getClassName() const noexcept {

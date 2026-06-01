@@ -23,20 +23,20 @@ class CollisionShape2D : public Node2D {
 	virtual void drawDebug() const noexcept override;
 
 	// utility functions
-	void setShape(const float width, const float height) noexcept;
-	void setShape(const raylib::Vector2 &size) noexcept;
-	void setShape(const float radius) noexcept;
+	CollisionShape2D &setShape(const float width, const float height) noexcept;
+	CollisionShape2D &setShape(const raylib::Vector2 &size) noexcept;
+	CollisionShape2D &setShape(const float radius) noexcept;
 
 	// getters and getters
-	void			setParentPos(const raylib::Vector2 &newPos) noexcept;
-	void			setParentRotation(const float newRotation) noexcept;
-	raylib::Vector2 getParentPos() const noexcept;
-	float			getParentRotation() const noexcept;
-	const Shape2D  *getShape() const noexcept;
-	Shape2D		   *getShape() noexcept;
-	void			setShape(Shape2D *newShape) noexcept;
-	bool			isEnabled() const noexcept;
-	void			setEnabled(const bool newEnabled) noexcept;
+	CollisionShape2D &setParentPos(const raylib::Vector2 &newPos) noexcept;
+	CollisionShape2D &setParentRotation(const float newRotation) noexcept;
+	raylib::Vector2	  getParentPos() const noexcept;
+	float			  getParentRotation() const noexcept;
+	const Shape2D	 *getShape() const noexcept;
+	Shape2D			 *getShape() noexcept;
+	CollisionShape2D &setShape(Shape2D *newShape) noexcept;
+	bool			  isEnabled() const noexcept;
+	CollisionShape2D &setEnabled(const bool newEnabled) noexcept;
 
 	virtual const std::string &getClassName() const noexcept override;
 };

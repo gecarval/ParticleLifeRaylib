@@ -17,40 +17,41 @@ Object &Object::operator=(const Object &other) noexcept {
 	if (this != &other) {
 		_instanceName = other._instanceName;
 	}
-	return (*this);
+	return *this;
 }
 
 unsigned long Object::getInstanceID() const noexcept {
-	return (_instanceID);
+	return _instanceID;
 }
 
 const std::string &Object::getInstanceName() const noexcept {
-	return (_instanceName);
+	return _instanceName;
 }
 
 std::string &Object::getInstanceName() noexcept {
-	return (_instanceName);
+	return _instanceName;
 }
 
-void Object::setInstanceName(const std::string &instanceName) noexcept {
+Object &Object::setInstanceName(const std::string &instanceName) noexcept {
 	_instanceName = instanceName;
+	return *this;
 }
 
 bool Object::operator==(const Object &other) const noexcept {
-	return (_instanceID == other._instanceID);
+	return _instanceID == other._instanceID;
 }
 
 bool Object::operator!=(const Object &other) const noexcept {
-	return (_instanceID != other._instanceID);
+	return _instanceID != other._instanceID;
 }
 
 const std::string &Object::getClassName() const noexcept {
 	static const std::string className("Object");
-	return (className);
+	return className;
 }
 
 std::ostream &operator<<(std::ostream &out, const Object &other) {
 	out << other.getClassName() << "#" << other.getInstanceID() << ": \""
 		<< other.getInstanceName() << "\"";
-	return (out);
+	return out;
 }

@@ -20,22 +20,23 @@ Node &Node::operator=(const Node &other) noexcept {
 		_children = other._children;
 		_parent = other._parent;
 	}
-	return (*this);
+	return *this;
 }
 
 Node *Node::getParent() const noexcept {
-	return (_parent);
+	return _parent;
 }
 
-void Node::setParent(Node *parent) noexcept {
+Node &Node::setParent(Node *parent) noexcept {
 	if (_parent != nullptr) {
 		_parent->removeChild(this->getInstanceID());
 	}
 	_parent = parent;
+	return *this;
 }
 
 std::vector<Node *> Node::getChildren() const noexcept {
-	return (_children);
+	return _children;
 }
 
 void Node::ready() noexcept {
@@ -56,7 +57,7 @@ std::vector<Node *> Node::findChild(const std::string &instanceName) noexcept {
 		}
 		i++;
 	}
-	return (children);
+	return children;
 }
 
 std::vector<Node *> Node::findChild(const unsigned long instanceID) noexcept {
@@ -68,7 +69,7 @@ std::vector<Node *> Node::findChild(const unsigned long instanceID) noexcept {
 		}
 		i++;
 	}
-	return (children);
+	return children;
 }
 
 std::vector<const Node *>
@@ -81,7 +82,7 @@ Node::findChild(const std::string &instanceName) const noexcept {
 		}
 		i++;
 	}
-	return (children);
+	return children;
 }
 
 std::vector<const Node *>
@@ -94,7 +95,7 @@ Node::findChild(const unsigned long instanceID) const noexcept {
 		}
 		i++;
 	}
-	return (children);
+	return children;
 }
 
 std::vector<Node *> Node::findClass(const std::string &className) noexcept {
@@ -106,7 +107,7 @@ std::vector<Node *> Node::findClass(const std::string &className) noexcept {
 		}
 		i++;
 	}
-	return (children);
+	return children;
 }
 
 std::vector<const Node *>
@@ -119,63 +120,69 @@ Node::findClass(const std::string &className) const noexcept {
 		}
 		i++;
 	}
-	return (children);
+	return children;
 }
 
-void Node::insertChild(Node &child, const Node::iterator &it) noexcept {
+Node &Node::insertChild(Node &child, const Node::iterator &it) noexcept {
 	if (child._parent == this) {
-		return;
+		return *this;
 	}
 	if (it < _children.begin() || it >= _children.end()) {
-		return;
+		return *this;
 	}
 	(*it)->setParent(this);
 	_children.insert(it, &child);
+	return *this;
 }
 
-void Node::pushFrontChild(Node &child) noexcept {
+Node &Node::pushFrontChild(Node &child) noexcept {
 	if (child._parent == this) {
-		return;
+		return *this;
 	}
 	child.setParent(this);
 	_children.insert(_children.begin(), &child);
+	return *this;
 }
 
-void Node::pushBackChild(Node &child) noexcept {
+Node &Node::pushBackChild(Node &child) noexcept {
 	if (child._parent == this) {
-		return;
+		return *this;
 	}
 	child.setParent(this);
 	_children.push_back(&child);
+	return *this;
 }
 
 Node *Node::backChild() noexcept {
-	return (_children.back());
+	return _children.back();
 }
 
 Node *Node::frontChild() noexcept {
-	return (_children.front());
+	return _children.front();
 }
 
-void Node::popFrontChild() noexcept {
+Node &Node::popFrontChild() noexcept {
 	_children.front()->_parent = nullptr;
 	_children.erase(_children.begin());
+	return *this;
 }
 
-void Node::popBackChild() noexcept {
+Node &Node::popBackChild() noexcept {
 	_children.back()->_parent = nullptr;
 	_children.pop_back();
+	return *this;
 }
 
-void Node::deleteChild(const Node::iterator &it) noexcept {
+Node &Node::deleteChild(const Node::iterator &it) noexcept {
 	if (it < _children.begin() || it >= _children.end()) {
-		return;
+		return *this;
 	}
 	delete *it;
 	_children.erase(it);
+	return *this;
 }
 
-void Node::deleteChild(const std::string &instanceName) noexcept {
+Node &Node::deleteChild(const std::string &instanceName) noexcept {
 	unsigned long i = 0;
 	while (i < _children.size()) {
 		if (instanceName == _children[i]->getInstanceName()) {
@@ -185,9 +192,10 @@ void Node::deleteChild(const std::string &instanceName) noexcept {
 		}
 		i++;
 	}
+	return *this;
 }
 
-void Node::deleteChild(const unsigned long instanceID) noexcept {
+Node &Node::deleteChild(const unsigned long instanceID) noexcept {
 	unsigned long i = 0;
 	while (i < _children.size()) {
 		if (instanceID == _children[i]->getInstanceID()) {
@@ -197,17 +205,19 @@ void Node::deleteChild(const unsigned long instanceID) noexcept {
 		}
 		i++;
 	}
+	return *this;
 }
 
-void Node::removeChild(const Node::iterator &it) noexcept {
+Node &Node::removeChild(const Node::iterator &it) noexcept {
 	if (it < _children.begin() || it >= _children.end()) {
-		return;
+		return *this;
 	}
 	(*it)->_parent = nullptr;
 	_children.erase(it);
+	return *this;
 }
 
-void Node::removeChild(const std::string &instanceName) noexcept {
+Node &Node::removeChild(const std::string &instanceName) noexcept {
 	unsigned long i = 0;
 	while (i < _children.size()) {
 		if (instanceName == _children[i]->getInstanceName()) {
@@ -217,9 +227,10 @@ void Node::removeChild(const std::string &instanceName) noexcept {
 		}
 		i++;
 	}
+	return *this;
 }
 
-void Node::removeChild(const unsigned long instanceID) noexcept {
+Node &Node::removeChild(const unsigned long instanceID) noexcept {
 	unsigned long i = 0;
 	while (i < _children.size()) {
 		if (instanceID == _children[i]->getInstanceID()) {
@@ -229,11 +240,12 @@ void Node::removeChild(const unsigned long instanceID) noexcept {
 		}
 		i++;
 	}
+	return *this;
 }
 
 const std::string &Node::getClassName() const noexcept {
 	static const std::string className("Node");
-	return (className);
+	return className;
 }
 
 std::ostream &operator<<(std::ostream &out, const Node &other) {
@@ -251,5 +263,5 @@ std::ostream &operator<<(std::ostream &out, const Node &other) {
 		}
 	}
 	out << "]";
-	return (out);
+	return out;
 }

@@ -31,12 +31,12 @@ class CanvasItem : public Node {
 	virtual void drawDebug() const noexcept = 0;
 
 	// getters and setters
-	bool isVisible() const noexcept;
-	void setVisible(const bool visible) noexcept;
-	bool isVisibleDebug() const noexcept;
-	void setVisibleDebug(const bool visibleDebug) noexcept;
-	int	 getLayer() const noexcept;
-	void setLayer(const int layer) noexcept;
+	bool		isVisible() const noexcept;
+	CanvasItem &setVisible(const bool visible) noexcept;
+	bool		isVisibleDebug() const noexcept;
+	CanvasItem &setVisibleDebug(const bool visibleDebug) noexcept;
+	int			getLayer() const noexcept;
+	CanvasItem &setLayer(const int layer) noexcept;
 
 	virtual const std::string &getClassName() const noexcept override;
 };

@@ -1,5 +1,5 @@
-#include "CollisionObject2D.hpp"
 #include "../../../../physics_server/PhysicsServer.hpp"
+#include "CollisionObject2D.hpp"
 
 CollisionObject2D::CollisionObject2D(const std::string &instanceName)
 	: Node2D(instanceName), _collisionLayer(1), _collisionMask(1) {
@@ -30,16 +30,18 @@ int CollisionObject2D::getCollisionLayer() const noexcept {
 	return _collisionLayer;
 }
 
-void CollisionObject2D::setCollisionLayer(int newLayer) noexcept {
+CollisionObject2D &CollisionObject2D::setCollisionLayer(int newLayer) noexcept {
 	_collisionLayer = newLayer;
+	return *this;
 }
 
 int CollisionObject2D::getCollisionMask() const noexcept {
 	return _collisionMask;
 }
 
-void CollisionObject2D::setCollisionMask(int newMask) noexcept {
+CollisionObject2D &CollisionObject2D::setCollisionMask(int newMask) noexcept {
 	_collisionMask = newMask;
+	return *this;
 }
 
 const std::string &CollisionObject2D::getClassName() const noexcept {

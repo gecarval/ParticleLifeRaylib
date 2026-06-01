@@ -20,7 +20,7 @@ class Object {
 	unsigned long	   getInstanceID() const noexcept;
 	const std::string &getInstanceName() const noexcept;
 	std::string		  &getInstanceName() noexcept;
-	void setInstanceName(const std::string &instanceName = "") noexcept;
+	Object &setInstanceName(const std::string &instanceName = "") noexcept;
 
 	// operators
 	bool operator==(const Object &other) const noexcept;

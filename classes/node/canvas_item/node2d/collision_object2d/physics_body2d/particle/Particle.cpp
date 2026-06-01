@@ -8,11 +8,8 @@ Particle::Particle(const std::string &instanceName, const raylib::Vector2 &pos,
 	Sprite2D		 &sprite = *new Sprite2D("ParticleSprite");
 	CollisionShape2D &collisionShape =
 		*new CollisionShape2D("ParticleCollisionShape");
-	sprite.setColor(col);
-	sprite.setShape(_defaultSize);
-	collisionShape.setShape(_defaultSize);
-	pushBackChild(sprite);
-	pushBackChild(collisionShape);
+	pushBackChild(sprite.setColor(col).setShape(_defaultSize));
+	pushBackChild(collisionShape.setShape(_defaultSize));
 	setPos(pos);
 }
 

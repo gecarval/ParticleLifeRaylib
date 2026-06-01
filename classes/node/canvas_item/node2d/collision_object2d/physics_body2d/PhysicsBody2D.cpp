@@ -1,6 +1,6 @@
-#include "PhysicsBody2D.hpp"
 #include "../../../../../shape2d/circle_shape2d/CircleShape2D.hpp"
 #include "../../../../../shape2d/rectangle_shape2d/RectangleShape2D.hpp"
+#include "PhysicsBody2D.hpp"
 #include <algorithm>
 
 PhysicsBody2D::PhysicsBody2D(const std::string &instanceName)
@@ -68,42 +68,50 @@ void PhysicsBody2D::drawDebug() const noexcept {
 	Node2D::drawDebug();
 }
 
-void PhysicsBody2D::applyForce(const raylib::Vector2 &force) noexcept {
+PhysicsBody2D &
+PhysicsBody2D::applyForce(const raylib::Vector2 &force) noexcept {
 	_linearAcc += force / _mass;
+	return *this;
 }
 
-void PhysicsBody2D::moveTowards(const raylib::Vector2 &target,
-								const float			   strength) noexcept {
+PhysicsBody2D &PhysicsBody2D::moveTowards(const raylib::Vector2 &target,
+										  const float strength) noexcept {
 	const raylib::Vector2 direction = target - _pos;
 	_linearAcc += (direction.Normalize() * strength);
+	return *this;
 }
 
-void PhysicsBody2D::moveAwayFrom(const raylib::Vector2 &target,
-								 const float			strength) noexcept {
+PhysicsBody2D &PhysicsBody2D::moveAwayFrom(const raylib::Vector2 &target,
+										   const float strength) noexcept {
 	const raylib::Vector2 direction = _pos - target;
 	_linearAcc += (direction.Normalize() * strength);
+	return *this;
 }
 
-void PhysicsBody2D::applyGravity(const float strength) noexcept {
+PhysicsBody2D &PhysicsBody2D::applyGravity(const float strength) noexcept {
 	_linearAcc.y += strength;
+	return *this;
 }
 
-void PhysicsBody2D::applyNewtonianGravity(const raylib::Vector2 &target,
-										  const float strength) noexcept {
+PhysicsBody2D &
+PhysicsBody2D::applyNewtonianGravity(const raylib::Vector2 &target,
+									 const float			strength) noexcept {
 	const raylib::Vector2 direction = target - _pos;
 	const float			  distance = direction.Length();
 	if (distance > 0) {
 		const float forceMagnitude = strength / (distance * distance);
 		_linearAcc += direction.Normalize() * forceMagnitude;
 	}
+	return *this;
 }
 
-void PhysicsBody2D::applyFriction(const float strength) noexcept {
+PhysicsBody2D &PhysicsBody2D::applyFriction(const float strength) noexcept {
 	if (_linearVel.Length() > 0) {
 		const raylib::Vector2 frictionForce =
 			_linearVel.Normalize() * -strength * _mass;
 		applyForce(frictionForce);
 	}
+	return *this;
 }
 
 // ---------------------------------------------------------------------------
@@ -134,12 +142,10 @@ static inline raylib::Vector2 perpCCW(const raylib::Vector2 &v) noexcept {
 //  inertiaB   — moment of inertia of other  (pass 0 if static)
 //  restitution— coefficient of restitution [0,1]
 // ---------------------------------------------------------------------------
-void PhysicsBody2D::resolveContact(PhysicsBody2D		 &other,
-								   const raylib::Vector2 &normal,
-								   const raylib::Vector2 &contactPt,
-								   const float overlap, const float inertiaA,
-								   const float inertiaB,
-								   const float restitution) noexcept {
+PhysicsBody2D &PhysicsBody2D::resolveContact(
+	PhysicsBody2D &other, const raylib::Vector2 &normal,
+	const raylib::Vector2 &contactPt, const float overlap, const float inertiaA,
+	const float inertiaB, const float restitution) noexcept {
 	const float invMassA = _is_static ? 0.0f : 1.0f / _mass;
 	const float invMassB = other._is_static ? 0.0f : 1.0f / other._mass;
 	const float totalInvMass = invMassA + invMassB;
@@ -172,7 +178,7 @@ void PhysicsBody2D::resolveContact(PhysicsBody2D		 &other,
 	const float			  velAlongNormal = relVel.DotProduct(normal);
 
 	// Only resolve if the bodies are approaching each other
-	if (velAlongNormal >= 0.0f) return;
+	if (velAlongNormal >= 0.0f) return *this;
 
 	// --- Impulse magnitude ------------------------------------------------
 	// Standard rigid-body impulse formula including rotational terms:
@@ -192,7 +198,7 @@ void PhysicsBody2D::resolveContact(PhysicsBody2D		 &other,
 	const float denom = totalInvMass + rACrossN * rACrossN * invInertiaA +
 						rBCrossN * rBCrossN * invInertiaB;
 
-	if (denom <= 0.0f) return;
+	if (denom <= 0.0f) return *this;
 
 	const float impulseMag = -(1.0f + restitution) * velAlongNormal / denom;
 	const raylib::Vector2 impulse = normal * impulseMag;
@@ -206,17 +212,18 @@ void PhysicsBody2D::resolveContact(PhysicsBody2D		 &other,
 		_angularVel.x += cross2D(rA, impulse) * invInertiaA;
 	if (!other._lock_rotation && invInertiaB > 0.0f)
 		other._angularVel.x -= cross2D(rB, impulse) * invInertiaB;
+	return *this;
 }
 
-void PhysicsBody2D::collideWith(PhysicsBody2D &other,
-								const float	   restitution) noexcept {
+PhysicsBody2D &PhysicsBody2D::collideWith(PhysicsBody2D &other,
+										  const float	 restitution) noexcept {
 	auto colliders = findClass("CollisionShape2D");
 	if (colliders.empty()) {
-		return;
+		return *this;
 	}
 	auto otherColliders = other.findClass("CollisionShape2D");
 	if (otherColliders.empty()) {
-		return;
+		return *this;
 	}
 
 	const CollisionShape2D &_collisionShape =
@@ -226,7 +233,7 @@ void PhysicsBody2D::collideWith(PhysicsBody2D &other,
 
 	if (_collisionShape.getShape() == nullptr ||
 		otherCollisionShape.getShape() == nullptr) {
-		return;
+		return *this;
 	}
 
 	if (_collisionShape.getShape()->getClassName() == "CircleShape2D" &&
@@ -247,14 +254,16 @@ void PhysicsBody2D::collideWith(PhysicsBody2D &other,
 				   "CircleShape2D") {
 		other.collissionRectangleCircle(*this, restitution);
 	}
+	return *this;
 }
 
-void PhysicsBody2D::collissionCircleCircle(PhysicsBody2D &other,
-										   const float restitution) noexcept {
+PhysicsBody2D &
+PhysicsBody2D::collissionCircleCircle(PhysicsBody2D &other,
+									  const float	 restitution) noexcept {
 	auto colliders = findClass("CollisionShape2D");
-	if (colliders.empty()) return;
+	if (colliders.empty()) return *this;
 	auto otherColliders = other.findClass("CollisionShape2D");
-	if (otherColliders.empty()) return;
+	if (otherColliders.empty()) return *this;
 
 	const CollisionShape2D &_collisionShape =
 		dynamic_cast<CollisionShape2D &>(*colliders[0]);
@@ -265,13 +274,13 @@ void PhysicsBody2D::collissionCircleCircle(PhysicsBody2D &other,
 		dynamic_cast<const CircleShape2D *>(_collisionShape.getShape());
 	const CircleShape2D *otherCircle =
 		dynamic_cast<const CircleShape2D *>(otherCollisionShape.getShape());
-	if (!myCircle || !otherCircle) return;
+	if (!myCircle || !otherCircle) return *this;
 
 	const raylib::Vector2 delta = _pos - other._pos;
 	const float			  dist = delta.Length();
 	const float minDist = myCircle->getRadius() + otherCircle->getRadius();
 
-	if (dist <= 0.0f || dist >= minDist) return;
+	if (dist <= 0.0f || dist >= minDist) return *this;
 
 	// Unit normal pointing from other → this
 	const raylib::Vector2 normal = delta / dist;
@@ -289,14 +298,16 @@ void PhysicsBody2D::collissionCircleCircle(PhysicsBody2D &other,
 
 	resolveContact(other, normal, contactPt, overlap, inertiaA, inertiaB,
 				   restitution);
+	return *this;
 }
 
-void PhysicsBody2D::collissionRectangleRectangle(
-	PhysicsBody2D &other, const float restitution) noexcept {
+PhysicsBody2D &
+PhysicsBody2D::collissionRectangleRectangle(PhysicsBody2D &other,
+											const float restitution) noexcept {
 	auto colliders = findClass("CollisionShape2D");
-	if (colliders.empty()) return;
+	if (colliders.empty()) return *this;
 	auto otherColliders = other.findClass("CollisionShape2D");
-	if (otherColliders.empty()) return;
+	if (otherColliders.empty()) return *this;
 
 	const CollisionShape2D &_collisionShape =
 		dynamic_cast<CollisionShape2D &>(*colliders[0]);
@@ -307,7 +318,7 @@ void PhysicsBody2D::collissionRectangleRectangle(
 		dynamic_cast<const RectangleShape2D *>(_collisionShape.getShape());
 	const RectangleShape2D *otherRect =
 		dynamic_cast<const RectangleShape2D *>(otherCollisionShape.getShape());
-	if (!myRect || !otherRect) return;
+	if (!myRect || !otherRect) return *this;
 
 	// AABB overlap — SAT for axis-aligned boxes
 	const raylib::Vector2 myMin = _pos;
@@ -320,7 +331,7 @@ void PhysicsBody2D::collissionRectangleRectangle(
 	const float overlapY =
 		std::min(myMax.y, otherMax.y) - std::max(myMin.y, otherMin.y);
 
-	if (overlapX <= 0.0f || overlapY <= 0.0f) return;
+	if (overlapX <= 0.0f || overlapY <= 0.0f) return *this;
 
 	// Resolve along the axis of least penetration
 	raylib::Vector2 normal;
@@ -351,14 +362,16 @@ void PhysicsBody2D::collissionRectangleRectangle(
 
 	resolveContact(other, normal, contactPt, overlap, inertiaA, inertiaB,
 				   restitution);
+	return *this;
 }
 
-void PhysicsBody2D::collissionCircleRectangle(
-	PhysicsBody2D &other, const float restitution) noexcept {
+PhysicsBody2D &
+PhysicsBody2D::collissionCircleRectangle(PhysicsBody2D &other,
+										 const float	restitution) noexcept {
 	auto colliders = findClass("CollisionShape2D");
-	if (colliders.empty()) return;
+	if (colliders.empty()) return *this;
 	auto otherColliders = other.findClass("CollisionShape2D");
-	if (otherColliders.empty()) return;
+	if (otherColliders.empty()) return *this;
 
 	const CollisionShape2D &_collisionShape =
 		dynamic_cast<CollisionShape2D &>(*colliders[0]);
@@ -370,7 +383,7 @@ void PhysicsBody2D::collissionCircleRectangle(
 		dynamic_cast<const CircleShape2D *>(_collisionShape.getShape());
 	const RectangleShape2D *otherRect =
 		dynamic_cast<const RectangleShape2D *>(otherCollisionShape.getShape());
-	if (!myCircle || !otherRect) return;
+	if (!myCircle || !otherRect) return *this;
 
 	// Closest point on the AABB to the circle centre
 	const float clampedX = std::max(
@@ -382,7 +395,7 @@ void PhysicsBody2D::collissionCircleRectangle(
 	const raylib::Vector2 delta = _pos - contactPt;
 	const float			  dist = delta.Length();
 
-	if (dist <= 0.0f || dist >= myCircle->getRadius()) return;
+	if (dist <= 0.0f || dist >= myCircle->getRadius()) return *this;
 
 	const raylib::Vector2 normal =
 		(dist > 0.0f) ? (delta / dist) : raylib::Vector2(0, -1);
@@ -398,85 +411,101 @@ void PhysicsBody2D::collissionCircleRectangle(
 
 	resolveContact(other, normal, contactPt, overlap, inertiaA, inertiaB,
 				   restitution);
+	return *this;
 }
 
-void PhysicsBody2D::collissionRectangleCircle(
-	PhysicsBody2D &other, const float restitution) noexcept {
+PhysicsBody2D &
+PhysicsBody2D::collissionRectangleCircle(PhysicsBody2D &other,
+										 const float	restitution) noexcept {
 	other.collissionCircleRectangle(*this, restitution);
+	return *this;
 }
 
 raylib::Vector2 PhysicsBody2D::getLinearVel() const noexcept {
 	return _linearVel;
 }
 
-void PhysicsBody2D::setLinearVel(const raylib::Vector2 &newLinearVel) noexcept {
+PhysicsBody2D &
+PhysicsBody2D::setLinearVel(const raylib::Vector2 &newLinearVel) noexcept {
 	_linearVel = newLinearVel;
+	return *this;
 }
 
 raylib::Vector2 PhysicsBody2D::getAngularVel() const noexcept {
 	return _angularVel;
 }
 
-void PhysicsBody2D::setAngularVel(
-	const raylib::Vector2 &newAngularVel) noexcept {
+PhysicsBody2D &
+PhysicsBody2D::setAngularVel(const raylib::Vector2 &newAngularVel) noexcept {
 	_angularVel = newAngularVel;
+	return *this;
 }
 
 raylib::Vector2 PhysicsBody2D::getLinearAcc() const noexcept {
 	return _linearAcc;
 }
 
-void PhysicsBody2D::setLinearAcc(const raylib::Vector2 &newLinearAcc) noexcept {
+PhysicsBody2D &
+PhysicsBody2D::setLinearAcc(const raylib::Vector2 &newLinearAcc) noexcept {
 	_linearAcc = newLinearAcc;
+	return *this;
 }
 
 raylib::Vector2 PhysicsBody2D::getAngularAcc() const noexcept {
 	return _angularAcc;
 }
 
-void PhysicsBody2D::setAngularAcc(
-	const raylib::Vector2 &newAngularAcc) noexcept {
+PhysicsBody2D &
+PhysicsBody2D::setAngularAcc(const raylib::Vector2 &newAngularAcc) noexcept {
 	_angularAcc = newAngularAcc;
+	return *this;
 }
 
 float PhysicsBody2D::getMass() const noexcept {
 	return _mass;
 }
 
-void PhysicsBody2D::setMass(const float newMass) noexcept {
+PhysicsBody2D &PhysicsBody2D::setMass(const float newMass) noexcept {
 	_mass = newMass;
+	return *this;
 }
 
 float PhysicsBody2D::getFriction() const noexcept {
 	return _friction;
 }
 
-void PhysicsBody2D::setFriction(const float newFriction) noexcept {
+PhysicsBody2D &PhysicsBody2D::setFriction(const float newFriction) noexcept {
 	_friction = newFriction;
+	return *this;
 }
 
 float PhysicsBody2D::getRestitution() const noexcept {
 	return _restitution;
 }
 
-void PhysicsBody2D::setRestitution(const float newRestitution) noexcept {
+PhysicsBody2D &
+PhysicsBody2D::setRestitution(const float newRestitution) noexcept {
 	_restitution = newRestitution;
+	return *this;
 }
 
 bool PhysicsBody2D::isStatic() const noexcept {
 	return _is_static;
 }
 
-void PhysicsBody2D::setStatic(const bool newIsStatic) noexcept {
+PhysicsBody2D &PhysicsBody2D::setStatic(const bool newIsStatic) noexcept {
 	_is_static = newIsStatic;
+	return *this;
 }
 
 bool PhysicsBody2D::isRotationLocked() const noexcept {
 	return _lock_rotation;
 }
 
-void PhysicsBody2D::setLockRotation(const bool newLockRotation) noexcept {
+PhysicsBody2D &
+PhysicsBody2D::setLockRotation(const bool newLockRotation) noexcept {
 	_lock_rotation = newLockRotation;
+	return *this;
 }
 
 const std::string &PhysicsBody2D::getClassName() const noexcept {

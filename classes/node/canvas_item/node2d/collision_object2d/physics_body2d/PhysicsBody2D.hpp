@@ -26,53 +26,59 @@ class PhysicsBody2D : public CollisionObject2D {
 	virtual void drawDebug() const noexcept override;
 
 	// movement methods
-	void applyForce(const raylib::Vector2 &force) noexcept;
-	void moveTowards(const raylib::Vector2 &target,
-					 const float			strength = 1.0f) noexcept;
-	void moveAwayFrom(const raylib::Vector2 &target,
-					  const float			 strength = 1.0f) noexcept;
+	PhysicsBody2D &applyForce(const raylib::Vector2 &force) noexcept;
+	PhysicsBody2D &moveTowards(const raylib::Vector2 &target,
+							   const float			  strength = 1.0f) noexcept;
+	PhysicsBody2D &moveAwayFrom(const raylib::Vector2 &target,
+								const float strength = 1.0f) noexcept;
 
 	// physics methods
-	void applyGravity(const float strength = 9.81f) noexcept;
-	void applyNewtonianGravity(const raylib::Vector2 &target,
-							   const float strength = 9.81f) noexcept;
-	void applyFriction(const float strength = 0.1f) noexcept;
-	void resolveContact(PhysicsBody2D &other, const raylib::Vector2 &normal,
-						const raylib::Vector2 &contactPt, const float overlap,
-						const float inertiaA, const float inertiaB,
-						const float restitution) noexcept;
-	void collideWith(PhysicsBody2D &other,
-					 const float	restitution = 1.0f) noexcept;
-	void collissionCircleCircle(PhysicsBody2D &other,
-								const float	   restitution = 1.0f) noexcept;
-	void collissionCircleRectangle(PhysicsBody2D &other,
-								   const float	  restitution = 1.0f) noexcept;
-	void collissionRectangleRectangle(PhysicsBody2D &other,
-									  const float restitution = 1.0f) noexcept;
-	void collissionRectangleCircle(PhysicsBody2D &other,
-								   const float	  restitution = 1.0f) noexcept;
+	PhysicsBody2D &applyGravity(const float strength = 9.81f) noexcept;
+	PhysicsBody2D &applyNewtonianGravity(const raylib::Vector2 &target,
+										 const float strength = 9.81f) noexcept;
+	PhysicsBody2D &applyFriction(const float strength = 0.1f) noexcept;
+	PhysicsBody2D &resolveContact(PhysicsBody2D			&other,
+								  const raylib::Vector2 &normal,
+								  const raylib::Vector2 &contactPt,
+								  const float overlap, const float inertiaA,
+								  const float inertiaB,
+								  const float restitution) noexcept;
+	PhysicsBody2D &collideWith(PhysicsBody2D &other,
+							   const float	  restitution = 1.0f) noexcept;
+	PhysicsBody2D &
+	collissionCircleCircle(PhysicsBody2D &other,
+						   const float	  restitution = 1.0f) noexcept;
+	PhysicsBody2D &
+	collissionCircleRectangle(PhysicsBody2D &other,
+							  const float	 restitution = 1.0f) noexcept;
+	PhysicsBody2D &
+	collissionRectangleRectangle(PhysicsBody2D &other,
+								 const float	restitution = 1.0f) noexcept;
+	PhysicsBody2D &
+	collissionRectangleCircle(PhysicsBody2D &other,
+							  const float	 restitution = 1.0f) noexcept;
 
 	// getters and setters
 	raylib::Vector2 getLinearVel() const noexcept;
-	void			setLinearVel(const raylib::Vector2 &newLinearVel) noexcept;
+	PhysicsBody2D  &setLinearVel(const raylib::Vector2 &newLinearVel) noexcept;
 	raylib::Vector2 getAngularVel() const noexcept;
-	void setAngularVel(const raylib::Vector2 &newAngularVel) noexcept;
+	PhysicsBody2D &setAngularVel(const raylib::Vector2 &newAngularVel) noexcept;
 
 	raylib::Vector2 getLinearAcc() const noexcept;
-	void			setLinearAcc(const raylib::Vector2 &newLinearAcc) noexcept;
+	PhysicsBody2D  &setLinearAcc(const raylib::Vector2 &newLinearAcc) noexcept;
 	raylib::Vector2 getAngularAcc() const noexcept;
-	void setAngularAcc(const raylib::Vector2 &newAngularAcc) noexcept;
+	PhysicsBody2D &setAngularAcc(const raylib::Vector2 &newAngularAcc) noexcept;
 
-	float getMass() const noexcept;
-	void  setMass(const float newMass) noexcept;
-	float getFriction() const noexcept;
-	void  setFriction(const float newFriction) noexcept;
-	float getRestitution() const noexcept;
-	void  setRestitution(const float newRestitution) noexcept;
-	bool  isStatic() const noexcept;
-	void  setStatic(const bool newIsStatic) noexcept;
-	bool  isRotationLocked() const noexcept;
-	void  setLockRotation(const bool newLockRotation) noexcept;
+	float		   getMass() const noexcept;
+	PhysicsBody2D &setMass(const float newMass) noexcept;
+	float		   getFriction() const noexcept;
+	PhysicsBody2D &setFriction(const float newFriction) noexcept;
+	float		   getRestitution() const noexcept;
+	PhysicsBody2D &setRestitution(const float newRestitution) noexcept;
+	bool		   isStatic() const noexcept;
+	PhysicsBody2D &setStatic(const bool newIsStatic) noexcept;
+	bool		   isRotationLocked() const noexcept;
+	PhysicsBody2D &setLockRotation(const bool newLockRotation) noexcept;
 
 	const virtual std::string &getClassName() const noexcept override;
 };

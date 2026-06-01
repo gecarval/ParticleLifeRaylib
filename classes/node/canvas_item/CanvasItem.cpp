@@ -1,6 +1,6 @@
-#include "CanvasItem.hpp"
 #include "../../render_server/RenderServer.hpp"
 #include "../../shape2d/rectangle_shape2d/RectangleShape2D.hpp"
+#include "CanvasItem.hpp"
 
 CanvasItem::CanvasItem(const std::string &instanceName)
 	: Node(instanceName), _visible(true), _visibleDebug(false), _layer(0) {
@@ -28,9 +28,9 @@ bool CanvasItem::isInView(const raylib::Window	&window,
 	const raylib::Vector2	size(window.GetWidth(), window.GetHeight());
 	const raylib::Rectangle screenSpace(raylib::Vector2::Zero(), size);
 	if (screenSpace.CheckCollision(pos)) {
-		return (true);
+		return true;
 	}
-	return (false);
+	return false;
 }
 
 bool CanvasItem::isInView(const raylib::Window	 &window,
@@ -43,9 +43,9 @@ bool CanvasItem::isInView(const raylib::Window	 &window,
 								 window.GetHeight() / camera.GetZoom());
 	const raylib::Rectangle screenSpace(posScreen, size);
 	if (screenSpace.CheckCollision(pos)) {
-		return (true);
+		return true;
 	}
-	return (false);
+	return false;
 }
 
 bool CanvasItem::isInView(const raylib::Window &window, const Shape2D &shape,
@@ -54,9 +54,9 @@ bool CanvasItem::isInView(const raylib::Window &window, const Shape2D &shape,
 	const raylib::Vector2  size(window.GetWidth(), window.GetHeight());
 	const RectangleShape2D screenSpace(size);
 	if (screenSpace.collides(pos, shape, shapePos)) {
-		return (true);
+		return true;
 	}
-	return (false);
+	return false;
 }
 
 bool CanvasItem::isInView(const raylib::Window	 &window,
@@ -69,9 +69,9 @@ bool CanvasItem::isInView(const raylib::Window	 &window,
 								window.GetHeight() / camera.GetZoom());
 	const RectangleShape2D screenSpace(size);
 	if (screenSpace.collides(pos, shape, shapePos)) {
-		return (true);
+		return true;
 	}
-	return (false);
+	return false;
 }
 
 CanvasItem::~CanvasItem() {
@@ -82,24 +82,27 @@ bool CanvasItem::isVisible() const noexcept {
 	return _visible;
 }
 
-void CanvasItem::setVisible(const bool visible) noexcept {
+CanvasItem &CanvasItem::setVisible(const bool visible) noexcept {
 	_visible = visible;
+	return *this;
 }
 
 bool CanvasItem::isVisibleDebug() const noexcept {
 	return _visibleDebug;
 }
 
-void CanvasItem::setVisibleDebug(const bool visibleDebug) noexcept {
+CanvasItem &CanvasItem::setVisibleDebug(const bool visibleDebug) noexcept {
 	_visibleDebug = visibleDebug;
+	return *this;
 }
 
 int CanvasItem::getLayer() const noexcept {
 	return _layer;
 }
 
-void CanvasItem::setLayer(const int layer) noexcept {
+CanvasItem &CanvasItem::setLayer(const int layer) noexcept {
 	_layer = layer;
+	return *this;
 }
 
 const std::string &CanvasItem::getClassName() const noexcept {

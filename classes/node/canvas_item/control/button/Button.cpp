@@ -1,5 +1,4 @@
 #include "./Button.hpp"
-#include "../../../../../include/raymath.h"
 
 // Constructor
 Button::Button(const float x, const float y, const float width,
@@ -109,101 +108,116 @@ void Button::draw() const noexcept {
 }
 
 // Setters
-void Button::setText(const std::string &text) {
+Button &Button::setText(const std::string &text) {
 	this->text = text;
+	return *this;
 }
 
-void Button::setPosition(const float x, const float y) {
+Button &Button::setPosition(const float x, const float y) {
 	this->bounds.SetPosition(x, y);
+	return *this;
 }
 
-void Button::setPosition(const raylib::Vector2 &position) {
+Button &Button::setPosition(const raylib::Vector2 &position) {
 	this->bounds.SetPosition(position);
+	return *this;
 }
 
-void Button::setSize(const float width, const float height) {
+Button &Button::setSize(const float width, const float height) {
 	this->bounds.SetSize(width, height);
+	return *this;
 }
 
-void Button::setSize(const raylib::Vector2 &size) {
+Button &Button::setSize(const raylib::Vector2 &size) {
 	this->bounds.SetSize(size);
+	return *this;
 }
 
-void Button::setBounds(const raylib::Rectangle &bounds) {
+Button &Button::setBounds(const raylib::Rectangle &bounds) {
 	this->bounds = bounds;
+	return *this;
 }
 
-void Button::setColors(const raylib::Color &normal, const raylib::Color &hover,
-					   const raylib::Color &pressed) {
+Button &Button::setColors(const raylib::Color &normal,
+						  const raylib::Color &hover,
+						  const raylib::Color &pressed) {
 	this->normalColor = normal;
 	this->hoverColor = hover;
 	this->pressedColor = pressed;
+	return *this;
 }
 
-void Button::setTextColor(const raylib::Color &color) {
+Button &Button::setTextColor(const raylib::Color &color) {
 	this->textColor = color;
+	return *this;
 }
 
-void Button::setFontSize(const unsigned int size) {
+Button &Button::setFontSize(const unsigned int size) {
 	this->fontSize = size;
+	return *this;
 }
 
-void Button::setBorderWidth(const float width) {
+Button &Button::setBorderWidth(const float width) {
 	this->borderWidth = width;
+	return *this;
 }
 
-void Button::setBorderColor(const raylib::Color &color) {
+Button &Button::setBorderColor(const raylib::Color &color) {
 	this->borderColor = color;
+	return *this;
 }
 
-void Button::setRoundness(const float roundness) {
+Button &Button::setRoundness(const float roundness) {
 	this->roundness = Clamp(roundness, 0.0f, 1.0f);
+	return *this;
 }
 
-void Button::setOnClick(std::function<void()> callback) {
+Button &Button::setOnClick(std::function<void()> callback) {
 	this->onClick = callback;
+	return *this;
 }
 
 // Getters
 bool Button::isButtonPressed() const {
-	return (this->isPressed);
+	return this->isPressed;
 }
 
 bool Button::isButtonHovered() const {
-	return (this->isHovered);
+	return this->isHovered;
 }
 
 raylib::Rectangle &Button::getBounds() {
-	return (this->bounds);
+	return this->bounds;
 }
 
 const raylib::Rectangle &Button::getBounds() const {
-	return (this->bounds);
+	return this->bounds;
 }
 
-void Button::setEnabled(const bool enabled) {
+Button &Button::setEnabled(const bool enabled) {
 	this->enabled = enabled;
+	return *this;
 }
 
 bool Button::isEnabled() const {
-	return (this->enabled);
+	return this->enabled;
 }
 
 // Private helper methods
 raylib::Color Button::getCurrentColor() const {
 	if (!this->enabled) {
-		return (this->normalColor);
+		return this->normalColor;
 	}
 
 	if (this->isPressed) {
-		return (this->pressedColor);
+		return this->pressedColor;
 	} else if (this->isHovered) {
-		return (this->hoverColor);
+		return this->hoverColor;
 	}
-	return (this->normalColor);
+	return this->normalColor;
 }
 
-void Button::checkInteraction() {
+Button &Button::checkInteraction() {
 	const raylib::Vector2 &mousePos = raylib::Mouse::GetPosition();
 	this->isHovered = this->bounds.CheckCollision(mousePos);
 
@@ -212,9 +226,10 @@ void Button::checkInteraction() {
 	} else if (raylib::Mouse::IsButtonReleased(MOUSE_LEFT_BUTTON)) {
 		this->isPressed = false;
 	}
+	return *this;
 }
 
 const std::string &Button::getClassName() const noexcept {
 	static const std::string className("Button");
-	return (className);
+	return className;
 }

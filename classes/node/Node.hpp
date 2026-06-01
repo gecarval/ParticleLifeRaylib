@@ -20,7 +20,7 @@ class Node : public Object {
 	Node &operator=(const Node &other) noexcept;
 
 	// getter and setter
-	void				setParent(Node *parent) noexcept;
+	Node			   &setParent(Node *parent) noexcept;
 	Node			   *getParent() const noexcept;
 	std::vector<Node *> getChildren() const noexcept;
 
@@ -41,19 +41,19 @@ class Node : public Object {
 	findClass(const std::string &className) const noexcept;
 
 	// insertion and deletion
-	void  insertChild(Node &child, const Node::iterator &it) noexcept;
-	void  pushFrontChild(Node &child) noexcept;
-	void  pushBackChild(Node &child) noexcept;
+	Node &insertChild(Node &child, const Node::iterator &it) noexcept;
+	Node &pushFrontChild(Node &child) noexcept;
+	Node &pushBackChild(Node &child) noexcept;
 	Node *frontChild() noexcept;
 	Node *backChild() noexcept;
-	void  popFrontChild() noexcept;
-	void  popBackChild() noexcept;
-	void  deleteChild(const Node::iterator &it) noexcept;
-	void  deleteChild(const std::string &instanceName) noexcept;
-	void  deleteChild(const unsigned long instanceID) noexcept;
-	void  removeChild(const Node::iterator &it) noexcept;
-	void  removeChild(const std::string &instanceName) noexcept;
-	void  removeChild(const unsigned long instanceID) noexcept;
+	Node &popFrontChild() noexcept;
+	Node &popBackChild() noexcept;
+	Node &deleteChild(const Node::iterator &it) noexcept;
+	Node &deleteChild(const std::string &instanceName) noexcept;
+	Node &deleteChild(const unsigned long instanceID) noexcept;
+	Node &removeChild(const Node::iterator &it) noexcept;
+	Node &removeChild(const std::string &instanceName) noexcept;
+	Node &removeChild(const unsigned long instanceID) noexcept;
 
 	virtual const std::string &getClassName() const noexcept override;
 };

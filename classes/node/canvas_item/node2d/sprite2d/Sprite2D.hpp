@@ -23,26 +23,26 @@ class Sprite2D : public Node2D {
 	virtual ~Sprite2D();
 
 	// utility functions
-	void setShape(const float width, const float height) noexcept;
-	void setShape(const raylib::Vector2 &size) noexcept;
-	void setShape(const float radius) noexcept;
+	Sprite2D &setShape(const float width, const float height) noexcept;
+	Sprite2D &setShape(const raylib::Vector2 &size) noexcept;
+	Sprite2D &setShape(const float radius) noexcept;
 
 	// getters and setters
 	const Shape2D			*getShape() const noexcept;
 	Shape2D					*getShape() noexcept;
-	void					 setShape(Shape2D *newShape) noexcept;
+	Sprite2D				&setShape(Shape2D *newShape) noexcept;
 	const raylib::Texture2D &getTexture() const noexcept;
 	raylib::Texture2D		&getTexture() noexcept;
-	void setTexture(raylib::Texture2D &&newTexture) noexcept;
+	Sprite2D &setTexture(raylib::Texture2D &&newTexture) noexcept;
 
 	raylib::Color	getColor() const noexcept;
-	void			setColor(const raylib::Color &newColor) noexcept;
+	Sprite2D	   &setColor(const raylib::Color &newColor) noexcept;
 	raylib::Vector2 getOffset() const noexcept;
-	void			setOffset(const raylib::Vector2 &newOffset) noexcept;
+	Sprite2D	   &setOffset(const raylib::Vector2 &newOffset) noexcept;
 	float			getScale() const noexcept;
-	void			setScale(const float newScale) noexcept;
+	Sprite2D	   &setScale(const float newScale) noexcept;
 	float			getRotation() const noexcept;
-	void			setRotation(const float newRotation) noexcept;
+	Sprite2D	   &setRotation(const float newRotation) noexcept;
 
 	// draw calls
 	virtual void draw() const noexcept override;

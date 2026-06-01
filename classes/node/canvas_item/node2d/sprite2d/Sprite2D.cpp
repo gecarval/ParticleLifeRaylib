@@ -35,11 +35,11 @@ Sprite2D::~Sprite2D() {
 	}
 }
 
-void Sprite2D::setShape(const float width, const float height) noexcept {
+Sprite2D &Sprite2D::setShape(const float width, const float height) noexcept {
 	const raylib::Vector2 newSize(width, height);
 	if (_shape == nullptr) {
 		_shape = new RectangleShape2D(newSize);
-		return;
+		return *this;
 	}
 	if (_shape->getClassName() == "RectangleShape2D") {
 		RectangleShape2D *rectShape = dynamic_cast<RectangleShape2D *>(_shape);
@@ -47,12 +47,13 @@ void Sprite2D::setShape(const float width, const float height) noexcept {
 	} else {
 		setShape(new RectangleShape2D(newSize));
 	}
+	return *this;
 }
 
-void Sprite2D::setShape(const raylib::Vector2 &size) noexcept {
+Sprite2D &Sprite2D::setShape(const raylib::Vector2 &size) noexcept {
 	if (_shape == nullptr) {
 		_shape = new RectangleShape2D(size);
-		return;
+		return *this;
 	}
 	if (_shape->getClassName() == "RectangleShape2D") {
 		RectangleShape2D *rectShape = dynamic_cast<RectangleShape2D *>(_shape);
@@ -60,12 +61,13 @@ void Sprite2D::setShape(const raylib::Vector2 &size) noexcept {
 	} else {
 		setShape(new RectangleShape2D(size));
 	}
+	return *this;
 }
 
-void Sprite2D::setShape(const float radius) noexcept {
+Sprite2D &Sprite2D::setShape(const float radius) noexcept {
 	if (_shape == nullptr) {
 		_shape = new CircleShape2D(radius);
-		return;
+		return *this;
 	}
 	if (_shape->getClassName() == "CircleShape2D") {
 		CircleShape2D *circleShape = dynamic_cast<CircleShape2D *>(_shape);
@@ -73,6 +75,7 @@ void Sprite2D::setShape(const float radius) noexcept {
 	} else {
 		setShape(new CircleShape2D(radius));
 	}
+	return *this;
 }
 
 const Shape2D *Sprite2D::getShape() const noexcept {
@@ -83,11 +86,12 @@ Shape2D *Sprite2D::getShape() noexcept {
 	return _shape;
 }
 
-void Sprite2D::setShape(Shape2D *newShape) noexcept {
+Sprite2D &Sprite2D::setShape(Shape2D *newShape) noexcept {
 	if (_shape != nullptr) {
 		delete _shape;
 	}
 	_shape = newShape;
+	return *this;
 }
 
 const raylib::Texture2D &Sprite2D::getTexture() const noexcept {
@@ -98,40 +102,45 @@ raylib::Texture2D &Sprite2D::getTexture() noexcept {
 	return _texture;
 }
 
-void Sprite2D::setTexture(raylib::Texture2D &&newTexture) noexcept {
+Sprite2D &Sprite2D::setTexture(raylib::Texture2D &&newTexture) noexcept {
 	_texture = std::move(newTexture);
+	return *this;
 }
 
 raylib::Color Sprite2D::getColor() const noexcept {
 	return _color;
 }
 
-void Sprite2D::setColor(const raylib::Color &newColor) noexcept {
+Sprite2D &Sprite2D::setColor(const raylib::Color &newColor) noexcept {
 	_color = newColor;
+	return *this;
 }
 
 raylib::Vector2 Sprite2D::getOffset() const noexcept {
 	return _offset;
 }
 
-void Sprite2D::setOffset(const raylib::Vector2 &newOffset) noexcept {
+Sprite2D &Sprite2D::setOffset(const raylib::Vector2 &newOffset) noexcept {
 	_offset = newOffset;
+	return *this;
 }
 
 float Sprite2D::getScale() const noexcept {
 	return _scale;
 }
 
-void Sprite2D::setScale(const float newScale) noexcept {
+Sprite2D &Sprite2D::setScale(const float newScale) noexcept {
 	_scale = newScale;
+	return *this;
 }
 
 float Sprite2D::getRotation() const noexcept {
 	return _rotation;
 }
 
-void Sprite2D::setRotation(const float newRotation) noexcept {
+Sprite2D &Sprite2D::setRotation(const float newRotation) noexcept {
 	_rotation = newRotation;
+	return *this;
 }
 
 void Sprite2D::draw() const noexcept {
