@@ -48,7 +48,7 @@ int main(void) {
 		Particle	   *newParticle = new Particle(std::to_string(i), pos);
 		particles.push_back(newParticle);
 	}
-	raylib::Window		  window(800, 600);
+	raylib::Window		  window(1600, 900);
 	const raylib::Vector2 initialPosition(window.GetSize() / 2.0f);
 	raylib::Camera2D	  cam(initialPosition, initialPosition);
 	// window.SetTargetFPS(60);
