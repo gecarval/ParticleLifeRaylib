@@ -67,9 +67,9 @@ static void spawnParticles(SceneRoot &root, int N, float spread) {
 		const raylib::Vector2 pos(distPos(rng), distPos(rng));
 		const float			  mass = distMass(rng);
 		const raylib::Color	  col(
-			  static_cast<unsigned char>(180 + (i % 60)),
-			  static_cast<unsigned char>(180 + ((i * 7) % 60)),
-			  static_cast<unsigned char>(220 - (i % 80)), 255);
+			static_cast<unsigned char>(180 + (i % 60)),
+			static_cast<unsigned char>(180 + ((i * 7) % 60)),
+			static_cast<unsigned char>(220 - (i % 80)), 255);
 
 		// Particle auto-registers with BOTH PhysicsServer (via
 		// CollisionObject2D's ctor) and GravityServer (via PhysicsBody2D's
@@ -88,7 +88,7 @@ static void spawnParticles(SceneRoot &root, int N, float spread) {
 int main() {
 	// --- Window / camera --------------------------------------------------
 	raylib::Window window(1280, 800, "GravityServer (FMM) demo");
-	window.SetTargetFPS(60);
+	// window.SetTargetFPS(60);
 
 	raylib::Camera2D camera;
 	camera.SetTarget(raylib::Vector2(0.0f, 0.0f));
