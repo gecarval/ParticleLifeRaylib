@@ -1,3 +1,4 @@
+#include "../classes/gravity_server/GravityServer.hpp"
 #include "../classes/node/canvas_item/node2d/collision_object2d/CollisionObject2D.hpp"
 #include "../classes/node/canvas_item/node2d/collision_object2d/physics_body2d/particle/Particle.hpp"
 #include "../classes/physics_server/PhysicsServer.hpp"
@@ -38,13 +39,14 @@ static void cameraControl(raylib::Camera2D &cam) {
 
 int main(void) {
 	PhysicsServer		   &physicsServer = PhysicsServer::getInstance();
+	GravityServer		   &gravityServer = GravityServer::getInstance();
 	RenderServer		   &renderServer = RenderServer::getInstance();
 	std::vector<Particle *> particles;
 	std::vector<CollisionObject2D *> colliders;
 	colliders.reserve(1000);
 	particles.reserve(1000);
-	for (int i = 0; i < 1000; ++i) {
-		raylib::Vector2 pos(rand() % 800, rand() % 600);
+	for (int i = 0; i < 3000; ++i) {
+		raylib::Vector2 pos(rand() % 1600, rand() % 900);
 		Particle	   *newParticle = new Particle(std::to_string(i), pos);
 		particles.push_back(newParticle);
 	}
@@ -58,18 +60,15 @@ int main(void) {
 		window.ClearBackground();
 		cam.BeginMode();
 		physicsServer.rebuild();
+		gravityServer.rebuild();
+		gravityServer.applyGravity(10.0f);
 		for (Particle *p : particles) {
 			colliders.clear();
 			physicsServer.getCollisions(*p, colliders);
 			for (CollisionObject2D *pn2 : colliders) {
 				if (*p != *pn2) {
 					Particle *p2 = dynamic_cast<Particle *>(pn2);
-					p->collideWith(*p2, 0.5f);
-				}
-			}
-			for (Node2D *p2 : particles) {
-				if (*p != *p2) {
-					p->applyNewtonianGravity(p2->getPos());
+					p->collideWith(*p2, 0.8f);
 				}
 			}
 			p->updatePhysics();
@@ -82,6 +81,8 @@ int main(void) {
 	for (Node2D *p : particles) {
 		delete p;
 	}
+	RenderServer::deleteInstance();
 	PhysicsServer::deleteInstance();
+	GravityServer::deleteInstance();
 	return (0);
 }

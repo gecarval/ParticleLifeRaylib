@@ -19,7 +19,7 @@ class RenderServer : public Object {
 
   public:
 	static RenderServer &getInstance() noexcept;
-	static void			 destroyInstance() noexcept;
+	static void			 deleteInstance() noexcept;
 
 	void		render(const raylib::Window &window) noexcept;
 	void		render(const raylib::Window	  &window,

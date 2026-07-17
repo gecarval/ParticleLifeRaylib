@@ -26,6 +26,7 @@ INCLUDE_DIR := include
 # Project sources
 CLASS_SRC := $(CLASS_DIR)/Object.cpp \
 			 $(CLASS_DIR)/physics_server/PhysicsServer.cpp \
+			 $(CLASS_DIR)/gravity_server/GravityServer.cpp \
 			 $(CLASS_DIR)/render_server/RenderServer.cpp \
 			 $(CLASS_DIR)/shape2d/Shape2D.cpp \
 			 $(CLASS_DIR)/shape2d/circle_shape2d/CircleShape2D.cpp \
@@ -51,6 +52,7 @@ HEADERS := $(INCLUDE_DIR)/json.hpp \
 		   $(INCLUDE_DIR)/rlgl.h \
 		   $(CLASS_DIR)/Object.hpp \
 		   $(CLASS_DIR)/physics_server/PhysicsServer.hpp \
+		   $(CLASS_DIR)/gravity_server/GravityServer.hpp \
 		   $(CLASS_DIR)/render_server/RenderServer.hpp \
 		   $(CLASS_DIR)/shape2d/Shape2D.hpp \
 		   $(CLASS_DIR)/shape2d/circle_shape2d/CircleShape2D.hpp \
@@ -60,11 +62,11 @@ HEADERS := $(INCLUDE_DIR)/json.hpp \
 		   $(CLASS_DIR)/node/canvas_item/control/Control.hpp \
 		   $(CLASS_DIR)/node/canvas_item/control/button/Button.hpp \
 		   $(CLASS_DIR)/node/canvas_item/node2d/Node2D.hpp \
-		   $(CLASS_DIR)/node/canvas_item/node2d/sprite2d/Sprite2D.cpp \
-		   $(CLASS_DIR)/node/canvas_item/node2d/collision_shape2d/CollisionShape2D.cpp \
-		   $(CLASS_DIR)/node/canvas_item/node2d/collision_object2d/CollisionObject2D.cpp \
-		   $(CLASS_DIR)/node/canvas_item/node2d/collision_object2d/physics_body2d/PhysicsBody2D.cpp \
-		   $(CLASS_DIR)/node/canvas_item/node2d/collision_object2d/physics_body2d/particle/Particle.cpp
+		   $(CLASS_DIR)/node/canvas_item/node2d/sprite2d/Sprite2D.hpp \
+		   $(CLASS_DIR)/node/canvas_item/node2d/collision_shape2d/CollisionShape2D.hpp \
+		   $(CLASS_DIR)/node/canvas_item/node2d/collision_object2d/CollisionObject2D.hpp \
+		   $(CLASS_DIR)/node/canvas_item/node2d/collision_object2d/physics_body2d/PhysicsBody2D.hpp \
+		   $(CLASS_DIR)/node/canvas_item/node2d/collision_object2d/physics_body2d/particle/Particle.hpp
 
 # Include paths
 INC_FLAGS := -I$(CLASS_DIR) \

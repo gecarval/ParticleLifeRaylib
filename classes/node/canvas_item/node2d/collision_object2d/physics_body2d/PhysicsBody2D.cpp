@@ -1,13 +1,15 @@
+#include "PhysicsBody2D.hpp"
+#include "../../../../../gravity_server/GravityServer.hpp"
 #include "../../../../../shape2d/circle_shape2d/CircleShape2D.hpp"
 #include "../../../../../shape2d/rectangle_shape2d/RectangleShape2D.hpp"
 #include "../../collision_shape2d/CollisionShape2D.hpp"
-#include "PhysicsBody2D.hpp"
 #include <algorithm>
 
 PhysicsBody2D::PhysicsBody2D(const std::string &instanceName)
 	: CollisionObject2D(instanceName), _linearVel(0, 0), _angularVel(0, 0),
 	  _linearAcc(0, 0), _angularAcc(0, 0), _mass(1.0f), _friction(0.1f),
 	  _restitution(0.5f), _is_static(false), _lock_rotation(true) {
+	GravityServer::addBody(this);
 }
 
 PhysicsBody2D::PhysicsBody2D(const PhysicsBody2D &other)
@@ -16,6 +18,7 @@ PhysicsBody2D::PhysicsBody2D(const PhysicsBody2D &other)
 	  _angularAcc(other._angularAcc), _mass(other._mass),
 	  _friction(other._friction), _restitution(other._restitution),
 	  _is_static(other._is_static), _lock_rotation(other._lock_rotation) {
+	GravityServer::addBody(this);
 }
 
 PhysicsBody2D &PhysicsBody2D::operator=(const PhysicsBody2D &other) {
@@ -35,6 +38,7 @@ PhysicsBody2D &PhysicsBody2D::operator=(const PhysicsBody2D &other) {
 }
 
 PhysicsBody2D::~PhysicsBody2D() {
+	GravityServer::removeBody(this);
 }
 
 void PhysicsBody2D::updatePhysics() noexcept {
