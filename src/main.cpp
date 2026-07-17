@@ -1,5 +1,5 @@
 #include "../classes/gravity_server/GravityServer.hpp"
-#include "../classes/node/Node.hpp"
+#include "../classes/node/canvas_item/node2d/collision_object2d/CollisionObject2D.hpp"
 #include "../classes/node/canvas_item/node2d/collision_object2d/physics_body2d/particle/Particle.hpp"
 #include "../classes/physics_server/PhysicsServer.hpp"
 #include "../classes/render_server/RenderServer.hpp"
@@ -75,15 +75,14 @@ int main(void) {
 	const raylib::Vector2 initialPosition(window.GetSize() / 2.0f);
 	raylib::Camera2D	  cam(initialPosition, initialPosition);
 	// window.SetTargetFPS(60);
-	GravityServer::getInstance()
-		.setExpansionOrder(GravityServer::DEFAULT_EXPANSION_ORDER)
-		.setMaxBodiesPerLeaf(GravityServer::DEFAULT_MAX_BODIES_PER_LEAF)
-		.setTheta(GravityServer::DEFAULT_THETA);
-	const float G = 200.0f;
 	while (!window.ShouldClose()) {
 		cameraControl(cam);
-		GravityServer::getInstance().rebuild().applyGravity(G);
+		window.BeginDrawing();
+		window.ClearBackground();
+		cam.BeginMode();
 		PhysicsServer::getInstance().rebuild();
+		GravityServer::getInstance().rebuild();
+		GravityServer::getInstance().applyGravity(10.0f);
 		for (Particle *p : particles) {
 			colliders.clear();
 			colliders.reserve(32);
@@ -107,7 +106,7 @@ int main(void) {
 	for (Node2D *p : particles) {
 		delete p;
 	}
-	RenderServer::destroyInstance();
+	RenderServer::deleteInstance();
 	PhysicsServer::deleteInstance();
 	GravityServer::deleteInstance();
 	return (0);

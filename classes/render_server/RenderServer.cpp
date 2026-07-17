@@ -20,7 +20,7 @@ RenderServer &RenderServer::getInstance() noexcept {
 	return *_instance;
 }
 
-void RenderServer::destroyInstance() noexcept {
+void RenderServer::deleteInstance() noexcept {
 	delete _instance;
 	_instance = nullptr;
 }
