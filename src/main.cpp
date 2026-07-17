@@ -41,7 +41,8 @@ static void cameraControl(raylib::Camera2D &cam) {
 
 // Build a cluster of N particles randomly scattered inside a disc.
 static void spawnParticles(std::vector<Particle *> &bodies, int N,
-						   const float spread, const float minMass = 0.5f,
+						   const float spread, const float speed = 5.0f,
+						   const float minMass = 0.5f,
 						   const float maxMass = 3.0f) {
 	std::mt19937						  rng(42);
 	std::uniform_real_distribution<float> distPos(-spread, spread);
@@ -52,11 +53,13 @@ static void spawnParticles(std::vector<Particle *> &bodies, int N,
 			static_cast<unsigned char>(180 + ((i * 7) % 60)),
 			static_cast<unsigned char>(220 - (i % 80)), 255);
 		const raylib::Vector2 pos(distPos(rng), distPos(rng));
+		const raylib::Vector2 tangent(-pos.y, pos.x);
 		const float			  mass =
 			Remap(pos.Distance(zero), 0, spread, maxMass, minMass);
 		Particle *p = new Particle("P" + std::to_string(i), pos, col);
 		p->setMass(mass);
 		p->setLockRotation(true);
+		p->setLinearVel(tangent.Normalize() * speed);
 		bodies.push_back(p);
 	}
 }
@@ -67,13 +70,7 @@ int main(void) {
 	RenderServer::getInstance();
 	std::vector<Particle *>			 particles;
 	std::vector<CollisionObject2D *> colliders;
-	spawnParticles(particles, 2000, 1000.0f, 0.5f, 3.0f);
-	for (PhysicsBody2D *b : particles) {
-		const raylib::Vector2 p = b->getPos();
-		const raylib::Vector2 tangent(-p.y, p.x);
-		const float			  speed = 5.0f;
-		b->setLinearVel(tangent.Normalize() * speed);
-	}
+	spawnParticles(particles, 2000, 1000.0f, 5.0f, 0.5f, 3.0f);
 	raylib::Window		  window(1600, 900);
 	const raylib::Vector2 initialPosition(window.GetSize() / 2.0f);
 	raylib::Camera2D	  cam(initialPosition, initialPosition);
