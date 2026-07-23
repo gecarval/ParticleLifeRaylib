@@ -41,13 +41,16 @@ static void cameraControl(raylib::Camera2D &cam) {
 }
 
 // Build a cluster of N particles randomly scattered inside a disc.
-static void spawnParticles(std::vector<Particle *> &bodies, int N,
-						   const float spread, const float speed = 5.0f,
+static void spawnParticles(std::vector<Particle *> &bodies, const int N,
+						   const float spread, const float speed = 6.0f,
 						   const float minMass = 0.5f,
 						   const float maxMass = 3.0f) {
 	std::mt19937						  rng(42);
 	std::uniform_real_distribution<float> distPos(-spread, spread);
-	const raylib::Vector2				  zero(0);
+	static constexpr raylib::Vector2	  zero(0);
+	const float							  maxDist =
+		spread *
+		1.41421356f; // sqrt(2): true max distance for a square spawn region
 	for (int i = 0; i < N; ++i) {
 		const raylib::Color col(
 			static_cast<unsigned char>(180 + (i % 60)),
@@ -56,7 +59,7 @@ static void spawnParticles(std::vector<Particle *> &bodies, int N,
 		const raylib::Vector2 pos(distPos(rng), distPos(rng));
 		const raylib::Vector2 tangent(-pos.y, pos.x);
 		const float			  mass =
-			Remap(pos.Distance(zero), 0, spread, maxMass, minMass);
+			Remap(pos.Distance(zero), 0, maxDist, maxMass, minMass);
 		Particle *p = new Particle("P" + std::to_string(i), pos, col);
 		p->setMass(mass);
 		p->setLockRotation(true);
@@ -68,7 +71,7 @@ static void spawnParticles(std::vector<Particle *> &bodies, int N,
 int main(void) {
 	std::vector<Particle *>			 particles;
 	std::vector<CollisionObject2D *> colliders;
-	spawnParticles(particles, 2000, 1000.0f);
+	spawnParticles(particles, 5000, 20000.0f);
 	raylib::Window		  window(1600, 900);
 	const raylib::Vector2 initialPosition(window.GetSize() / 2.0f);
 	raylib::Camera2D	  cam(initialPosition, initialPosition);
@@ -78,9 +81,9 @@ int main(void) {
 		window.BeginDrawing();
 		window.ClearBackground();
 		cam.BeginMode();
-		PhysicsServer::getInstance().rebuild();
 		GravityServer::getInstance().rebuild();
 		GravityServer::getInstance().applyGravity();
+		PhysicsServer::getInstance().rebuild();
 		for (Particle *p : particles) {
 			colliders.clear();
 			PhysicsServer::getInstance().getCollisions(*p, colliders);
