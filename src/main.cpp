@@ -8,12 +8,13 @@
 #include <vector>
 
 static void cameraControl(raylib::Camera2D &cam) {
-	const float walkSpeed = 20.0f / cam.GetZoom();
+	const float walkSpeed = (1000.0f / cam.GetZoom()) * ::GetFrameTime();
 	const float zoomDelta =
 		raylib::Mouse::GetWheelMove() * cam.GetZoom() * 0.1f;
-	const raylib::Vector2 mousePan = raylib::Mouse::GetDelta() / cam.GetZoom();
-	static const float	  minZoom = 0.1f;
-	static const float	  maxZoom = 3.0f;
+	const raylib::Vector2 mousePan =
+		(raylib::Mouse::GetDelta() / cam.GetZoom());
+	static const float minZoom = 0.1f;
+	static const float maxZoom = 3.0f;
 
 	raylib::Vector2 target = cam.GetTarget();
 	if (IsMouseButtonDown(MOUSE_MIDDLE_BUTTON)) {
