@@ -97,15 +97,11 @@ void RenderServer::render(const raylib::Window	 &window,
 }
 
 void RenderServer::addCanvasItem(CanvasItem *canvasItem) noexcept {
-	if (_instance != nullptr) {
-		_canvasItems[canvasItem->getInstanceID()] = canvasItem;
-	}
+	_canvasItems[canvasItem->getInstanceID()] = canvasItem;
 }
 
 void RenderServer::removeCanvasItem(CanvasItem *canvasItem) noexcept {
-	if (_instance != nullptr) {
-		_canvasItems.erase(canvasItem->getInstanceID());
-	}
+	_canvasItems.erase(canvasItem->getInstanceID());
 }
 
 const std::string &RenderServer::getClassName() const noexcept {

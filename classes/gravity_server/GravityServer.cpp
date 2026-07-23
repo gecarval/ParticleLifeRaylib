@@ -456,15 +456,11 @@ GravityServer::~GravityServer() {
 }
 
 void GravityServer::addBody(PhysicsBody2D *body) noexcept {
-	if (_instance != nullptr && body != nullptr) {
-		_bodies[body->getInstanceID()] = body;
-	}
+	_bodies[body->getInstanceID()] = body;
 }
 
 void GravityServer::removeBody(PhysicsBody2D *body) noexcept {
-	if (_instance != nullptr && body != nullptr) {
-		_bodies.erase(body->getInstanceID());
-	}
+	_bodies.erase(body->getInstanceID());
 }
 
 GravityServer &GravityServer::getInstance() noexcept {

@@ -1,5 +1,5 @@
-#include "../node/canvas_item/node2d/collision_object2d/CollisionObject2D.hpp"
 #include "PhysicsServer.hpp"
+#include "../node/canvas_item/node2d/collision_object2d/CollisionObject2D.hpp"
 #include <array>
 
 // Static
@@ -24,16 +24,12 @@ PhysicsServer::hashFunction(const raylib::Vector2 &position) const noexcept {
 
 void PhysicsServer::addCollisionObject(
 	CollisionObject2D *collisionObject) noexcept {
-	if (_instance != nullptr) {
-		_collisionObjects[collisionObject->getInstanceID()] = collisionObject;
-	}
+	_collisionObjects[collisionObject->getInstanceID()] = collisionObject;
 }
 
 void PhysicsServer::removeCollisionObject(
 	CollisionObject2D *collisionObject) noexcept {
-	if (_instance != nullptr) {
-		_collisionObjects.erase(collisionObject->getInstanceID());
-	}
+	_collisionObjects.erase(collisionObject->getInstanceID());
 }
 
 PhysicsServer &PhysicsServer::getInstance() noexcept {

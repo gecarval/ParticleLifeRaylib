@@ -65,9 +65,6 @@ static void spawnParticles(std::vector<Particle *> &bodies, int N,
 }
 
 int main(void) {
-	GravityServer::getInstance();
-	PhysicsServer::getInstance();
-	RenderServer::getInstance();
 	std::vector<Particle *>			 particles;
 	std::vector<CollisionObject2D *> colliders;
 	spawnParticles(particles, 2000, 1000.0f, 5.0f, 0.5f, 3.0f);
