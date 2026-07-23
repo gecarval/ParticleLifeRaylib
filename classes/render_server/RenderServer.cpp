@@ -28,24 +28,19 @@ void RenderServer::deleteInstance() noexcept {
 void RenderServer::render(const raylib::Window &window) noexcept {
 	for (const auto &pair : _canvasItems) {
 		bool		inView = false;
-		bool		isSprite = false;
 		CanvasItem *canvasItem = pair.second;
-		Sprite2D   *sprite = dynamic_cast<Sprite2D *>(canvasItem);
-		if (sprite) {
-			isSprite = true;
-			raylib::Vector2 pos = sprite->getPos();
-			const Shape2D  *shape = sprite->getShape();
+		if (canvasItem->getClassName() == "Sprite2D") {
+			const auto	  *sprite = dynamic_cast<Sprite2D *>(canvasItem);
+			const auto	   pos = sprite->getPos();
+			const Shape2D *shape = sprite->getShape();
 			if (shape && canvasItem->isInView(window, *shape, pos)) {
 				inView = true;
 			}
-		}
-		if (!isSprite) {
-			Node2D *node = dynamic_cast<Node2D *>(canvasItem);
-			if (node) {
-				raylib::Vector2 pos = node->getPos();
-				if (canvasItem->isInView(window, pos)) {
-					inView = true;
-				}
+		} else if (canvasItem->getClassName() == "Node2D") {
+			const auto *node = dynamic_cast<Node2D *>(canvasItem);
+			const auto	pos = node->getPos();
+			if (canvasItem->isInView(window, pos)) {
+				inView = true;
 			}
 		}
 		if (!inView) {
@@ -64,24 +59,19 @@ void RenderServer::render(const raylib::Window	 &window,
 						  const raylib::Camera2D &camera) noexcept {
 	for (const auto &pair : _canvasItems) {
 		bool		inView = false;
-		bool		isSprite = false;
 		CanvasItem *canvasItem = pair.second;
-		Sprite2D   *sprite = dynamic_cast<Sprite2D *>(canvasItem);
-		if (sprite) {
-			isSprite = true;
-			raylib::Vector2 pos = sprite->getPos();
-			const Shape2D  *shape = sprite->getShape();
+		if (canvasItem->getClassName() == "Sprite2D") {
+			const auto	  *sprite = dynamic_cast<Sprite2D *>(canvasItem);
+			const auto	   pos = sprite->getPos();
+			const Shape2D *shape = sprite->getShape();
 			if (shape && canvasItem->isInView(window, camera, *shape, pos)) {
 				inView = true;
 			}
-		}
-		if (!isSprite) {
-			Node2D *node = dynamic_cast<Node2D *>(canvasItem);
-			if (node) {
-				raylib::Vector2 pos = node->getPos();
-				if (canvasItem->isInView(window, camera, pos)) {
-					inView = true;
-				}
+		} else if (canvasItem->getClassName() == "Node2D") {
+			const auto *node = dynamic_cast<Node2D *>(canvasItem);
+			const auto	pos = node->getPos();
+			if (canvasItem->isInView(window, camera, pos)) {
+				inView = true;
 			}
 		}
 		if (!inView) {
