@@ -68,7 +68,7 @@ static void spawnParticles(std::vector<Particle *> &bodies, int N,
 int main(void) {
 	std::vector<Particle *>			 particles;
 	std::vector<CollisionObject2D *> colliders;
-	spawnParticles(particles, 2000, 1000.0f, 5.0f, 0.5f, 3.0f);
+	spawnParticles(particles, 2000, 1000.0f);
 	raylib::Window		  window(1600, 900);
 	const raylib::Vector2 initialPosition(window.GetSize() / 2.0f);
 	raylib::Camera2D	  cam(initialPosition, initialPosition);
@@ -80,10 +80,9 @@ int main(void) {
 		cam.BeginMode();
 		PhysicsServer::getInstance().rebuild();
 		GravityServer::getInstance().rebuild();
-		GravityServer::getInstance().applyGravity(10.0f);
+		GravityServer::getInstance().applyGravity();
 		for (Particle *p : particles) {
 			colliders.clear();
-			colliders.reserve(32);
 			PhysicsServer::getInstance().getCollisions(*p, colliders);
 			for (CollisionObject2D *pn2 : colliders) {
 				if (*p != *pn2) {

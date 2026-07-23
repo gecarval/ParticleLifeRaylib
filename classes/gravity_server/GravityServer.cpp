@@ -35,7 +35,7 @@ namespace {
 
 constexpr int	kOrder = 6; // terms kept beyond the monopole (a_0)
 constexpr int	kMaxPerLeaf = 8;
-constexpr int	kMaxDepth = 20;
+constexpr int	kMaxDepth = 32;
 constexpr float kTheta = 0.6f; // smaller => more accurate, more direct work
 
 using Cplx = std::complex<float>;
